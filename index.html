@@ -71,8 +71,8 @@
     .upload-area:hover { border-color: #a855f7; }
 
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); align-items: center; justify-content: center; z-index: 1000; }
-    .post-actions { display: flex; gap: 15px; margin-top: 12px; color: #94a3b8; cursor: pointer; }
-    .comment { background: #1a2233; padding: 12px; border-radius: 12px; margin-top: 10px; }
+    .post-actions { display: flex; gap: 15px; margin-top: 12px; color: #94a3b8; }
+    .comment { background: #1a2233; padding: 12px; border-radius: 12px; margin-top: 10px; font-size: 0.95rem; }
   </style>
 </head>
 <body>
@@ -133,7 +133,7 @@ let selectedFilters = [];
 let currentMedia = null;
 let currentPostTags = [];
 
-// ==================== ЗАГРУЗКА / СОХРАНЕНИЕ ====================
+// ==================== ЗАГРУЗКА ====================
 function loadData() {
   if (localStorage.getItem("rootlab_posts")) posts = JSON.parse(localStorage.getItem("rootlab_posts"));
   if (localStorage.getItem("rootlab_user")) currentUser = JSON.parse(localStorage.getItem("rootlab_user"));
@@ -159,9 +159,8 @@ function getFilteredPosts() {
   return posts.filter(post => post.tags && selectedFilters.some(tag => post.tags.includes(tag)));
 }
 
-// ==================== РЕНДЕР СТРАНИЦ ====================
+// ==================== РЕНДЕР ====================
 function renderCurrentPage(page) {
-  const container = document.getElementById("pageContent");
   if (page === "home") renderHome();
   else if (page === "create") renderCreatePost();
   else if (page === "plugins") renderPluginsPage();
@@ -169,7 +168,7 @@ function renderCurrentPage(page) {
 }
 
 function renderHome() {
-  let html = `
+  document.getElementById("pageContent").innerHTML = `
     <h2>📢 Лента публикаций</h2>
     <div style="margin:20px 0 10px;">
       <strong>Категории:</strong><br>
@@ -179,7 +178,6 @@ function renderHome() {
     <input type="text" id="searchInput" placeholder="🔍 Поиск..." style="width:100%; max-width:500px; margin-bottom:20px;" onkeyup="searchPosts()">
     <div class="grid-cards" id="postsGrid"></div>
   `;
-  document.getElementById("pageContent").innerHTML = html;
   renderCategoryButtons();
   renderPosts();
 }
@@ -192,13 +190,10 @@ function renderCategoryButtons() {
 }
 
 window.toggleCategory = function(catId) {
-  if (catId === "all") {
-    selectedFilters = [];
-  } else {
+  if (catId === "all") selectedFilters = [];
+  else {
     const cat = presetCategories.find(c => c.id === catId);
-    cat.tags.forEach(tag => {
-      if (!selectedFilters.includes(tag)) selectedFilters.push(tag);
-    });
+    if (cat) cat.tags.forEach(tag => { if (!selectedFilters.includes(tag)) selectedFilters.push(tag); });
   }
   renderCategoryButtons();
   renderSelectedFilters();
@@ -220,15 +215,17 @@ window.removeFilter = function(tag) {
   renderPosts();
 };
 
-function renderPosts() {
-  const filtered = getFilteredPosts();
+function renderPosts(filteredPosts = null) {
+  const postsToShow = filteredPosts || getFilteredPosts();
   const grid = document.getElementById("postsGrid");
-  grid.innerHTML = filtered.map(post => `
+  grid.innerHTML = postsToShow.map(post => `
     <div class="card">
       <h3>${post.title}</h3>
       <p>${post.content}</p>
       <div style="margin:12px 0;">\( {post.tags ? post.tags.map(t => `<span class="tag"># \){t}</span>`).join('') : ''}</div>
-      \( {post.media ? (post.mediaType === 'video' ? `<video src=" \){post.media}" controls style="width:100%;border-radius:12px;"></video>` : `<img src="${post.media}" style="width:100%;border-radius:12px;">`) : ''}
+      ${post.media ? (post.mediaType === 'video' ? 
+        `<video src="${post.media}" controls style="width:100%;border-radius:12px;margin-top:10px;"></video>` : 
+        `<img src="${post.media}" style="width:100%;border-radius:12px;margin-top:10px;">`) : ''}
       <small>${post.date}</small>
       <div class="post-actions">
         <span onclick="likePost('${post.id}')">❤️ ${post.likes || 0}</span>
@@ -236,14 +233,16 @@ function renderPosts() {
       </div>
       <div id="comments-${post.id}" style="display:none; margin-top:15px;"></div>
     </div>
-  `).join('') || '<p style="text-align:center; padding:40px; color:#64748b;">Ничего не найдено</p>';
+  `).join('') || '<p style="text-align:center; padding:60px; color:#64748b;">Ничего не найдено</p>';
 }
 
 window.likePost = function(id) {
   const post = posts.find(p => p.id === id);
-  if (post) post.likes = (post.likes || 0) + 1;
-  saveData();
-  renderPosts();
+  if (post) {
+    post.likes = (post.likes || 0) + 1;
+    saveData();
+    renderPosts();
+  }
 };
 
 window.toggleComments = function(id) {
@@ -257,6 +256,8 @@ function renderComments(id) {
   let html = `<h4>Комментарии</h4>`;
   if (post.comments && post.comments.length) {
     html += post.comments.map(c => `<div class="comment"><strong>${c.author}:</strong> ${c.text}</div>`).join('');
+  } else {
+    html += `<p style="color:#64748b;">Комментариев пока нет</p>`;
   }
   html += `
     <input type="text" id="comment-input-${id}" placeholder="Напишите комментарий..." style="margin-top:10px;">
@@ -267,7 +268,7 @@ function renderComments(id) {
 
 window.addComment = function(id) {
   const input = document.getElementById(`comment-input-${id}`);
-  if (!input.value.trim()) return;
+  if (!input || !input.value.trim()) return;
   const post = posts.find(p => p.id === id);
   if (post) {
     if (!post.comments) post.comments = [];
@@ -278,15 +279,17 @@ window.addComment = function(id) {
 };
 
 window.searchPosts = function() {
-  const term = document.getElementById("searchInput").value.toLowerCase();
+  const term = document.getElementById("searchInput").value.toLowerCase().trim();
   const filtered = getFilteredPosts().filter(p => 
     p.title.toLowerCase().includes(term) || p.content.toLowerCase().includes(term)
   );
-  document.getElementById("postsGrid").innerHTML = /* тот же рендер как в renderPosts */ filtered.map(/* ... */).join('');
+  renderPosts(filtered);
 };
 
 // ==================== Создать пост ====================
 function renderCreatePost() {
+  currentPostTags = [];
+  currentMedia = null;
   document.getElementById("pageContent").innerHTML = `
     <div class="create-post">
       <h2>Создать пост / модуль</h2>
@@ -295,9 +298,11 @@ function renderCreatePost() {
       
       <h3>Теги</h3>
       <div id="selectedTags" style="margin-bottom:10px;"></div>
-      <input type="text" id="tagInput" placeholder="Введите тег + Enter" onkeypress="if(event.key==='Enter') addTag()">
+      <input type="text" id="tagInput" placeholder="Введите тег и нажмите Enter" onkeypress="if(event.key==='Enter') addTag()">
       <div style="margin:10px 0;">
-        \( {["Magisk","KernelSU","LSPosed","Shamiko","Zygisk","APatch","Гайд","Root"].map(t => `<button onclick="quickAddTag(' \){t}')" class="btn" style="background:#1e2937;font-size:0.85rem;padding:6px 12px;margin:3px;">#${t}</button>`).join('')}
+        ${["Magisk","KernelSU","LSPosed","Shamiko","Zygisk","APatch","Гайд","Root"].map(t => 
+          `<button onclick="quickAddTag('\( {t}')" class="btn" style="background:#1e2937;font-size:0.85rem;padding:6px 12px;margin:3px;"># \){t}</button>`
+        ).join('')}
       </div>
 
       <div class="upload-area" id="uploadArea"><p>📎 Загрузить фото или видео</p><input type="file" id="mediaInput" accept="image/*,video/*" style="display:none;"></div>
@@ -316,7 +321,7 @@ function handleFileSelect(e) {
   const reader = new FileReader();
   reader.onload = ev => {
     currentMedia = { url: ev.target.result, type: file.type.startsWith('video') ? 'video' : 'image' };
-    document.getElementById("uploadArea").innerHTML = `<p>✅ ${file.name}</p>`;
+    document.getElementById("uploadArea").innerHTML = `<p>✅ Загружен: ${file.name}</p>`;
   };
   reader.readAsDataURL(file);
 }
@@ -367,7 +372,7 @@ window.publishPost = function() {
   currentMedia = null;
   currentPostTags = [];
   saveData();
-  alert("✅ Опубликовано!");
+  alert("✅ Пост успешно опубликован!");
   document.querySelector('[data-page="home"]').click();
 };
 
@@ -378,20 +383,26 @@ function renderPluginsPage() {
     <div class="grid-cards" id="pluginsGrid"></div>
   `;
   const grid = document.getElementById("pluginsGrid");
-  const pluginPosts = posts.filter(p => p.tags && p.tags.some(t => ["Magisk","KernelSU","LSPosed","Zygisk","Shamiko","APatch"].includes(t)));
-  grid.innerHTML = pluginPosts.map(p => `
+  const filtered = posts.filter(p => p.tags && p.tags.some(t => ["Magisk","KernelSU","LSPosed","Zygisk","Shamiko","APatch"].includes(t)));
+  
+  grid.innerHTML = filtered.map(post => `
     <div class="card">
-      <h3>${p.title}</h3>
-      <div>\( {p.tags.map(t => `<span class="tag"># \){t}</span>`).join('')}</div>
-      <p>${p.content}</p>
+      <h3>${post.title}</h3>
+      <div>\( {post.tags.map(t => `<span class="tag"># \){t}</span>`).join('')}</div>
+      <p>${post.content}</p>
+      <small>${post.date}</small>
     </div>
-  `).join('');
+  `).join('') || '<p>Пока нет плагинов</p>';
 }
 
 // ==================== Мои ссылки ====================
 function renderSocialPage() {
-  // ... (можно добавить по необходимости)
-  document.getElementById("pageContent").innerHTML = `<h2>🔗 Мои ссылки</h2><p>Раздел для редактирования профиля и ссылок</p>`;
+  document.getElementById("pageContent").innerHTML = `
+    <h2>🔗 Мои ссылки</h2>
+    <div class="create-post">
+      <p>Здесь можно редактировать профиль и социальные сети (функция в разработке).</p>
+    </div>
+  `;
 }
 
 // ==================== Профиль ====================
@@ -400,7 +411,7 @@ document.getElementById("openProfileBtn").addEventListener("click", () => {
   document.getElementById("profileBio").textContent = currentUser.bio;
   document.getElementById("profileAvatar").src = currentUser.avatar;
   document.getElementById("socialLinksContainer").innerHTML = currentUser.socials.map(s => 
-    `<p><i class="\( {s.icon}"></i> <strong> \){s.name}:</strong> <a href="\( {s.url}" target="_blank"> \){s.url}</a></p>`
+    `<p><i class="\( {s.icon}"></i> <strong> \){s.name}:</strong> <a href="\( {s.url}" target="_blank" style="color:#c084fc;"> \){s.url}</a></p>`
   ).join('');
   document.getElementById("profileModal").style.display = "flex";
 });
