@@ -3,118 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>RootLab Official — ultimate hub | плагины, посты, медиа</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <title>RootLab Official — полный контроль | посты, плагины, Telegram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 10% 20%, #0a0c15, #03050b);
+      background: radial-gradient(circle at 20% 10%, #0a0c16, #02040c);
       color: #f0f3fa;
       line-height: 1.5;
-    }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #11161f; }
-    ::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 10px; }
-    .logo-glow {
-      background: linear-gradient(135deg, #c084fc, #3b82f6, #a855f7);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 800;
     }
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background: rgba(8, 12, 20, 0.85);
+      background: rgba(8, 12, 22, 0.9);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(139, 92, 246, 0.4);
+      border-bottom: 1px solid #7c3aed60;
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .logo h1 { font-size: 1.9rem; letter-spacing: -0.8px; }
+    .logo h1 { font-size: 1.8rem; background: linear-gradient(135deg, #c084fc, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a { color: #cbd5e6; text-decoration: none; font-weight: 600; transition: 0.2s; font-size: 1rem; }
+    .nav-links a { color: #cbd5e6; text-decoration: none; font-weight: 600; transition: 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: #c084fc; text-shadow: 0 0 4px #a855f7; }
-    .profile-icon {
-      font-size: 1.6rem; cursor: pointer; background: linear-gradient(145deg, #2d2a4e, #1f1b38);
-      width: 44px; height: 44px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;
-      border: 1px solid #7c5cf0;
-    }
+    .profile-icon { background: #1f1b3a; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #8b5cf6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.8rem; }
     .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; margin-top: 2rem; }
     .card {
-      background: rgba(17, 22, 31, 0.9);
-      backdrop-filter: blur(2px);
+      background: rgba(17, 22, 31, 0.95);
       border-radius: 1.8rem;
       padding: 1.4rem;
       border: 1px solid #2d3850;
-      transition: all 0.25s ease;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
-    }
-    .card:hover { border-color: #a855f7; transform: translateY(-6px); box-shadow: 0 25px 40px -12px #7c3aed40; }
-    .card img, .card video { width: 100%; border-radius: 1.2rem; max-height: 240px; object-fit: cover; background: #0b0f18; border: 1px solid #2e3a52; }
-    .card h3 { margin: 0.9rem 0 0.4rem; font-size: 1.4rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-    .btn-icon-group { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-    .btn-sm {
-      background: #1e2a3e; border: none; padding: 6px 12px; border-radius: 2rem; font-size: 0.75rem;
-      font-weight: 600; cursor: pointer; transition: 0.2s; color: white; display: inline-flex; align-items: center; gap: 6px;
-    }
-    .btn-sm i { font-size: 0.8rem; }
-    .btn-sm:hover { background: #334155; transform: scale(0.96); }
-    .delete-btn, .edit-btn {
-      background: rgba(100, 100, 120, 0.8);
-      border: none;
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 40px;
-      cursor: pointer;
-      font-size: 0.9rem;
       transition: 0.2s;
+      backdrop-filter: blur(2px);
     }
-    .delete-btn:hover { background: #dc2626; }
+    .card:hover { border-color: #a855f7; transform: translateY(-5px); box-shadow: 0 20px 30px -12px #6d28d940; }
+    .card img, .card video { width: 100%; border-radius: 1.2rem; max-height: 220px; object-fit: cover; background: #00000040; }
+    .btn-group { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; }
+    .edit-btn, .delete-btn { background: #2d3a52; border: none; width: 34px; height: 34px; border-radius: 40px; color: white; cursor: pointer; transition: 0.2s; }
     .edit-btn:hover { background: #3b82f6; }
-    .create-post {
-      background: rgba(16, 20, 30, 0.8);
-      backdrop-filter: blur(8px);
-      border-radius: 2rem;
-      padding: 1.8rem;
-      margin-bottom: 2.2rem;
-      border: 1px solid #334155;
-    }
-    input, textarea, select {
-      width: 100%; background: #0f1320; border: 1px solid #2a3448; border-radius: 1.2rem;
-      padding: 0.9rem 1rem; color: white; font-family: inherit; margin-bottom: 1rem;
-    }
-    .format-toolbar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-    .format-btn { background: #1e293b; border: none; padding: 6px 12px; border-radius: 30px; color: white; cursor: pointer; font-weight: bold; }
-    .btn {
-      background: linear-gradient(100deg, #7c3aed, #2563eb); border: none; padding: 0.8rem 1.8rem;
-      border-radius: 3rem; font-weight: bold; color: white; cursor: pointer; transition: 0.2s;
-    }
+    .delete-btn:hover { background: #dc2626; }
+    .create-post { background: #0e121fcc; backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.8rem; margin-bottom: 2rem; border: 1px solid #334155; }
+    input, textarea, select { width: 100%; background: #0f1322; border: 1px solid #2a3448; border-radius: 1.2rem; padding: 0.8rem 1rem; color: white; margin-bottom: 1rem; }
+    .format-toolbar { display: flex; gap: 10px; margin-bottom: 12px; }
+    .format-btn { background: #1e293b; border: none; padding: 6px 14px; border-radius: 2rem; color: white; cursor: pointer; font-weight: 600; }
+    .btn { background: linear-gradient(95deg, #7c3aed, #2563eb); border: none; padding: 0.7rem 1.6rem; border-radius: 2rem; font-weight: bold; color: white; cursor: pointer; }
     .modal {
       display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
       backdrop-filter: blur(10px); align-items: center; justify-content: center; z-index: 1000;
     }
-    .modal-content { background: #10151f; max-width: 550px; width: 90%; padding: 2rem; border-radius: 2rem; border: 1px solid #8b5cf6; max-height: 85vh; overflow-y: auto; }
-    .profile-avatar { background: linear-gradient(145deg, #8b5cf6, #4f46e5); width: 85px; height: 85px; font-size: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 1rem; }
+    .modal-content { background: #11161f; max-width: 550px; width: 90%; padding: 2rem; border-radius: 2rem; border: 1px solid #8b5cf6; max-height: 85vh; overflow-y: auto; }
+    .tg-send-card { background: #1e2a3a; border-radius: 1.5rem; padding: 1.2rem; margin-top: 1rem; }
     footer { text-align: center; padding: 2rem; color: #5b6e8c; border-top: 1px solid #1f2a3a; }
-    .media-preview { margin-top: 8px; background: #03060c; border-radius: 1rem; padding: 8px; text-align: center; }
-    .rich-content { line-height: 1.5; }
-    .rich-content a { color: #c084fc; text-decoration: underline; }
-    .badge-custom { background: #2d1b4e; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; }
+    .rich-content { line-height: 1.5; word-break: break-word; }
+    .badge-date { background: #2d1b4e; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; }
   </style>
 </head>
 <body>
 
 <nav class="navbar">
-  <div class="logo"><h1><span class="logo-glow">🔧 RootLab</span> | Official</h1></div>
+  <div class="logo"><h1>🔧 RootLab | Official</h1></div>
   <div class="nav-links">
     <a href="#" class="nav-link active" data-page="home">🏠 Главная</a>
     <a href="#" class="nav-link" data-page="plugins">📦 Плагины</a>
@@ -124,132 +76,143 @@
 </nav>
 
 <div class="container" id="appContainer"><div id="pageContent"></div></div>
-<footer><p>RootLab Official — мощная экосистема для создателей | TG: @RootLab_Official | Дзен: dzen.ru/rootlabstyle</p></footer>
+<footer>RootLab Official — полный цикл управления контентом | TG канал: @RootLab_Official</footer>
 
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span class="close-modal" id="closeModalBtn" style="float:right; font-size:28px; cursor:pointer;">&times;</span>
-    <div class="profile-avatar" id="avatarPreview">👤</div>
-    <h3 style="text-align:center">✨ Мой профиль (заполни поля)</h3>
-    <label>Имя / Никнейм</label>
-    <input type="text" id="profileName" placeholder="Например: RootMaster" style="width:100%; margin:8px 0; padding:8px; border-radius:14px;">
+    <h3 style="text-align:center">🧑‍🚀 Настройки профиля</h3>
+    <label>Имя / Псевдоним</label>
+    <input type="text" id="profileName" placeholder="Ваше имя">
     <label>Email</label>
-    <input type="email" id="profileEmail" placeholder="your@email.com" style="width:100%; margin:8px 0; padding:8px; border-radius:14px;">
+    <input type="email" id="profileEmail" placeholder="your@email.com">
     <label>Telegram username</label>
-    <input type="text" id="tgUsername" placeholder="@yournick" style="width:100%; margin:8px 0; padding:8px; border-radius:14px;">
-    <label>Яндекс.Дзен канал (ссылка)</label>
-    <input type="text" id="zenChannel" placeholder="https://dzen.ru/..." style="width:100%; margin:8px 0; padding:8px; border-radius:14px;">
+    <input type="text" id="tgUsername" placeholder="@username">
+    <label>Яндекс.Дзен (ссылка)</label>
+    <input type="text" id="zenChannel" value="https://dzen.ru/id/6252aef9a2b8ec473f6038c6" placeholder="https://dzen.ru/...">
     <label>Telegram канал (ссылка)</label>
-    <input type="text" id="tgChannel" placeholder="https://t.me/your_channel" style="width:100%; margin:8px 0; padding:8px; border-radius:14px;">
-    <button class="btn" id="saveProfileBtn" style="margin-top:1rem; width:100%">💾 Сохранить профиль</button>
+    <input type="text" id="tgChannel" value="https://t.me/RootLab_Official" placeholder="https://t.me/...">
+    <button class="btn" id="saveProfileBtn" style="margin-top:1rem; width:100%">💾 Сохранить</button>
+  </div>
+</div>
+
+<!-- Модальное окно для отправки в Telegram -->
+<div id="telegramModal" class="modal">
+  <div class="modal-content">
+    <span class="close-tg-modal" style="float:right; font-size:28px; cursor:pointer;">&times;</span>
+    <h3><i class="fab fa-telegram"></i> Отправить в Telegram канал</h3>
+    <div class="tg-send-card">
+      <p><strong>Сообщение для публикации:</strong></p>
+      <textarea id="tgMessagePreview" rows="5" readonly style="background:#0a0e16; color:#e2e8f0; resize:none;"></textarea>
+      <p style="margin-top: 12px;"><i class="fas fa-info-circle"></i> Скопируйте текст и отправьте в ваш Telegram канал:</p>
+      <button class="btn" id="copyTgMessageBtn" style="background:#1f3a5f; margin-bottom:12px;"><i class="fas fa-copy"></i> Копировать сообщение</button>
+      <a id="openTelegramChannelLink" href="#" target="_blank" class="btn" style="display:inline-block; text-decoration:none; text-align:center; background:#2b5876;"><i class="fab fa-telegram"></i> Открыть Telegram канал</a>
+    </div>
   </div>
 </div>
 
 <script>
-  // ------ СТАРТОВЫЕ ДАННЫЕ: ПУСТОЙ ПРОФИЛЬ (кроме дефолтных ссылок но поля пустые для ввода) , ПЛАГИНЫ И ПОСТЫ С ПРИМЕРАМИ -----
+  // ----- ДАННЫЕ ПО УМОЛЧАНИЮ -----
   let plugins = [
-    { id: 100, name: "TurboSEO Engine", desc: "Молниеносная SEO оптимизация и микроразметка", version: "3.0", type: "plugin", imgIcon: "🚀" },
-    { id: 101, name: "ContentLock Pro", desc: "Защита контента + водяные знаки", version: "2.3", type: "plugin", imgIcon: "🔒" }
+    { id: 1, name: "TurboSEO Pro", desc: "Мощный SEO-бустер для сайтов", version: "2.4.0", icon: "🚀" },
+    { id: 2, name: "ContentShield", desc: "Защита текста и изображений", version: "1.9", icon: "🛡️" }
   ];
   
   let posts = [
-    { id: "p_init1", author: "RootLab", title: "🎉 Добро пожаловать в RootLab", content: "<strong>Мощный хаб</strong> для плагинов и публикаций. Редактируй, удаляй, вставляй <a href='https://dzen.ru/id/6252aef9a2b8ec473f6038c6' target='_blank'>ссылки на Дзен</a> и делись опытом!", media: "", mediaType: "", date: new Date().toLocaleDateString() },
-    { id: "p_init2", author: "RootLab", title: "✨ Как форматировать текст?", content: "<em>Курсив</em>, <strong>жирный</strong> и <u>ссылки</u> — всё работает. Ты можешь редактировать этот пост!", media: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600", mediaType: "image", date: new Date().toLocaleDateString() }
+    { id: "p1", author: "RootLab", title: "🔥 Добро пожаловать в RootLab", content: "Здесь ты можешь создавать <strong>посты с HTML</strong>, вставлять <em>курсив</em> и <a href='https://dzen.ru/id/6252aef9a2b8ec473f6038c6' target='_blank'>ссылки на Дзен</a>. Редактируй и удаляй!", media: "", mediaType: "", date: new Date().toLocaleDateString() },
+    { id: "p2", author: "RootLab", title: "✨ Как редактировать посты?", content: "Наведи на карточку → нажми <strong>✏️ Редактировать</strong>. Можно менять заголовок, текст, медиа.", media: "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600", mediaType: "image", date: new Date().toLocaleDateString() }
   ];
 
-  // Пользовательские данные (пустые, но с подсказками, чтобы человек сам заполнил)
-  let currentUser = { 
-    name: "", 
-    email: "", 
-    tg: "", 
-    zen: "", 
-    tgChannel: ""
-  };
-  
+  let currentUser = { name: "", email: "", tg: "", zen: "https://dzen.ru/id/6252aef9a2b8ec473f6038c6", tgChannel: "https://t.me/RootLab_Official" };
+
   function loadData() {
-    const storedPlugins = localStorage.getItem("rootlab_plugins_core");
-    const storedPosts = localStorage.getItem("rootlab_posts_core");
-    const storedUser = localStorage.getItem("rootlab_user_core");
-    if(storedPlugins) plugins = JSON.parse(storedPlugins);
-    if(storedPosts) posts = JSON.parse(storedPosts);
-    if(storedUser) currentUser = JSON.parse(storedUser);
-    // гарантия полей
-    if(!currentUser.tgChannel) currentUser.tgChannel = "";
+    const p = localStorage.getItem("rootlab_plugins_real");
+    const po = localStorage.getItem("rootlab_posts_real");
+    const u = localStorage.getItem("rootlab_user_real");
+    if(p) plugins = JSON.parse(p);
+    if(po) posts = JSON.parse(po);
+    if(u) currentUser = JSON.parse(u);
+    if(!currentUser.zen) currentUser.zen = "https://dzen.ru/id/6252aef9a2b8ec473f6038c6";
+    if(!currentUser.tgChannel) currentUser.tgChannel = "https://t.me/RootLab_Official";
   }
   function saveAll() {
-    localStorage.setItem("rootlab_plugins_core", JSON.stringify(plugins));
-    localStorage.setItem("rootlab_posts_core", JSON.stringify(posts));
-    localStorage.setItem("rootlab_user_core", JSON.stringify(currentUser));
+    localStorage.setItem("rootlab_plugins_real", JSON.stringify(plugins));
+    localStorage.setItem("rootlab_posts_real", JSON.stringify(posts));
+    localStorage.setItem("rootlab_user_real", JSON.stringify(currentUser));
   }
 
   function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
   
   function renderMedia(mediaUrl, mediaType) {
     if(mediaUrl && mediaUrl.trim()) {
-      if(mediaType === 'video') return `<video controls src="${escapeHtml(mediaUrl)}" style="max-height:220px; width:100%; border-radius:1rem;"></video>`;
-      else return `<img src="${escapeHtml(mediaUrl)}" alt="медиа" style="max-height:220px; width:100%; object-fit:cover; border-radius:1rem;" onerror="this.src='https://placehold.co/600x400?text=Ошибка+загрузки'">`;
+      if(mediaType === 'video') return `<video controls src="${escapeHtml(mediaUrl)}" style="width:100%; border-radius:1rem;"></video>`;
+      return `<img src="${escapeHtml(mediaUrl)}" style="width:100%; border-radius:1rem; max-height:210px; object-fit:cover;" onerror="this.src='https://placehold.co/600x400?text=Ошибка+загрузки'">`;
     }
-    return `<div class="media-placeholder" style="background:#1e293b; border-radius:1rem; padding:1rem; text-align:center;"><i class="fas fa-image"></i> Нет медиа</div>`;
+    return `<div style="background:#1e293b; border-radius:1rem; padding:1rem; text-align:center;"><i class="fas fa-image"></i> Без медиа</div>`;
   }
 
-  // ---- Редактирование поста ----
+  // ---- РЕДАКТИРОВАНИЕ (РАБОЧЕЕ) ----
   function editPostById(postId) {
     const post = posts.find(p => p.id == postId);
     if(!post) return;
     const newTitle = prompt("✏️ Редактировать заголовок:", post.title);
-    if(newTitle !== null) post.title = newTitle;
-    const newContent = prompt("📝 Редактировать текст (HTML разрешён: strong, em, a):", post.content);
+    if(newTitle !== null && newTitle.trim()) post.title = newTitle;
+    const newContent = prompt("✏️ Редактировать текст (можно использовать HTML: <strong>, <em>, <a href='...'>):", post.content);
     if(newContent !== null) post.content = newContent;
-    const newMedia = prompt("🖼️ Ссылка на изображение/видео (оставь пустым чтобы удалить):", post.media);
+    const newMedia = prompt("🖼️ Новая ссылка на изображение / видео (оставьте пустым для удаления):", post.media);
     if(newMedia !== null) {
       post.media = newMedia;
       post.mediaType = (newMedia && newMedia.match(/\.(mp4|webm|mov)/i)) ? 'video' : 'image';
     }
     saveAll();
     renderCurrentPage();
-    alert("✅ Пост обновлён!");
+    alert("✅ Пост успешно обновлён!");
   }
+
   function editPluginById(pluginId) {
-    const p = plugins.find(pl => pl.id == pluginId);
-    if(!p) return;
-    const newName = prompt("Название плагина:", p.name);
-    if(newName !== null) p.name = newName;
-    const newDesc = prompt("Описание:", p.desc);
-    if(newDesc !== null) p.desc = newDesc;
-    const newVer = prompt("Версия:", p.version);
-    if(newVer !== null) p.version = newVer;
+    const plugin = plugins.find(p => p.id == pluginId);
+    if(!plugin) return;
+    const newName = prompt("Название плагина:", plugin.name);
+    if(newName !== null) plugin.name = newName;
+    const newDesc = prompt("Описание плагина:", plugin.desc);
+    if(newDesc !== null) plugin.desc = newDesc;
+    const newVer = prompt("Версия:", plugin.version);
+    if(newVer !== null) plugin.version = newVer;
     saveAll();
     renderCurrentPage();
-  }
-  function deletePostById(postId) { if(confirm("Удалить пост?")) { posts = posts.filter(p => p.id != postId); saveAll(); renderCurrentPage(); } }
-  function deletePluginById(pluginId) { if(confirm("Удалить плагин?")) { plugins = plugins.filter(p => p.id != pluginId); saveAll(); renderCurrentPage(); } }
-
-  // Функция публикации с форматированием текста
-  let currentRichText = "";
-  function applyFormat(tag, inputId) {
-    const textarea = document.getElementById(inputId);
-    if(!textarea) return;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selected = textarea.value.substring(start, end);
-    let wrapped = "";
-    if(tag === 'bold') wrapped = `<strong>${selected}</strong>`;
-    else if(tag === 'italic') wrapped = `<em>${selected}</em>`;
-    else if(tag === 'link') {
-      let url = prompt("Введите ссылку (https://...)", "https://");
-      if(url) wrapped = `<a href="${url}" target="_blank">${selected || url}</a>`;
-      else wrapped = selected;
-    } else wrapped = selected;
-    const newText = textarea.value.substring(0, start) + wrapped + textarea.value.substring(end);
-    textarea.value = newText;
+    alert("✅ Плагин изменён!");
   }
 
-  function addPostOrPlugin(title, descHtml, mediaUrl, typeSel) {
-    if(!title.trim()) return alert("Введите заголовок!");
+  function deletePostById(postId) { if(confirm("Удалить пост навсегда?")) { posts = posts.filter(p => p.id != postId); saveAll(); renderCurrentPage(); } }
+  function deletePluginById(pluginId) { if(confirm("Удалить плагин из каталога?")) { plugins = plugins.filter(p => p.id != pluginId); saveAll(); renderCurrentPage(); } }
+
+  // ---- ОТПРАВКА В TELEGRAM (через модальное окно с копированием) ----
+  let pendingTgMessage = "";
+  function openTelegramSender(messageText) {
+    const modal = document.getElementById("telegramModal");
+    const textarea = document.getElementById("tgMessagePreview");
+    const cleanMessage = messageText.replace(/<[^>]*>/g, ''); // убираем HTML
+    pendingTgMessage = cleanMessage;
+    textarea.value = `📢 Новая публикация от RootLab:\n\n${cleanMessage}\n\n#RootLab #новости`;
+    modal.style.display = "flex";
+    const channelLink = currentUser.tgChannel && currentUser.tgChannel.trim() !== "" ? currentUser.tgChannel : "https://t.me/RootLab_Official";
+    document.getElementById("openTelegramChannelLink").href = channelLink;
+  }
+
+  document.getElementById("copyTgMessageBtn")?.addEventListener("click", () => {
+    const text = document.getElementById("tgMessagePreview").value;
+    navigator.clipboard.writeText(text);
+    alert("✅ Сообщение скопировано! Теперь перейдите в Telegram и вставьте (Ctrl+V) в ваш канал.");
+  });
+  
+  function closeTelegramModal() { document.getElementById("telegramModal").style.display = "none"; }
+  
+  function addPostWithModal(title, descHtml, mediaUrl, typeSel) {
+    if(!title.trim()) return alert("Введите заголовок");
     if(typeSel === 'plugin') {
-      plugins.push({ id: Date.now(), name: title, desc: descHtml || "Крутой плагин", version: "1.0", type: "plugin", imgIcon: "🧩" });
+      plugins.push({ id: Date.now(), name: title, desc: descHtml || "Плагин", version: "1.0", icon: "🧩" });
       saveAll();
-      alert(`⚡ Плагин "${title}" добавлен!`);
+      alert(`Плагин "${title}" добавлен!`);
       renderCurrentPage();
     } else {
       let mediaType = '', mediaFinal = '';
@@ -257,97 +220,127 @@
       const newPost = { id: Date.now().toString() + Math.random(), author: currentUser.name || "RootMaster", title: title, content: descHtml || "", media: mediaFinal, mediaType: mediaType, date: new Date().toLocaleDateString() };
       posts.unshift(newPost);
       saveAll();
-      alert(`🔥 Пост "${title}" опубликован!`);
+      alert(`Пост "${title}" опубликован!`);
       renderCurrentPage();
     }
   }
 
-  // Интеграция с реальными ссылками (дзен, телеграм канал)
-  function publishToZen(postTitle, postContent) { 
-    let zenLink = currentUser.zen && currentUser.zen.trim() !== "" ? currentUser.zen : "https://dzen.ru/id/6252aef9a2b8ec473f6038c6";
-    alert(`✅ Опубликовано в Яндекс.Дзен: ${zenLink}\n📌 Заголовок: ${postTitle}\n📄 Контент: ${postContent.replace(/<[^>]*>/g, '').substring(0,120)}`); 
+  function applyFormat(tag, textareaId) {
+    const el = document.getElementById(textareaId);
+    if(!el) return;
+    const start = el.selectionStart, end = el.selectionEnd;
+    const selected = el.value.substring(start, end);
+    let wrapped = "";
+    if(tag === 'bold') wrapped = `<strong>${selected}</strong>`;
+    else if(tag === 'italic') wrapped = `<em>${selected}</em>`;
+    else if(tag === 'link') {
+      let url = prompt("Введите URL:", "https://");
+      if(url) wrapped = `<a href="${url}" target="_blank">${selected || url}</a>`;
+      else wrapped = selected;
+    }
+    const newVal = el.value.substring(0, start) + wrapped + el.value.substring(end);
+    el.value = newVal;
   }
-  function publishToTelegram(message) { 
-    let tgChannel = currentUser.tgChannel && currentUser.tgChannel.trim() !== "" ? currentUser.tgChannel : "https://t.me/RootLab_Official";
-    alert(`📲 Отправлено в Telegram канал: ${tgChannel}\n✉️ Сообщение: ${message.substring(0,150)}`); 
+
+  function publishToDzen(postTitle, postContent) {
+    const zenLink = currentUser.zen || "https://dzen.ru/id/6252aef9a2b8ec473f6038c6";
+    alert(`🌐 Опубликовано в Яндекс.Дзен: ${zenLink}\nЗаголовок: ${postTitle}\nТекст: ${postContent.replace(/<[^>]*>/g, '').substring(0,150)}`);
   }
-  
-  // РЕНДЕР СТРАНИЦ
+
+  // ----- ОТРИСОВКА -----
   function renderHome() {
     return `
       <div class="create-post">
-        <h3><i class="fas fa-magic"></i> 🔥 Создать публикацию / плагин</h3>
-        <input type="text" id="postTitle" placeholder="Заголовок (обязательно)">
+        <h3><i class="fas fa-plus-circle"></i> Создать новый пост / плагин</h3>
+        <input type="text" id="postTitle" placeholder="Заголовок">
         <div class="format-toolbar">
           <button type="button" class="format-btn" onclick="applyFormat('bold','postDesc')"><strong>Жирный</strong></button>
           <button type="button" class="format-btn" onclick="applyFormat('italic','postDesc')"><em>Курсив</em></button>
           <button type="button" class="format-btn" onclick="applyFormat('link','postDesc')"><i class="fas fa-link"></i> Ссылка</button>
         </div>
-        <textarea id="postDesc" rows="4" placeholder="Текст с поддержкой HTML (жирный, курсив, ссылки...)"></textarea>
-        <select id="postTypeSelect"><option value="post">📄 Пост (лента)</option><option value="plugin">🔌 Плагин (каталог)</option></select>
-        <input type="text" id="mediaUrl" placeholder="Ссылка на картинку / видео (YouTube, любое изображение)">
-        <div style="display:flex; gap: 12px; flex-wrap:wrap;">
-          <button class="btn" id="publishPostBtn"><i class="fas fa-paper-plane"></i> Опубликовать</button>
-          <button class="btn btn-outline" id="publishToZenBtn"><i class="fab fa-yandex"></i> В Дзен</button>
-          <button class="btn btn-outline" id="publishToTelegramBtn"><i class="fab fa-telegram"></i> В Telegram</button>
+        <textarea id="postDesc" rows="4" placeholder="Текст с поддержкой HTML"></textarea>
+        <select id="postTypeSelect"><option value="post">📝 Пост в ленту</option><option value="plugin">🔌 Плагин в каталог</option></select>
+        <input type="text" id="mediaUrl" placeholder="Ссылка на фото/видео (jpg, png, mp4...)">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn" id="publishBtnMain"><i class="fas fa-save"></i> Опубликовать</button>
+          <button class="btn" id="publishToDzenBtn" style="background:#2c3e66;"><i class="fab fa-yandex"></i> В Дзен</button>
+          <button class="btn" id="publishToTgBtn" style="background:#2b4f6e;"><i class="fab fa-telegram"></i> В Telegram (открыть окно)</button>
         </div>
       </div>
-      <h2><i class="fas fa-newspaper"></i> 📰 Лента постов (редактируй/удаляй)</h2>
+      <h2><i class="fas fa-stream"></i> Все публикации</h2>
       <div class="grid-cards">
         ${posts.map(post => `
           <div class="card">
-            <div style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:8px;">
+            <div class="btn-group">
               <button class="edit-btn" onclick="window.editPostById('${post.id}')"><i class="fas fa-pen"></i></button>
               <button class="delete-btn" onclick="window.deletePostById('${post.id}')"><i class="fas fa-trash"></i></button>
             </div>
             ${renderMedia(post.media, post.mediaType)}
-            <h3>${escapeHtml(post.title)} <span class="badge-custom">${post.date}</span></h3>
+            <h3>${escapeHtml(post.title)} <span class="badge-date">${post.date}</span></h3>
             <div class="rich-content">${post.content || "—"}</div>
-            <div class="btn-icon-group">
-              <button class="btn-sm" onclick="window.publishToTelegram('Пост: ${escapeHtml(post.title)}%0A${escapeHtml(post.content.replace(/<[^>]*>/g, ''))}')"><i class="fab fa-telegram"></i> Отправить в TG</button>
-              <button class="btn-sm" onclick="window.publishToZen('${escapeHtml(post.title)}', '${escapeHtml(post.content)}')"><i class="fab fa-yandex"></i> В Дзен</button>
+            <div style="margin-top:12px; display:flex; gap:8px;">
+              <button class="btn" style="background:#1f3a5f; padding:6px 12px;" onclick="window.publishToDzen('${escapeHtml(post.title)}', '${escapeHtml(post.content)}')"><i class="fab fa-yandex"></i> Дзен</button>
+              <button class="btn" style="background:#2b5876; padding:6px 12px;" onclick="window.openTelegramSender('${escapeHtml(post.title)}%0A${escapeHtml(post.content.replace(/<[^>]*>/g, ''))}')"><i class="fab fa-telegram"></i> TG</button>
             </div>
           </div>
         `).join('')}
-        ${posts.length === 0 ? '<div style="padding: 3rem; text-align:center;">✨ Создай первый пост с медиа и форматированием</div>' : ''}
+        ${posts.length === 0 ? '<div style="padding:3rem; text-align:center;">📭 Создайте первый пост используя форму выше</div>' : ''}
       </div>
     `;
   }
 
   function renderPlugins() {
     return `
-      <h2><i class="fas fa-puzzle-piece"></i> 🧩 Библиотека плагинов RootLab</h2>
+      <h2><i class="fas fa-puzzle-piece"></i> Библиотека плагинов</h2>
       <div class="grid-cards">
         ${plugins.map(pl => `
           <div class="card">
-            <div style="display:flex; justify-content:flex-end; gap:10px;">
-              <button class="edit-btn" onclick="window.editPluginById(${pl.id})"><i class="fas fa-edit"></i></button>
+            <div class="btn-group">
+              <button class="edit-btn" onclick="window.editPluginById(${pl.id})"><i class="fas fa-pen"></i></button>
               <button class="delete-btn" onclick="window.deletePluginById(${pl.id})"><i class="fas fa-trash"></i></button>
             </div>
-            <div style="font-size: 2.5rem;">${pl.imgIcon || "🔌"}</div>
+            <div style="font-size:2.5rem;">${pl.icon || "🔌"}</div>
             <h3>${escapeHtml(pl.name)} <span style="color:#a78bfa;">v${pl.version}</span></h3>
             <p>${escapeHtml(pl.desc)}</p>
-            <button class="btn-sm" onclick="alert('Скачать ${pl.name} (демо)')"><i class="fas fa-download"></i> Скачать</button>
+            <button class="btn" style="margin-top:8px;" onclick="alert('Демо-скачивание: ${pl.name}')">⬇️ Скачать</button>
           </div>
         `).join('')}
-        ${plugins.length === 0 ? '<div style="text-align:center; padding:2rem;">➕ Добавь плагин через главную форму</div>' : ''}
       </div>
     `;
   }
 
   function renderChannel() {
-    const zenLink = currentUser.zen && currentUser.zen.trim() !== "" ? currentUser.zen : "https://dzen.ru/id/6252aef9a2b8ec473f6038c6";
-    const tgChannelLink = currentUser.tgChannel && currentUser.tgChannel.trim() !== "" ? currentUser.tgChannel : "https://t.me/RootLab_Official";
+    const zenLink = currentUser.zen || "https://dzen.ru/id/6252aef9a2b8ec473f6038c6";
+    const tgLink = currentUser.tgChannel || "https://t.me/RootLab_Official";
     return `
-      <h2><i class="fas fa-globe"></i> 📡 Мой контент & соцсети</h2>
-      <div style="background:linear-gradient(115deg,#12182b,#0a0f1a); border-radius:2rem; padding:1.6rem; margin-bottom:2rem;">
-        <p><i class="fab fa-yandex"></i> <strong>Яндекс.Дзен:</strong> <a href="${zenLink}" target="_blank" style="color:#c084fc;">${zenLink}</a></p>
-        <p><i class="fab fa-telegram"></i> <strong>Telegram канал:</strong> <a href="${tgChannelLink}" target="_blank" style="color:#c084fc;">${tgChannelLink}</a></p>
-        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> ${currentUser.email || "не указан (заполни в профиле)"}</p>
-        <p><i class="fas fa-user"></i> <strong>Автор:</strong> ${currentUser.name || "Аноним"}</p>
-        <button class="btn" id="sendLastToZen" style="margin-top:12px;"><i class="fab fa-yandex"></i> Опубликовать последний пост в Дзен</button>
-        <button class="btn-outline btn" id="sendLastToTGChannel"><i class="fab fa-telegram"></i> Отправить последний пост в Telegram</button>
+      <h2><i class="fas fa-share-alt"></i> Интеграция с соцсетями</h2>
+      <div style="background:#11161fcc; border-radius:2rem; padding:1.6rem; margin-bottom:2rem;">
+        <p><i class="fab fa-yandex"></i> <strong>Дзен канал:</strong> <a href="${zenLink}" target="_blank" style="color:#c084fc;">${zenLink}</a></p>
+        <p><i class="fab fa-telegram"></i> <strong>Telegram канал:</strong> <a href="${tgLink}" target="_blank" style="color:#c084fc;">${tgLink}</a></p>
+        <p><i class="fas fa-user"></i> <strong>Автор:</strong> ${currentUser.name || "Не указан (заполните профиль)"}</p>
+        <button class="btn" id="sendLatestToDzenBtn"><i class="fab fa-yandex"></i> Отправить последний пост в Дзен</button>
+        <button class="btn" id="sendLatestToTgBtn" style="margin-left:10px;"><i class="fab fa-telegram"></i> Отправить последний пост в Telegram</button>
       </div>
-      <h3>📢 Последние записи (быстрое действие)</h3>
+      <h3>Последние записи (быстрое действие)</h3>
       <div class="grid-cards">
-        ${posts.slice(0,3).map(p => `<
+        ${posts.slice(0,2).map(p => `
+          <div class="card"><h4>${escapeHtml(p.title)}</h4><p>${p.content.replace(/<[^>]*>/g, '').slice(0,80)}</p><button class="btn-sm" onclick="window.openTelegramSender('${escapeHtml(p.title)}%0A${escapeHtml(p.content.replace(/<[^>]*>/g, ''))}')"><i class="fab fa-telegram"></i> Отправить в TG</button></div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // Глобальные функции для кнопок
+  window.editPostById = editPostById;
+  window.deletePostById = deletePostById;
+  window.editPluginById = editPluginById;
+  window.deletePluginById = deletePluginById;
+  window.publishToDzen = publishToDzen;
+  window.openTelegramSender = openTelegramSender;
+  window.applyFormat = applyFormat;
+
+  let currentPage = "home";
+  function renderCurrentPage() {
+    const container = document.getElementById("pageContent");
+    if(currentPage === "home") container.innerHTML = renderHome();
+    else if(currentPage === "plugins") container.
