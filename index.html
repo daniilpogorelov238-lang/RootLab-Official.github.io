@@ -69,7 +69,7 @@
   <div id="pageContent"></div>
 </div>
 
-<footer style="text-align:center; padding:2rem; color:#64748b;">RootLab Official</footer>
+<footer style="text-align:center; padding:2rem; color:#64748b;">RootLab Official © 2026</footer>
 
 <!-- Telegram Modal -->
 <div id="telegramModal" class="modal">
@@ -78,6 +78,37 @@
     <h3>Отправить в Telegram</h3>
     <textarea id="tgMessagePreview" rows="7" style="width:100%; background:#0a0e16; color:white; margin:15px 0;"></textarea>
     <button class="btn" id="copyTgBtn" style="width:100%; background:#229ed9;">Копировать текст</button>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <span style="float:right; font-size:28px; cursor:pointer;" onclick="closeProfileModal()">×</span>
+    
+    <div style="text-align:center; margin-bottom:1.5rem;">
+      <div style="width:90px; height:90px; margin:0 auto 15px; background:#1f1b3a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:42px; border:3px solid #8b5cf6;">
+        👨‍🚀
+      </div>
+      <h2 id="profileName">RootMaster</h2>
+      <p style="color:#94a3b8;">Администратор RootLab</p>
+    </div>
+
+    <div style="background:#0a0e16; padding:1.5rem; border-radius:1.2rem; margin:15px 0;">
+      <p><strong>Яндекс.Дзен:</strong><br>
+         <a href="#" id="profileZenLink" target="_blank" style="color:#c084fc; word-break:break-all;"></a>
+      </p>
+      <p><strong>Telegram канал:</strong><br>
+         <a href="#" id="profileTgLink" target="_blank" style="color:#c084fc; word-break:break-all;"></a>
+      </p>
+    </div>
+
+    <button onclick="editProfile()" class="btn" style="width:100%; margin-top:10px;">
+      ✏️ Редактировать профиль
+    </button>
+    <button onclick="logout()" class="btn" style="width:100%; margin-top:8px; background:#334155;">
+      🚪 Выйти
+    </button>
   </div>
 </div>
 
@@ -92,7 +123,9 @@ let currentUser = {
 };
 
 let currentMedia = { url: "", type: "" };
+let currentPage = "home";
 
+// ==================== ЗАГРУЗКА / СОХРАНЕНИЕ ====================
 function loadData() {
   if (localStorage.getItem("rootlab_posts")) posts = JSON.parse(localStorage.getItem("rootlab_posts"));
   if (localStorage.getItem("rootlab_plugins")) plugins = JSON.parse(localStorage.getItem("rootlab_plugins"));
@@ -106,8 +139,6 @@ function saveData() {
 }
 
 // ==================== РЕНДЕР СТРАНИЦ ====================
-let currentPage = "home";
-
 function renderCurrentPage() {
   const container = document.getElementById("pageContent");
   
@@ -149,10 +180,10 @@ function renderCurrentPage() {
       <div class="grid-cards" id="postsGrid"></div>
     `;
     setupHomeListeners();
+    renderPosts();
   } 
   else if (currentPage === "plugins") {
-    // ... (можно оставить как было)
-    container.innerHTML = `<h2>Плагины</h2><p>Раздел в разработке</p>`;
+    container.innerHTML = `<h2>📦 Плагины</h2><p>Раздел в разработке</p>`;
   } 
   else if (currentPage === "channel") {
     container.innerHTML = `
@@ -174,7 +205,24 @@ function renderCurrentPage() {
   }
 }
 
-// ==================== ЗАГРУЗКА ФАЙЛОВ ====================
+// ==================== ПУБЛИКАЦИИ ====================
+function renderPosts() {
+  const grid = document.getElementById("postsGrid");
+  if (!grid) return;
+  
+  grid.innerHTML = posts.map(post => `
+    <div class="card">
+      <h3>${post.title}</h3>
+      <p>${post.content}</p>
+      ${post.media ? (post.mediaType === 'video' ? 
+        `<video src="${post.media}" controls style="width:100%; border-radius:12px; margin-top:10px;"></video>` : 
+        `<img src="${post.media}" style="width:100%; border-radius:12px; margin-top:10px;">`) : ''}
+      <small style="color:#64748b;">${post.date}</small>
+    </div>
+  `).join('');
+}
+
+// ==================== HOME LISTENERS ====================
 function setupHomeListeners() {
   const uploadArea = document.getElementById("uploadArea");
   const fileInput = document.getElementById("fileInput");
@@ -201,12 +249,10 @@ function setupHomeListeners() {
     reader.readAsDataURL(file);
   });
 
-  // Кнопки публикации
   document.getElementById("publishBtn").onclick = () => publish(false);
   document.getElementById("tgPublishBtn").onclick = () => publish(true);
 }
 
-// Удаление медиа
 window.removeCurrentMedia = function() {
   currentMedia = { url: "", type: "" };
   document.getElementById("previewContainer").style.display = "none";
@@ -240,7 +286,7 @@ window.sendToTG = function(id) {
   
   const modal = document.getElementById("telegramModal");
   const preview = document.getElementById("tgMessagePreview");
-  preview.value = `📢 ${post.title}\n\n${post.content.replace(/<[^>]*>/g, '')}`;
+  preview.value = `📢 ${post.title}\n\n${post.content}`;
   modal.style.display = "flex";
 };
 
@@ -250,16 +296,46 @@ window.closeTgModal = function() {
 
 document.getElementById("copyTgBtn").addEventListener("click", () => {
   const text = document.getElementById("tgMessagePreview").value;
-  navigator.clipboard.writeText(text);
-  alert("Скопировано в буфер обмена!");
+  navigator.clipboard.writeText(text).then(() => alert("Скопировано в буфер обмена!"));
 });
 
-// ==================== Форматирование ====================
+// ==================== ПРОФИЛЬ ====================
+document.getElementById("openProfileBtn").addEventListener("click", () => {
+  updateProfileModal();
+  document.getElementById("profileModal").style.display = "flex";
+});
+
+window.closeProfileModal = function() {
+  document.getElementById("profileModal").style.display = "none";
+};
+
+function updateProfileModal() {
+  document.getElementById("profileName").textContent = currentUser.name;
+  document.getElementById("profileZenLink").textContent = currentUser.zen;
+  document.getElementById("profileZenLink").href = currentUser.zen;
+  document.getElementById("profileTgLink").textContent = currentUser.tgChannel;
+  document.getElementById("profileTgLink").href = currentUser.tgChannel;
+}
+
+window.editProfile = function() {
+  closeProfileModal();
+  document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+  const channelLink = Array.from(document.querySelectorAll(".nav-link")).find(l => l.dataset.page === "channel");
+  if (channelLink) channelLink.classList.add("active");
+  currentPage = "channel";
+  renderCurrentPage();
+};
+
+window.logout = function() {
+  if (confirm("Выйти из аккаунта?")) {
+    alert("Вы вышли из профиля");
+    closeProfileModal();
+  }
+};
+
+// ==================== ФОРМАТИРОВАНИЕ ====================
 window.applyFormat = function(type, id) {
-  const ta = document.getElementById(id);
-  if (!ta) return;
-  // простой вариант
-  alert("Форматирование " + type + " работает (можно улучшить дальше)");
+  alert("Форматирование " + type + " будет добавлено в следующих версиях");
 };
 
 // ==================== НАВИГАЦИЯ ====================
@@ -272,7 +348,7 @@ document.querySelectorAll(".nav-link").forEach(link => {
   });
 });
 
-// Сохранение настроек каналов
+// Сохранение настроек
 document.addEventListener("click", e => {
   if (e.target.id === "saveChannelBtn") {
     currentUser.name = document.getElementById("setName").value.trim();
