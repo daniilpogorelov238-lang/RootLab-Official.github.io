@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>RootLab Official | Загрузка плагинов и контента</title>
+    <title>RootLab Official | Редактирование + Публикация</title>
     <!-- Font Awesome Icons (v6 free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts: Inter + Space Grotesk -->
@@ -23,26 +23,16 @@
             scroll-behavior: smooth;
         }
 
-        /* glass + neon theme */
         :root {
             --glow-cyan: #00f2ff;
             --glow-purple: #b624ff;
-            --bg-dark: #0a0c12;
             --card-bg: rgba(18, 22, 35, 0.75);
             --border-neon: rgba(0, 242, 255, 0.25);
-            --accent: #00e0ff;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #141a2a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--glow-cyan);
-            border-radius: 8px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #141a2a; }
+        ::-webkit-scrollbar-thumb { background: var(--glow-cyan); border-radius: 8px; }
 
         .app-container {
             max-width: 1440px;
@@ -117,9 +107,7 @@
             align-items: center;
             gap: 8px;
         }
-        .tab-btn i {
-            font-size: 1.1rem;
-        }
+        .tab-btn i { font-size: 1.1rem; }
         .tab-btn.active {
             background: rgba(0, 242, 255, 0.15);
             color: var(--glow-cyan);
@@ -133,7 +121,7 @@
 
         .feed-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.8rem;
             margin-top: 1rem;
         }
@@ -224,20 +212,31 @@
         .card-actions {
             margin-top: 1rem;
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             justify-content: flex-start;
             font-size: 0.85rem;
             color: #b1c2e6;
+            flex-wrap: wrap;
         }
-        .card-actions i {
-            margin-right: 6px;
+        .action-btn {
+            cursor: pointer;
+            transition: 0.2s;
+            background: transparent;
+            border: none;
+            color: #b1c2e6;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 30px;
         }
-        hr {
-            border-color: #232b3f;
-            margin: 0.5rem 0;
-        }
+        .action-btn:hover { background: #1e2740; color: white; }
+        .delete-btn:hover { color: #ff7b8a; }
+        .edit-btn:hover { color: var(--glow-cyan); }
+        hr { border-color: #232b3f; margin: 0.5rem 0; }
 
-        /* modal form */
+        /* modal */
         .modal {
             display: none;
             position: fixed;
@@ -258,10 +257,7 @@
             padding: 2rem;
             box-shadow: 0 20px 35px rgba(0,0,0,0.6);
         }
-        .modal-card h2 {
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
-        }
+        .modal-card h2 { margin-bottom: 1.5rem; font-size: 1.6rem; }
         .modal-card input, .modal-card select, .modal-card textarea {
             width: 100%;
             margin: 0.6rem 0;
@@ -271,7 +267,6 @@
             border-radius: 18px;
             color: white;
             font-family: inherit;
-            transition: 0.2s;
         }
         .modal-card input:focus, .modal-card textarea:focus {
             outline: none;
@@ -347,14 +342,9 @@
             border-radius: 16px;
             border: 1px solid cyan;
         }
-
         @media (max-width: 680px) {
-            .app-container {
-                padding: 1rem;
-            }
-            .feed-grid {
-                grid-template-columns: 1fr;
-            }
+            .app-container { padding: 1rem; }
+            .feed-grid { grid-template-columns: 1fr; }
         }
         .empty-feed {
             text-align: center;
@@ -363,20 +353,6 @@
             border-radius: 40px;
             color: #6a789e;
         }
-        .delete-btn {
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .delete-btn:hover {
-            color: #ff7b8a;
-        }
-        .download-plugin-btn {
-            background: none;
-            border: none;
-            color: #0af;
-            cursor: pointer;
-            margin-left: 0.5rem;
-        }
     </style>
 </head>
 <body>
@@ -384,7 +360,7 @@
     <div class="header">
         <div class="logo">
             <h1>◈ RootLab ◈</h1>
-            <span>official — загружай плагины, фото, видео через проводник</span>
+            <span>official — редактируй & загружай плагины/медиа</span>
         </div>
         <button class="new-post-btn" id="openModalBtn"><i class="fas fa-plus-circle"></i> Опубликовать</button>
     </div>
@@ -400,30 +376,30 @@
     <div id="feedContainer" class="feed-grid"></div>
 </div>
 
-<!-- Модальное окно: публикация с загрузкой файлов (плагины — через скрепку) -->
+<!-- Модальное окно (СОЗДАНИЕ / РЕДАКТИРОВАНИЕ) -->
 <div id="postModal" class="modal">
     <div class="modal-card">
         <i class="fas fa-times close-icon" id="closeModalBtn"></i>
-        <h2><i class="fas fa-flask"></i> Новая публикация</h2>
+        <h2 id="modalTitle"><i class="fas fa-flask"></i> Новая публикация</h2>
         <form id="publishForm">
             <select id="contentType" required>
                 <option value="post">📄 Пост (текст)</option>
-                <option value="plugin">🔌 Плагин (загрузить архив .zip/.rar/.vst3)</option>
+                <option value="plugin">🔌 Плагин (загрузить архив)</option>
                 <option value="photo">🖼️ Фото (из галереи)</option>
                 <option value="video">🎥 Видео (из файлов)</option>
             </select>
             <input type="text" id="titleInput" placeholder="Заголовок *" required>
             <textarea id="descInput" rows="3" placeholder="Описание / контент..."></textarea>
             
-            <!-- Динамическое поле для плагина (скрепка, выбор файла) -->
+            <!-- Поле для плагина (скрепка) -->
             <div id="dynamicPluginField" style="display: none;">
                 <div class="file-upload-area" id="pluginUploadArea">
                     <i class="fas fa-paperclip fa-lg"></i> <i class="fas fa-cube"></i>
                     <div>Прикрепить плагин (архив или файл)</div>
-                    <input type="file" id="pluginFileInput" accept=".zip,.rar,.vst3,.dll,.so,.vst,.aax,application/zip,application/x-rar-compressed" style="display: none;">
+                    <input type="file" id="pluginFileInput" accept=".zip,.rar,.vst3,.dll,.so,.vst,application/zip,application/x-rar-compressed" style="display: none;">
                     <div id="pluginFileName" class="file-info"></div>
                 </div>
-                <div class="file-hint">Поддерживаются .zip, .rar, .vst3 и другие файлы плагинов (до 20 МБ).</div>
+                <div class="file-hint">Поддерживаются .zip, .rar, .vst3 (до 20 МБ).</div>
             </div>
             
             <!-- Поле для медиа (фото/видео) -->
@@ -440,27 +416,27 @@
 
             <div class="modal-buttons">
                 <button type="button" class="btn-secondary" id="cancelModalBtn">Отмена</button>
-                <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Опубликовать</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Опубликовать</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    // ---------- Глобальное хранилище постов (в LocalStorage) ----------
+    // ---------- ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ ----------
     let posts = [];
+    let editModeId = null;
 
     function loadPostsFromStorage() {
-        const stored = localStorage.getItem('rootlab_plugin_media_files');
+        const stored = localStorage.getItem('rootlab_fixed_publish');
         if(stored) {
             posts = JSON.parse(stored);
         } else {
-            // Демо-контент (без ссылок на скачивание плагинов, только локальный пример)
             posts = [
-                { id: Date.now()+1, type: 'plugin', title: 'Root Spectral Processor', description: 'Плагин для спектральной обработки звука с AI-фильтрами.', pluginData: { name: 'RootSpectral.zip', base64: null, size: 0 }, createdAt: new Date().toISOString(), isPluginDemo: true, demoPluginName: 'RootSpectral.zip' },
-                { id: Date.now()+2, type: 'post', title: 'RootLab Обновление: теперь загружайте плагины через проводник', description: 'Мы добавили возможность прикреплять файлы плагинов прямо из вашего телефона или ПК! Никаких ссылок.', createdAt: new Date().toISOString() },
-                { id: Date.now()+3, type: 'photo', title: 'Интерфейс RootLab Studio', description: 'Новый дизайн концепт', mediaBase64: 'https://picsum.photos/id/104/500/300', isExternal: true, createdAt: new Date().toISOString() },
-                { id: Date.now()+4, type: 'video', title: 'Как установить плагин?', description: 'Видео-инструкция', mediaBase64: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', isExternal: true, createdAt: new Date().toISOString() }
+                { id: Date.now()+1, type: 'plugin', title: 'Root Spectral Processor', description: 'Плагин для спектральной обработки звука', pluginData: { name: 'RootSpectral.zip', base64: null, size: 0 }, createdAt: new Date().toISOString(), demoMode: true },
+                { id: Date.now()+2, type: 'post', title: 'RootLab Обновление: теперь всё работает!', description: 'Кнопка опубликовать активна, редактирование постов добавлено.', createdAt: new Date().toISOString() },
+                { id: Date.now()+3, type: 'photo', title: 'Интерфейс RootLab', description: 'Современный дизайн', mediaBase64: 'https://picsum.photos/id/104/500/300', isExternal: true, createdAt: new Date().toISOString() },
+                { id: Date.now()+4, type: 'video', title: 'Видео-инструкция', description: 'Как загружать плагины', mediaBase64: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', isExternal: true, createdAt: new Date().toISOString() }
             ];
             savePostsToStorage();
         }
@@ -468,7 +444,7 @@
     }
 
     function savePostsToStorage() {
-        localStorage.setItem('rootlab_plugin_media_files', JSON.stringify(posts));
+        localStorage.setItem('rootlab_fixed_publish', JSON.stringify(posts));
     }
 
     function addPost(postData) {
@@ -478,13 +454,22 @@
         renderFeed(currentFilter);
     }
 
+    function updatePost(id, updatedData) {
+        const index = posts.findIndex(p => p.id === id);
+        if(index !== -1) {
+            posts[index] = { ...posts[index], ...updatedData, updatedAt: new Date().toISOString() };
+            savePostsToStorage();
+            renderFeed(currentFilter);
+        }
+    }
+
     let currentFilter = 'all';
 
     function renderFeed(filterType) {
         const container = document.getElementById('feedContainer');
         let filteredPosts = posts.filter(p => filterType === 'all' ? true : p.type === filterType);
         if(filteredPosts.length === 0) {
-            container.innerHTML = `<div class="empty-feed"><i class="fas fa-cube fa-2x"></i><p>Публикаций пока нет. Нажмите "Опубликовать" и загрузите плагин или медиа!</p></div>`;
+            container.innerHTML = `<div class="empty-feed"><i class="fas fa-cube fa-2x"></i><p>Публикаций пока нет. Нажмите "Опубликовать"!</p></div>`;
             return;
         }
 
@@ -495,22 +480,22 @@
 
             if(post.type === 'plugin') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-puzzle-piece"></i> Плагин</span>';
-                let pluginFileName = (post.pluginData && post.pluginData.name) ? post.pluginData.name : (post.demoPluginName || 'plugin_file.bin');
-                let downloadAllowed = (post.pluginData && post.pluginData.base64) ? true : false;
+                let pluginFileName = (post.pluginData && post.pluginData.name) ? post.pluginData.name : (post.demoPluginName || 'plugin_file');
+                let hasRealFile = (post.pluginData && post.pluginData.base64);
                 extraMeta = `<div class="plugin-details">
                                 <i class="fas fa-paperclip"></i> ${escapeHtml(pluginFileName)} 
-                                ${downloadAllowed ? `<button class="download-plugin-btn" data-id="${post.id}" style="background:none; border:none; color:#0af; cursor:pointer;"><i class="fas fa-download"></i> Скачать</button>` : '<span style="color:#aaa;"> (демо-файл недоступен для скачивания)</span>'}
+                                ${hasRealFile ? `<button class="download-plugin-btn" data-id="${post.id}" style="background:none; border:none; color:#0af; cursor:pointer; margin-left:8px;"><i class="fas fa-download"></i> Скачать</button>` : '<span style="color:#aaa;"> (демо)</span>'}
                              </div>`;
-                mediaHtml = `<div class="plugin-placeholder"><i class="fas fa-cube fa-3x"></i><i class="fas fa-paperclip"></i><span style="font-size: 12px;">Файл плагина</span></div>`;
+                mediaHtml = `<div class="plugin-placeholder"><i class="fas fa-cube fa-3x"></i><i class="fas fa-paperclip"></i><span>Файл плагина</span></div>`;
             }
             else if(post.type === 'post') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-align-left"></i> Пост</span>';
-                mediaHtml = `<div class="img-placeholder" style="background: #14202e;"><i class="fas fa-newspaper fa-2x"></i> RootLab insider</div>`;
+                mediaHtml = `<div class="img-placeholder"><i class="fas fa-newspaper fa-2x"></i> RootLab insider</div>`;
             }
             else if(post.type === 'photo') {
-                badgeContent = '<span class="badge-type"><i class="fas fa-camera"></i> Фотография</span>';
+                badgeContent = '<span class="badge-type"><i class="fas fa-camera"></i> Фото</span>';
                 if(post.mediaBase64) {
-                    mediaHtml = `<img class="card-img" src="${post.mediaBase64}" alt="photo" onerror="this.src='https://placehold.co/600x400/1a1f2c/cyan?text=Ошибка+загрузки';">`;
+                    mediaHtml = `<img class="card-img" src="${post.mediaBase64}" alt="photo" onerror="this.src='https://placehold.co/600x400/1a1f2c/cyan?text=Error';">`;
                 } else {
                     mediaHtml = `<div class="img-placeholder"><i class="fas fa-image fa-3x"></i></div>`;
                 }
@@ -520,9 +505,9 @@
                 if(post.mediaBase64) {
                     if(post.isExternal && !post.mediaBase64.startsWith('data:')) {
                         if(post.mediaBase64.match(/\.(mp4|webm)$/i)) {
-                            mediaHtml = `<video class="card-video" controls preload="metadata"><source src="${post.mediaBase64}" type="video/mp4"></video>`;
+                            mediaHtml = `<video class="card-video" controls><source src="${post.mediaBase64}" type="video/mp4"></video>`;
                         } else {
-                            mediaHtml = `<div class="img-placeholder"><i class="fas fa-video"></i> <a href="${post.mediaBase64}" target="_blank">Открыть видео</a></div>`;
+                            mediaHtml = `<div class="img-placeholder"><i class="fas fa-video"></i> <a href="${post.mediaBase64}" target="_blank">Открыть</a></div>`;
                         }
                     } else {
                         mediaHtml = `<video class="card-video" controls><source src="${post.mediaBase64}" type="video/mp4"></video>`;
@@ -540,50 +525,51 @@
                     <div class="card-content">
                         ${badgeContent}
                         <div class="post-title">${escapeHtml(post.title)}</div>
-                        <div class="post-desc">${escapeHtml(post.description) || '— без описания —'}</div>
+                        <div class="post-desc">${escapeHtml(post.description) || '—'}</div>
                         ${extraMeta}
                         <hr>
                         <div class="card-actions">
                             <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
-                            <span><i class="far fa-heart"></i> ❤ 0</span>
-                            <span class="delete-post-btn" data-id="${post.id}" style="cursor:pointer; margin-left:auto; color:#ff7780;"><i class="fas fa-trash-alt"></i> Удалить</span>
+                            <button class="action-btn edit-btn" data-id="${post.id}"><i class="fas fa-edit"></i> Ред.</button>
+                            <button class="action-btn delete-btn" data-id="${post.id}"><i class="fas fa-trash-alt"></i> Удалить</button>
                         </div>
                     </div>
                 </div>
             `;
         }).join('');
 
-        // Обработка удаления
-        document.querySelectorAll('.delete-post-btn').forEach(btn => {
+        document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation();
                 const id = parseInt(btn.getAttribute('data-id'));
-                deletePostById(id);
+                if(confirm("Удалить публикацию?")) {
+                    posts = posts.filter(p => p.id !== id);
+                    savePostsToStorage();
+                    renderFeed(currentFilter);
+                }
             });
         });
-        // Обработка скачивания плагинов (если base64 существует)
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                openEditModal(id);
+            });
+        });
         document.querySelectorAll('.download-plugin-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const postId = parseInt(btn.getAttribute('data-id'));
                 const post = posts.find(p => p.id === postId);
                 if(post && post.pluginData && post.pluginData.base64) {
-                    const link = document.createElement('a');
-                    link.href = post.pluginData.base64;
-                    link.download = post.pluginData.name || 'plugin_file';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                    const a = document.createElement('a');
+                    a.href = post.pluginData.base64;
+                    a.download = post.pluginData.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
                 } else {
-                    alert("Файл плагина недоступен для скачивания (демо-запись). Загрузите свой плагин через форму!");
+                    alert("Файл плагина недоступен для скачивания (демо). Загрузите свой!");
                 }
             });
         });
-    }
-
-    function deletePostById(id) {
-        posts = posts.filter(p => p.id !== id);
-        savePostsToStorage();
-        renderFeed(currentFilter);
     }
 
     function escapeHtml(str) {
@@ -596,23 +582,17 @@
         });
     }
 
-    // ---------- ЛОГИКa ЗАГРУЗКИ ФАЙЛОВ (ПЛАГИНЫ + МЕДИА) ----------
-    const contentTypeSelect = document.getElementById('contentType');
-    const pluginFieldDiv = document.getElementById('dynamicPluginField');
-    const mediaFieldDiv = document.getElementById('dynamicMediaField');
-    
-    // Плагин файл
+    // ---------- ЛОГИКА РЕДАКТИРОВАНИЯ И ФАЙЛОВ ----------
+    let selectedPluginFile = null;
+    let selectedMediaBase64 = null;
+
     const pluginFileInput = document.getElementById('pluginFileInput');
     const pluginUploadArea = document.getElementById('pluginUploadArea');
     const pluginFileNameSpan = document.getElementById('pluginFileName');
-    let selectedPluginFile = null; // { name, base64, size }
-    
-    // Медиа файл
     const mediaFileInput = document.getElementById('mediaFileInput');
     const mediaUploadArea = document.getElementById('mediaUploadArea');
     const selectedFileNameSpan = document.getElementById('selectedFileName');
     const mediaPreviewDiv = document.getElementById('mediaPreview');
-    let selectedMediaBase64 = null, selectedMediaType = null;
 
     function resetPluginSelection() {
         selectedPluginFile = null;
@@ -621,58 +601,43 @@
     }
     function resetMediaSelection() {
         selectedMediaBase64 = null;
-        selectedMediaType = null;
         if(mediaFileInput) mediaFileInput.value = '';
         if(selectedFileNameSpan) selectedFileNameSpan.innerText = '';
         if(mediaPreviewDiv) mediaPreviewDiv.innerHTML = '';
     }
 
-    // Открытие выбора плагина
     if(pluginUploadArea) {
         pluginUploadArea.addEventListener('click', () => pluginFileInput.click());
         pluginFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(!file) return;
-            const maxSize = 20 * 1024 * 1024;
-            if(file.size > maxSize) {
-                alert("Файл плагина слишком большой! Максимум 20 МБ");
-                pluginFileInput.value = '';
-                return;
-            }
+            if(file.size > 20 * 1024 * 1024) { alert("Максимум 20 МБ"); return; }
             const reader = new FileReader();
             reader.onload = (ev) => {
-                selectedPluginFile = {
-                    name: file.name,
-                    base64: ev.target.result,
-                    size: file.size
-                };
-                pluginFileNameSpan.innerText = `📎 ${file.name} (${(file.size/1024).toFixed(1)} КБ)`;
+                selectedPluginFile = { name: file.name, base64: ev.target.result, size: file.size };
+                pluginFileNameSpan.innerText = `📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
             };
             reader.readAsDataURL(file);
         });
     }
-    
-    // Медиа (фото/видео) выбор
     if(mediaUploadArea) {
         mediaUploadArea.addEventListener('click', () => mediaFileInput.click());
         mediaFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(!file) return;
-            const type = contentTypeSelect.value;
+            const type = document.getElementById('contentType').value;
             const isImage = file.type.startsWith('image/');
             const isVideo = file.type.startsWith('video/');
             if(type === 'photo' && !isImage) { alert("Выберите изображение!"); return; }
-            if(type === 'video' && !isVideo) { alert("Выберите видеофайл!"); return; }
-            const maxSize = 15 * 1024 * 1024;
-            if(file.size > maxSize) { alert("Файл слишком большой (макс 15 МБ)"); return; }
+            if(type === 'video' && !isVideo) { alert("Выберите видео!"); return; }
+            if(file.size > 15 * 1024 * 1024) { alert("Максимум 15 МБ"); return; }
             const reader = new FileReader();
             reader.onload = (ev) => {
                 selectedMediaBase64 = ev.target.result;
-                selectedMediaType = type;
-                selectedFileNameSpan.innerText = `📁 ${file.name} (${(file.size/1024).toFixed(1)} КБ)`;
+                selectedFileNameSpan.innerText = `📁 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
                 if(mediaPreviewDiv) {
                     if(isImage) mediaPreviewDiv.innerHTML = `<img src="${selectedMediaBase64}" style="max-width:100%; max-height:130px; border-radius:16px;">`;
-                    else if(isVideo) mediaPreviewDiv.innerHTML = `<video src="${selectedMediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
+                    else mediaPreviewDiv.innerHTML = `<video src="${selectedMediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
                 }
             };
             reader.readAsDataURL(file);
@@ -680,56 +645,121 @@
     }
 
     function toggleDynamicFields() {
-        const type = contentTypeSelect.value;
-        pluginFieldDiv.style.display = 'none';
-        mediaFieldDiv.style.display = 'none';
+        const type = document.getElementById('contentType').value;
+        const pluginDiv = document.getElementById('dynamicPluginField');
+        const mediaDiv = document.getElementById('dynamicMediaField');
+        pluginDiv.style.display = 'none';
+        mediaDiv.style.display = 'none';
+        if(type === 'plugin') pluginDiv.style.display = 'block';
+        else if(type === 'photo' || type === 'video') mediaDiv.style.display = 'block';
+    }
+
+    function openEditModal(id) {
+        const post = posts.find(p => p.id === id);
+        if(!post) return;
+        editModeId = id;
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-pen-fancy"></i> Редактирование';
+        document.getElementById('submitBtn').innerText = 'Сохранить изменения';
+        document.getElementById('contentType').value = post.type;
+        document.getElementById('titleInput').value = post.title;
+        document.getElementById('descInput').value = post.description || '';
         resetPluginSelection();
         resetMediaSelection();
-        if(type === 'plugin') {
-            pluginFieldDiv.style.display = 'block';
-        } else if(type === 'photo' || type === 'video') {
-            mediaFieldDiv.style.display = 'block';
+        toggleDynamicFields();
+        
+        if(post.type === 'plugin') {
+            if(post.pluginData && post.pluginData.name) {
+                pluginFileNameSpan.innerText = `📎 Текущий: ${post.pluginData.name} (можно заменить)`;
+            } else {
+                pluginFileNameSpan.innerText = `📎 Демо-плагин (загрузите свой для замены)`;
+            }
         }
+        if(post.type === 'photo' || post.type === 'video') {
+            if(post.mediaBase64 && !post.isExternal) {
+                selectedMediaBase64 = post.mediaBase64;
+                if(post.type === 'photo') mediaPreviewDiv.innerHTML = `<img src="${post.mediaBase64}" style="max-width:100%; max-height:130px; border-radius:16px;">`;
+                else mediaPreviewDiv.innerHTML = `<video src="${post.mediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
+                selectedFileNameSpan.innerText = `Текущий файл (можно заменить)`;
+            } else if(post.mediaBase64 && post.isExternal) {
+                selectedFileNameSpan.innerText = `Внешний URL (загрузите новый файл для замены)`;
+            }
+        }
+        document.getElementById('postModal').style.display = 'flex';
     }
-    contentTypeSelect.addEventListener('change', toggleDynamicFields);
 
-    // ---------- Модальное окно и отправка ----------
+    function resetEditMode() {
+        editModeId = null;
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-flask"></i> Новая публикация';
+        document.getElementById('submitBtn').innerText = 'Опубликовать';
+        document.getElementById('publishForm').reset();
+        resetPluginSelection();
+        resetMediaSelection();
+        toggleDynamicFields();
+    }
+
+    // Modal open/close
     const modal = document.getElementById('postModal');
     const openBtn = document.getElementById('openModalBtn');
-    const closeModalBtns = ['closeModalBtn', 'cancelModalBtn'];
+    openBtn.addEventListener('click', () => { resetEditMode(); modal.style.display = 'flex'; });
+    document.getElementById('closeModalBtn').addEventListener('click', () => { modal.style.display = 'none'; resetEditMode(); });
+    document.getElementById('cancelModalBtn').addEventListener('click', () => { modal.style.display = 'none'; resetEditMode(); });
+    window.addEventListener('click', (e) => { if(e.target === modal) { modal.style.display = 'none'; resetEditMode(); } });
+    document.getElementById('contentType').addEventListener('change', toggleDynamicFields);
+
+    // SUBMIT (СОЗДАНИЕ / ОБНОВЛЕНИЕ) — ГЛАВНЫЙ ФИКС
     const publishForm = document.getElementById('publishForm');
-
-    function openModal() { modal.style.display = 'flex'; toggleDynamicFields(); }
-    function closeModal() { modal.style.display = 'none'; publishForm.reset(); toggleDynamicFields(); resetPluginSelection(); resetMediaSelection(); }
-    openBtn.addEventListener('click', openModal);
-    closeModalBtns.forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener('click', closeModal); });
-    window.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
-
     publishForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const type = contentTypeSelect.value;
+        const type = document.getElementById('contentType').value;
         const title = document.getElementById('titleInput').value.trim();
         const description = document.getElementById('descInput').value.trim();
-        if(!title) { alert("Укажите заголовок"); return; }
-        let newEntry = { type, title, description };
-        if(type === 'plugin') {
-            if(!selectedPluginFile) { alert("Прикрепите файл плагина (скрепка)!"); return; }
-            newEntry.pluginData = {
-                name: selectedPluginFile.name,
-                base64: selectedPluginFile.base64,
-                size: selectedPluginFile.size
-            };
+        if(!title) { alert("Введите заголовок"); return; }
+
+        if(editModeId !== null) {
+            // РЕДАКТИРОВАНИЕ
+            const updated = { type, title, description };
+            if(type === 'plugin') {
+                if(selectedPluginFile) {
+                    updated.pluginData = { name: selectedPluginFile.name, base64: selectedPluginFile.base64, size: selectedPluginFile.size };
+                } else {
+                    const oldPost = posts.find(p => p.id === editModeId);
+                    if(oldPost && oldPost.pluginData) updated.pluginData = oldPost.pluginData;
+                    else if(oldPost && oldPost.demoMode) updated.demoMode = true;
+                }
+            }
+            else if(type === 'photo' || type === 'video') {
+                if(selectedMediaBase64) {
+                    updated.mediaBase64 = selectedMediaBase64;
+                    updated.isExternal = false;
+                } else {
+                    const oldPost = posts.find(p => p.id === editModeId);
+                    if(oldPost && oldPost.mediaBase64) {
+                        updated.mediaBase64 = oldPost.mediaBase64;
+                        updated.isExternal = oldPost.isExternal || false;
+                    }
+                }
+            }
+            updatePost(editModeId, updated);
+        } 
+        else {
+            // СОЗДАНИЕ НОВОГО ПОСТА
+            const newData = { type, title, description };
+            if(type === 'plugin') {
+                if(!selectedPluginFile) { alert("Прикрепите файл плагина (скрепка)!"); return; }
+                newData.pluginData = { name: selectedPluginFile.name, base64: selectedPluginFile.base64, size: selectedPluginFile.size };
+            }
+            else if(type === 'photo' || type === 'video') {
+                if(!selectedMediaBase64) { alert(`Выберите ${type === 'photo' ? 'фото' : 'видео'} с устройства!`); return; }
+                newData.mediaBase64 = selectedMediaBase64;
+                newData.isExternal = false;
+            }
+            addPost(newData);
         }
-        else if(type === 'photo' || type === 'video') {
-            if(!selectedMediaBase64) { alert(`Выберите ${type === 'photo' ? 'фото' : 'видео'} с устройства!`); return; }
-            newEntry.mediaBase64 = selectedMediaBase64;
-            newEntry.isExternal = false;
-        }
-        addPost(newEntry);
-        closeModal();
+        modal.style.display = 'none';
+        resetEditMode();
     });
 
-    // ТАБЫ
+    // TABS
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
