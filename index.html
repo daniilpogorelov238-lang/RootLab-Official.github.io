@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>RootLab Official | Платформа для плагинов и контента</title>
+    <title>RootLab Official | Загрузка плагинов и контента</title>
     <!-- Font Awesome Icons (v6 free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts: Inter + Space Grotesk -->
@@ -33,7 +33,6 @@
             --accent: #00e0ff;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -45,14 +44,12 @@
             border-radius: 8px;
         }
 
-        /* layout */
         .app-container {
             max-width: 1440px;
             margin: 0 auto;
             padding: 1.5rem 2rem;
         }
 
-        /* header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -98,7 +95,6 @@
             transform: scale(1.02);
         }
 
-        /* filter tabs */
         .tabs-filter {
             display: flex;
             gap: 1rem;
@@ -135,10 +131,9 @@
             background: #1e253e;
         }
 
-        /* grid cards */
         .feed-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
             gap: 1.8rem;
             margin-top: 1rem;
         }
@@ -164,8 +159,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
-        .img-placeholder, .video-placeholder {
+        .img-placeholder, .video-placeholder, .plugin-placeholder {
             width: 100%;
             height: 180px;
             background: #11161f;
@@ -174,6 +170,8 @@
             justify-content: center;
             font-size: 3rem;
             color: var(--glow-cyan);
+            flex-direction: column;
+            gap: 6px;
         }
         img.card-img, video.card-video {
             width: 100%;
@@ -221,6 +219,7 @@
             margin: 0.7rem 0;
             font-family: monospace;
             border-left: 3px solid var(--glow-cyan);
+            word-break: break-all;
         }
         .card-actions {
             margin-top: 1rem;
@@ -254,7 +253,7 @@
             background: #0e1120e6;
             border: 1px solid var(--glow-cyan);
             border-radius: 32px;
-            max-width: 550px;
+            max-width: 560px;
             width: 90%;
             padding: 2rem;
             box-shadow: 0 20px 35px rgba(0,0,0,0.6);
@@ -311,6 +310,43 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+        .file-upload-area {
+            background: #1a1f2e;
+            border: 1px dashed var(--glow-cyan);
+            border-radius: 24px;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .file-upload-area:hover {
+            background: #232a40;
+            border-color: #0af;
+        }
+        .file-upload-area i {
+            font-size: 1.8rem;
+            color: var(--glow-cyan);
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        .file-info {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .preview-box {
+            margin-top: 12px;
+            max-height: 140px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .preview-box img, .preview-box video {
+            max-width: 100%;
+            max-height: 130px;
+            border-radius: 16px;
+            border: 1px solid cyan;
+        }
 
         @media (max-width: 680px) {
             .app-container {
@@ -327,6 +363,20 @@
             border-radius: 40px;
             color: #6a789e;
         }
+        .delete-btn {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .delete-btn:hover {
+            color: #ff7b8a;
+        }
+        .download-plugin-btn {
+            background: none;
+            border: none;
+            color: #0af;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -334,12 +384,11 @@
     <div class="header">
         <div class="logo">
             <h1>◈ RootLab ◈</h1>
-            <span>official — креативная лаборатория плагинов & контента</span>
+            <span>official — загружай плагины, фото, видео через проводник</span>
         </div>
         <button class="new-post-btn" id="openModalBtn"><i class="fas fa-plus-circle"></i> Опубликовать</button>
     </div>
 
-    <!-- Фильтр по типам контента -->
     <div class="tabs-filter">
         <button class="tab-btn active" data-filter="all"><i class="fas fa-globe"></i> Всё</button>
         <button class="tab-btn" data-filter="plugin"><i class="fas fa-puzzle-piece"></i> Плагины</button>
@@ -348,13 +397,10 @@
         <button class="tab-btn" data-filter="video"><i class="fas fa-video"></i> Видео</button>
     </div>
 
-    <!-- Лента контента -->
-    <div id="feedContainer" class="feed-grid">
-        <!-- динамически загружаемые карточки -->
-    </div>
+    <div id="feedContainer" class="feed-grid"></div>
 </div>
 
-<!-- Модальное окно для создания публикации -->
+<!-- Модальное окно: публикация с загрузкой файлов (плагины — через скрепку) -->
 <div id="postModal" class="modal">
     <div class="modal-card">
         <i class="fas fa-times close-icon" id="closeModalBtn"></i>
@@ -362,21 +408,34 @@
         <form id="publishForm">
             <select id="contentType" required>
                 <option value="post">📄 Пост (текст)</option>
-                <option value="plugin">🔌 Плагин (программный модуль)</option>
-                <option value="photo">🖼️ Фото (изображение)</option>
-                <option value="video">🎥 Видео (ссылка или embed)</option>
+                <option value="plugin">🔌 Плагин (загрузить архив .zip/.rar/.vst3)</option>
+                <option value="photo">🖼️ Фото (из галереи)</option>
+                <option value="video">🎥 Видео (из файлов)</option>
             </select>
             <input type="text" id="titleInput" placeholder="Заголовок *" required>
             <textarea id="descInput" rows="3" placeholder="Описание / контент..."></textarea>
             
-            <!-- динамические поля под плагины и медиа -->
+            <!-- Динамическое поле для плагина (скрепка, выбор файла) -->
             <div id="dynamicPluginField" style="display: none;">
-                <input type="text" id="pluginVersion" placeholder="Версия плагина (например 2.0.0)">
-                <input type="text" id="pluginDownloadUrl" placeholder="Ссылка на скачивание .zip / github">
+                <div class="file-upload-area" id="pluginUploadArea">
+                    <i class="fas fa-paperclip fa-lg"></i> <i class="fas fa-cube"></i>
+                    <div>Прикрепить плагин (архив или файл)</div>
+                    <input type="file" id="pluginFileInput" accept=".zip,.rar,.vst3,.dll,.so,.vst,.aax,application/zip,application/x-rar-compressed" style="display: none;">
+                    <div id="pluginFileName" class="file-info"></div>
+                </div>
+                <div class="file-hint">Поддерживаются .zip, .rar, .vst3 и другие файлы плагинов (до 20 МБ).</div>
             </div>
+            
+            <!-- Поле для медиа (фото/видео) -->
             <div id="dynamicMediaField" style="display: none;">
-                <input type="text" id="mediaUrl" placeholder="URL изображения или видео (прямая ссылка)">
-                <div class="file-hint">Поддерживается .jpg, .png, .mp4, YouTube embed? (ссылка на превью)</div>
+                <div class="file-upload-area" id="mediaUploadArea">
+                    <i class="fas fa-folder-open"></i> <i class="fas fa-image" id="mediaTypeIcon"></i>
+                    <div>Выбрать файл с устройства</div>
+                    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
+                    <div id="selectedFileName" class="file-info"></div>
+                </div>
+                <div id="mediaPreview" class="preview-box"></div>
+                <div class="file-hint">Фото JPG/PNG/GIF или видео MP4/WebM (до 15 МБ).</div>
             </div>
 
             <div class="modal-buttons">
@@ -391,18 +450,17 @@
     // ---------- Глобальное хранилище постов (в LocalStorage) ----------
     let posts = [];
 
-    // Загрузка сохраненных данных
     function loadPostsFromStorage() {
-        const stored = localStorage.getItem('rootlab_posts');
+        const stored = localStorage.getItem('rootlab_plugin_media_files');
         if(stored) {
             posts = JSON.parse(stored);
         } else {
-            // демо-данные для красивого старта
+            // Демо-контент (без ссылок на скачивание плагинов, только локальный пример)
             posts = [
-                { id: Date.now()+1, type: 'plugin', title: 'Root Synth Engine', description: 'Мощный аудио-плагин для синтеза bass и glitch эффектов. VST3 / AU.', pluginVersion: '1.4.2', pluginDownloadUrl: 'https://rootlab.xyz/downloads/rootsynth.zip', createdAt: new Date().toISOString() },
-                { id: Date.now()+2, type: 'post', title: 'Анонс: RootLab Community Week', description: 'С 10 по 16 июня проведём воркшопы по разработке плагинов! Участвуйте и выигрывайте лицензии.', createdAt: new Date().toISOString() },
-                { id: Date.now()+3, type: 'photo', title: 'Неоновая студия', description: 'Концепт арт новой обложки для пакета визуалов', mediaUrl: 'https://picsum.photos/id/104/500/300', createdAt: new Date().toISOString() },
-                { id: Date.now()+4, type: 'video', title: 'Трейлер RootLab 2.0', description: 'Короткий ролик с демонстрацией платформы', mediaUrl: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', createdAt: new Date().toISOString() }
+                { id: Date.now()+1, type: 'plugin', title: 'Root Spectral Processor', description: 'Плагин для спектральной обработки звука с AI-фильтрами.', pluginData: { name: 'RootSpectral.zip', base64: null, size: 0 }, createdAt: new Date().toISOString(), isPluginDemo: true, demoPluginName: 'RootSpectral.zip' },
+                { id: Date.now()+2, type: 'post', title: 'RootLab Обновление: теперь загружайте плагины через проводник', description: 'Мы добавили возможность прикреплять файлы плагинов прямо из вашего телефона или ПК! Никаких ссылок.', createdAt: new Date().toISOString() },
+                { id: Date.now()+3, type: 'photo', title: 'Интерфейс RootLab Studio', description: 'Новый дизайн концепт', mediaBase64: 'https://picsum.photos/id/104/500/300', isExternal: true, createdAt: new Date().toISOString() },
+                { id: Date.now()+4, type: 'video', title: 'Как установить плагин?', description: 'Видео-инструкция', mediaBase64: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', isExternal: true, createdAt: new Date().toISOString() }
             ];
             savePostsToStorage();
         }
@@ -410,83 +468,75 @@
     }
 
     function savePostsToStorage() {
-        localStorage.setItem('rootlab_posts', JSON.stringify(posts));
+        localStorage.setItem('rootlab_plugin_media_files', JSON.stringify(posts));
     }
 
-    // добавить пост
     function addPost(postData) {
-        const newPost = {
-            id: Date.now(),
-            createdAt: new Date().toISOString(),
-            ...postData
-        };
-        posts.unshift(newPost); // новые сверху
+        const newPost = { id: Date.now(), createdAt: new Date().toISOString(), ...postData };
+        posts.unshift(newPost);
         savePostsToStorage();
         renderFeed(currentFilter);
     }
 
-    // вспомогательная отрисовка
     let currentFilter = 'all';
 
     function renderFeed(filterType) {
         const container = document.getElementById('feedContainer');
         let filteredPosts = posts.filter(p => filterType === 'all' ? true : p.type === filterType);
-        
         if(filteredPosts.length === 0) {
-            container.innerHTML = `<div class="empty-feed"><i class="fas fa-cube fa-2x"></i><p>Публикаций пока нет. Станьте первым автором в RootLab!</p></div>`;
+            container.innerHTML = `<div class="empty-feed"><i class="fas fa-cube fa-2x"></i><p>Публикаций пока нет. Нажмите "Опубликовать" и загрузите плагин или медиа!</p></div>`;
             return;
         }
 
         container.innerHTML = filteredPosts.map(post => {
-            // Определяем отображение в зависимости от типа
             let mediaHtml = '';
             let badgeContent = '';
             let extraMeta = '';
-            
+
             if(post.type === 'plugin') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-puzzle-piece"></i> Плагин</span>';
+                let pluginFileName = (post.pluginData && post.pluginData.name) ? post.pluginData.name : (post.demoPluginName || 'plugin_file.bin');
+                let downloadAllowed = (post.pluginData && post.pluginData.base64) ? true : false;
                 extraMeta = `<div class="plugin-details">
-                                <i class="fas fa-code-branch"></i> версия ${post.pluginVersion || '1.0'} &nbsp;|&nbsp; 
-                                <i class="fas fa-download"></i> <a href="${post.pluginDownloadUrl || '#'}" target="_blank" style="color:#0af;">Скачать</a>
+                                <i class="fas fa-paperclip"></i> ${escapeHtml(pluginFileName)} 
+                                ${downloadAllowed ? `<button class="download-plugin-btn" data-id="${post.id}" style="background:none; border:none; color:#0af; cursor:pointer;"><i class="fas fa-download"></i> Скачать</button>` : '<span style="color:#aaa;"> (демо-файл недоступен для скачивания)</span>'}
                              </div>`;
-            } else if(post.type === 'post') {
+                mediaHtml = `<div class="plugin-placeholder"><i class="fas fa-cube fa-3x"></i><i class="fas fa-paperclip"></i><span style="font-size: 12px;">Файл плагина</span></div>`;
+            }
+            else if(post.type === 'post') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-align-left"></i> Пост</span>';
-            } else if(post.type === 'photo') {
+                mediaHtml = `<div class="img-placeholder" style="background: #14202e;"><i class="fas fa-newspaper fa-2x"></i> RootLab insider</div>`;
+            }
+            else if(post.type === 'photo') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-camera"></i> Фотография</span>';
-                if(post.mediaUrl) {
-                    mediaHtml = `<img class="card-img" src="${post.mediaUrl}" alt="photo preview" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1f2c/cyan?text=Image+error';">`;
+                if(post.mediaBase64) {
+                    mediaHtml = `<img class="card-img" src="${post.mediaBase64}" alt="photo" onerror="this.src='https://placehold.co/600x400/1a1f2c/cyan?text=Ошибка+загрузки';">`;
                 } else {
                     mediaHtml = `<div class="img-placeholder"><i class="fas fa-image fa-3x"></i></div>`;
                 }
-            } else if(post.type === 'video') {
+            }
+            else if(post.type === 'video') {
                 badgeContent = '<span class="badge-type"><i class="fas fa-play"></i> Видео</span>';
-                if(post.mediaUrl) {
-                    // Если ссылка ведёт на видео-файл, используем <video>, иначе показываем ссылку на превью
-                    if(post.mediaUrl.match(/\.(mp4|webm|ogg)$/i)) {
-                        mediaHtml = `<video class="card-video" controls preload="metadata"><source src="${post.mediaUrl}" type="video/mp4">Ваш браузер не поддерживает видео</video>`;
+                if(post.mediaBase64) {
+                    if(post.isExternal && !post.mediaBase64.startsWith('data:')) {
+                        if(post.mediaBase64.match(/\.(mp4|webm)$/i)) {
+                            mediaHtml = `<video class="card-video" controls preload="metadata"><source src="${post.mediaBase64}" type="video/mp4"></video>`;
+                        } else {
+                            mediaHtml = `<div class="img-placeholder"><i class="fas fa-video"></i> <a href="${post.mediaBase64}" target="_blank">Открыть видео</a></div>`;
+                        }
                     } else {
-                        mediaHtml = `<div class="img-placeholder"><i class="fas fa-video"></i> <a href="${post.mediaUrl}" target="_blank" style="color:#0af;">Открыть видео</a></div>`;
+                        mediaHtml = `<video class="card-video" controls><source src="${post.mediaBase64}" type="video/mp4"></video>`;
                     }
                 } else {
-                    mediaHtml = `<div class="img-placeholder"><i class="fas fa-link"></i> нет ссылки</div>`;
+                    mediaHtml = `<div class="img-placeholder"><i class="fas fa-link"></i> нет видео</div>`;
                 }
             }
 
-            // для постов и плагинов дефолтная заглушка
-            if(post.type === 'post' || post.type === 'plugin') {
-                if(post.type === 'post') mediaHtml = `<div class="img-placeholder" style="background: #14202e;"><i class="fas fa-newspaper fa-2x"></i> RootLab insider</div>`;
-                if(post.type === 'plugin') mediaHtml = `<div class="img-placeholder"><i class="fas fa-cube fa-2x"></i> Релиз плагина</div>`;
-            }
-
-            // дата формат
             const date = new Date(post.createdAt);
-            const formattedDate = date.toLocaleDateString('ru-RU', {day:'numeric', month:'short', year:'numeric'});
-            
+            const formattedDate = date.toLocaleDateString('ru-RU', { day:'numeric', month:'short', year:'numeric' });
             return `
                 <div class="post-card" data-id="${post.id}">
-                    <div class="card-media">
-                        ${mediaHtml}
-                    </div>
+                    <div class="card-media">${mediaHtml}</div>
                     <div class="card-content">
                         ${badgeContent}
                         <div class="post-title">${escapeHtml(post.title)}</div>
@@ -503,12 +553,29 @@
             `;
         }).join('');
 
-        // Добавляем обработчики удаления после отрисовки
+        // Обработка удаления
         document.querySelectorAll('.delete-post-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const id = parseInt(btn.getAttribute('data-id'));
                 deletePostById(id);
+            });
+        });
+        // Обработка скачивания плагинов (если base64 существует)
+        document.querySelectorAll('.download-plugin-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const postId = parseInt(btn.getAttribute('data-id'));
+                const post = posts.find(p => p.id === postId);
+                if(post && post.pluginData && post.pluginData.base64) {
+                    const link = document.createElement('a');
+                    link.href = post.pluginData.base64;
+                    link.download = post.pluginData.name || 'plugin_file';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert("Файл плагина недоступен для скачивания (демо-запись). Загрузите свой плагин через форму!");
+                }
             });
         });
     }
@@ -526,20 +593,98 @@
             if(m === '<') return '&lt;';
             if(m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 
-    // динамическое управление полями в модалке
+    // ---------- ЛОГИКa ЗАГРУЗКИ ФАЙЛОВ (ПЛАГИНЫ + МЕДИА) ----------
     const contentTypeSelect = document.getElementById('contentType');
     const pluginFieldDiv = document.getElementById('dynamicPluginField');
     const mediaFieldDiv = document.getElementById('dynamicMediaField');
     
+    // Плагин файл
+    const pluginFileInput = document.getElementById('pluginFileInput');
+    const pluginUploadArea = document.getElementById('pluginUploadArea');
+    const pluginFileNameSpan = document.getElementById('pluginFileName');
+    let selectedPluginFile = null; // { name, base64, size }
+    
+    // Медиа файл
+    const mediaFileInput = document.getElementById('mediaFileInput');
+    const mediaUploadArea = document.getElementById('mediaUploadArea');
+    const selectedFileNameSpan = document.getElementById('selectedFileName');
+    const mediaPreviewDiv = document.getElementById('mediaPreview');
+    let selectedMediaBase64 = null, selectedMediaType = null;
+
+    function resetPluginSelection() {
+        selectedPluginFile = null;
+        if(pluginFileInput) pluginFileInput.value = '';
+        if(pluginFileNameSpan) pluginFileNameSpan.innerText = '';
+    }
+    function resetMediaSelection() {
+        selectedMediaBase64 = null;
+        selectedMediaType = null;
+        if(mediaFileInput) mediaFileInput.value = '';
+        if(selectedFileNameSpan) selectedFileNameSpan.innerText = '';
+        if(mediaPreviewDiv) mediaPreviewDiv.innerHTML = '';
+    }
+
+    // Открытие выбора плагина
+    if(pluginUploadArea) {
+        pluginUploadArea.addEventListener('click', () => pluginFileInput.click());
+        pluginFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const maxSize = 20 * 1024 * 1024;
+            if(file.size > maxSize) {
+                alert("Файл плагина слишком большой! Максимум 20 МБ");
+                pluginFileInput.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                selectedPluginFile = {
+                    name: file.name,
+                    base64: ev.target.result,
+                    size: file.size
+                };
+                pluginFileNameSpan.innerText = `📎 ${file.name} (${(file.size/1024).toFixed(1)} КБ)`;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    // Медиа (фото/видео) выбор
+    if(mediaUploadArea) {
+        mediaUploadArea.addEventListener('click', () => mediaFileInput.click());
+        mediaFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const type = contentTypeSelect.value;
+            const isImage = file.type.startsWith('image/');
+            const isVideo = file.type.startsWith('video/');
+            if(type === 'photo' && !isImage) { alert("Выберите изображение!"); return; }
+            if(type === 'video' && !isVideo) { alert("Выберите видеофайл!"); return; }
+            const maxSize = 15 * 1024 * 1024;
+            if(file.size > maxSize) { alert("Файл слишком большой (макс 15 МБ)"); return; }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                selectedMediaBase64 = ev.target.result;
+                selectedMediaType = type;
+                selectedFileNameSpan.innerText = `📁 ${file.name} (${(file.size/1024).toFixed(1)} КБ)`;
+                if(mediaPreviewDiv) {
+                    if(isImage) mediaPreviewDiv.innerHTML = `<img src="${selectedMediaBase64}" style="max-width:100%; max-height:130px; border-radius:16px;">`;
+                    else if(isVideo) mediaPreviewDiv.innerHTML = `<video src="${selectedMediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
     function toggleDynamicFields() {
         const type = contentTypeSelect.value;
         pluginFieldDiv.style.display = 'none';
         mediaFieldDiv.style.display = 'none';
+        resetPluginSelection();
+        resetMediaSelection();
         if(type === 'plugin') {
             pluginFieldDiv.style.display = 'block';
         } else if(type === 'photo' || type === 'video') {
@@ -547,21 +692,17 @@
         }
     }
     contentTypeSelect.addEventListener('change', toggleDynamicFields);
-    
-    // модалка логика
+
+    // ---------- Модальное окно и отправка ----------
     const modal = document.getElementById('postModal');
     const openBtn = document.getElementById('openModalBtn');
-    const closeBtns = ['closeModalBtn', 'cancelModalBtn'];
+    const closeModalBtns = ['closeModalBtn', 'cancelModalBtn'];
     const publishForm = document.getElementById('publishForm');
 
     function openModal() { modal.style.display = 'flex'; toggleDynamicFields(); }
-    function closeModal() { modal.style.display = 'none'; publishForm.reset(); pluginFieldDiv.style.display = 'none'; mediaFieldDiv.style.display = 'none'; }
-
+    function closeModal() { modal.style.display = 'none'; publishForm.reset(); toggleDynamicFields(); resetPluginSelection(); resetMediaSelection(); }
     openBtn.addEventListener('click', openModal);
-    closeBtns.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.addEventListener('click', closeModal);
-    });
+    closeModalBtns.forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener('click', closeModal); });
     window.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
 
     publishForm.addEventListener('submit', (e) => {
@@ -569,35 +710,26 @@
         const type = contentTypeSelect.value;
         const title = document.getElementById('titleInput').value.trim();
         const description = document.getElementById('descInput').value.trim();
-        if(!title) {
-            alert("Заголовок обязателен!");
-            return;
-        }
+        if(!title) { alert("Укажите заголовок"); return; }
         let newEntry = { type, title, description };
-        
         if(type === 'plugin') {
-            const pluginVersion = document.getElementById('pluginVersion').value.trim() || '1.0';
-            const pluginDownloadUrl = document.getElementById('pluginDownloadUrl').value.trim();
-            if(!pluginDownloadUrl) {
-                alert("Для плагина укажите ссылку на скачивание");
-                return;
-            }
-            newEntry.pluginVersion = pluginVersion;
-            newEntry.pluginDownloadUrl = pluginDownloadUrl;
+            if(!selectedPluginFile) { alert("Прикрепите файл плагина (скрепка)!"); return; }
+            newEntry.pluginData = {
+                name: selectedPluginFile.name,
+                base64: selectedPluginFile.base64,
+                size: selectedPluginFile.size
+            };
         }
         else if(type === 'photo' || type === 'video') {
-            const mediaUrl = document.getElementById('mediaUrl').value.trim();
-            if(!mediaUrl) {
-                alert(`Укажите URL для ${type === 'photo' ? 'изображения' : 'видео'}`);
-                return;
-            }
-            newEntry.mediaUrl = mediaUrl;
+            if(!selectedMediaBase64) { alert(`Выберите ${type === 'photo' ? 'фото' : 'видео'} с устройства!`); return; }
+            newEntry.mediaBase64 = selectedMediaBase64;
+            newEntry.isExternal = false;
         }
         addPost(newEntry);
         closeModal();
     });
-    
-    // табы фильтрации
+
+    // ТАБЫ
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -607,8 +739,6 @@
             renderFeed(currentFilter);
         });
     });
-
-    // инициализация приложения
     loadPostsFromStorage();
 </script>
 </body>
