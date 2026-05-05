@@ -3,211 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RootLab | Плагины и публикации</title>
+  <title>RootLab | Сообщество разработчиков</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #eef2ff; line-height: 1.5; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0c10;
+      color: #eef2ff;
+      line-height: 1.5;
+    }
     .navbar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 2rem; background: #0f1117; border-bottom: 1px solid #2a2f3f;
-      position: sticky; top: 0; z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0f1117;
+      border-bottom: 1px solid #2a2f3f;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
-    .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #a855f7, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { color: #9ca3af; text-decoration: none; font-weight: 500; cursor: pointer; transition: 0.2s; }
-    .nav-links a:hover, .nav-links a.active { color: #c084fc; }
-    .profile-icon { background: #1e293b; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; }
-    .profile-icon:hover { background: #3b2e5e; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a855f7, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: #c084fc;
+    }
+    .profile-icon {
+      background: #1e293b;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.4rem;
+      transition: 0.2s;
+    }
+    .profile-icon:hover {
+      background: #3b2e5e;
+      transform: scale(1.05);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
     .card {
-      background: #11151e; border-radius: 1rem; padding: 1.2rem;
-      border: 1px solid #2a2f3f; transition: 0.2s;
+      background: #11151e;
+      border-radius: 1rem;
+      padding: 1.2rem;
+      border: 1px solid #2a2f3f;
+      transition: 0.2s;
     }
-    .card:hover { border-color: #8b5cf6; transform: translateY(-3px); }
-    .card img, .card video { width: 100%; border-radius: 0.8rem; max-height: 200px; object-fit: cover; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+    .card:hover {
+      border-color: #8b5cf6;
+      transform: translateY(-3px);
+    }
+    .card img, .card video {
+      width: 100%;
+      border-radius: 0.8rem;
+      max-height: 200px;
+      object-fit: cover;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
     .form-card {
-      background: #11151e; border-radius: 1rem; padding: 1.5rem;
-      border: 1px solid #2a2f3f; margin-bottom: 2rem;
+      background: #11151e;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 1px solid #2a2f3f;
+      margin-bottom: 2rem;
     }
     input, textarea, select {
-      width: 100%; background: #1a1f2c; border: 1px solid #2a2f3f;
-      padding: 0.7rem 1rem; border-radius: 0.7rem; color: white;
-      font-family: inherit; margin-bottom: 1rem;
+      width: 100%;
+      background: #1a1f2c;
+      border: 1px solid #2a2f3f;
+      padding: 0.7rem 1rem;
+      border-radius: 0.7rem;
+      color: white;
+      font-family: inherit;
+      margin-bottom: 1rem;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #8b5cf6;
     }
     .btn {
       background: linear-gradient(95deg, #7c3aed, #3b82f6);
-      padding: 0.7rem 1.5rem; border-radius: 2rem; border: none;
-      color: white; font-weight: 600; cursor: pointer;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2rem;
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .btn-outline { background: transparent; border: 1px solid #8b5cf6; }
+    .btn:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #8b5cf6;
+    }
+    .btn-outline:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
     .modal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      align-items: center; justify-content: center; z-index: 200;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
     }
     .modal-content {
-      background: #11151e; max-width: 400px; width: 90%;
-      padding: 2rem; border-radius: 1.5rem;
+      background: #11151e;
+      max-width: 400px;
+      width: 90%;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      border: 1px solid #8b5cf6;
     }
-    .badge { background: #2d1b4e; padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.7rem; display: inline-block; margin-top: 0.5rem; }
-    footer { text-align: center; padding: 2rem; color: #5b6e8c; border-top: 1px solid #1f2937; margin-top: 2rem; }
-    @media (max-width: 700px) { .navbar { flex-direction: column; gap: 0.8rem; } .nav-links { flex-wrap: wrap; justify-content: center; } }
+    .badge {
+      background: #2d1b4e;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .delete-btn {
+      background: transparent;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+    }
+    .delete-btn:hover {
+      background: #ef4444;
+      color: white;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #5b6e8c;
+      border-top: 1px solid #1f2937;
+      margin-top: 2rem;
+    }
+    .github-corner {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #24292e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 99;
+    }
+    .github-corner:hover {
+      background: #3b82f6;
+    }
+    @media (max-width: 700px) {
+      .navbar { flex-direction: column; }
+      .nav-links { justify-content: center; }
+      .container { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
 
+<a href="https://github.com/yourusername/rootlab" class="github-corner" target="_blank">
+  <i class="fab fa-github"></i> GitHub
+</a>
+
 <nav class="navbar">
-  <div class="logo">🔧 RootLab | Official</div>
+  <div class="logo">🔧 RootLab | Community</div>
   <div class="nav-links">
     <a class="nav-link active" data-page="feed">📰 Лента</a>
     <a class="nav-link" data-page="plugins">📦 Плагины</a>
     <a class="nav-link" data-page="my">👤 Моё</a>
   </div>
-  <div class="profile-icon" id="profileBtn">👤</div>
+  <div class="profile-icon" id="profileBtn">
+    <i class="fas fa-user"></i>
+  </div>
 </nav>
 
 <div class="container" id="app"></div>
-<footer><p>RootLab — публикации видны всем пользователям</p></footer>
+
+<footer>
+  <p>RootLab Community — открытое сообщество разработчиков | Все публикации видны всем</p>
+  <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+    <i class="fas fa-database"></i> Данные хранятся в вашем браузере (localStorage)
+  </p>
+</footer>
 
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span id="closeModal" style="float: right; cursor: pointer; font-size: 1.8rem;">&times;</span>
-    <h3 style="text-align:center; margin-bottom: 1rem;">Мой профиль</h3>
-    <input type="text" id="userName" placeholder="Ваше имя">
+    <h3 style="text-align:center; margin-bottom: 1rem;">
+      <i class="fas fa-user-edit"></i> Мой профиль
+    </h3>
+    <input type="text" id="userName" placeholder="Как вас зовут?">
     <input type="text" id="userTg" placeholder="Telegram (username)">
-    <input type="text" id="userZen" placeholder="Яндекс.Дзен ссылка">
-    <button class="btn" id="saveProfile" style="width: 100%;">Сохранить</button>
+    <input type="text" id="userZen" placeholder="Яндекс.Дзен">
+    <input type="text" id="userGithub" placeholder="GitHub (username)">
+    <button class="btn" id="saveProfile" style="width: 100%;">💾 Сохранить</button>
   </div>
 </div>
 
 <script>
-  // Глобальные данные (видны всем)
-  let publications = []; // { id, type, title, content, media, author, date }
-  let pluginsList = [];
-  let currentUser = { name: '', tg: '', zen: '' };
+  // ========== Глобальные данные ==========
+  let publications = [];  // посты в ленте
+  let pluginsList = [];   // плагины
+  let currentUser = { name: '', tg: '', zen: '', github: '' };
   
-  // Загрузка из localStorage
+  // ========== Загрузка данных ==========
   function loadData() {
-    const saved = localStorage.getItem('rootlab_publications');
-    if(saved) publications = JSON.parse(saved);
-    else {
-      // Пример контента для первого запуска
+    // Загружаем публикации
+    const savedPub = localStorage.getItem('rootlab_publications');
+    if(savedPub) {
+      publications = JSON.parse(savedPub);
+    } else {
+      // Стартовые публикации
       publications = [
-        { id: '1', type: 'post', title: 'Добро пожаловать в RootLab!', content: 'Здесь вы можете публиковать посты и делиться плагинами. Все публикации видны всем пользователям.', media: '', author: 'RootLab', date: new Date().toLocaleDateString() }
+        { 
+          id: '1', type: 'post', title: 'Добро пожаловать в RootLab!', 
+          content: 'Это открытое сообщество разработчиков. Публикуйте свои проекты, делитесь опытом и находите единомышленников!', 
+          media: '', author: 'RootLab Team', date: new Date().toLocaleDateString() 
+        },
+        { 
+          id: '2', type: 'post', title: 'Как опубликовать пост?', 
+          content: 'Заполните форму вверху ленты, укажите имя в профиле и нажмите "Опубликовать". Ваш пост увидят все посетители!', 
+          media: '', author: 'RootLab Team', date: new Date().toLocaleDateString() 
+        }
       ];
     }
     
-    const savedPlugins = localStorage.getItem('rootlab_plugins');
-    if(savedPlugins) pluginsList = JSON.parse(savedPlugins);
-    else {
+    // Загружаем плагины
+    const savedPlug = localStorage.getItem('rootlab_plugins');
+    if(savedPlug) {
+      pluginsList = JSON.parse(savedPlug);
+    } else {
       pluginsList = [
-        { id: 'p1', name: 'SEO Booster', desc: 'Оптимизация сайта', version: '2.0', author: 'RootLab' },
-        { id: 'p2', name: 'ContentProtect', desc: 'Защита контента', version: '1.5', author: 'RootLab' }
+        { id: 'p1', name: 'SEO Booster Pro', desc: 'Улучшает SEO вашего сайта', version: '2.1.0', author: 'RootLab Team', downloads: 156 },
+        { id: 'p2', name: 'ContentGuard', desc: 'Защита контента от копирования', version: '1.4.2', author: 'RootLab Team', downloads: 89 },
+        { id: 'p3', name: 'Analytics Dashboard', desc: 'Красивая аналитика для сайта', version: '1.0.0', author: 'RootLab Team', downloads: 234 }
       ];
     }
     
+    // Загружаем пользователя
     const savedUser = localStorage.getItem('rootlab_user');
-    if(savedUser) currentUser = JSON.parse(savedUser);
+    if(savedUser) {
+      currentUser = JSON.parse(savedUser);
+    }
   }
   
+  // Сохранение всего
   function saveAll() {
     localStorage.setItem('rootlab_publications', JSON.stringify(publications));
     localStorage.setItem('rootlab_plugins', JSON.stringify(pluginsList));
     localStorage.setItem('rootlab_user', JSON.stringify(currentUser));
   }
   
-  // Рендер ленты (все видят все посты)
-  function renderFeed() {
-    const posts = publications.filter(p => p.type === 'post');
-    return `
-      <div class="form-card">
-        <h3><i class="fas fa-plus-circle"></i> Новая публикация</h3>
-        <input type="text" id="postTitle" placeholder="Заголовок">
-        <textarea id="postContent" rows="3" placeholder="Текст поста"></textarea>
-        <input type="text" id="postMedia" placeholder="Ссылка на картинку или видео (опционально)">
-        <button class="btn" id="publishPost">📝 Опубликовать в ленту</button>
-      </div>
-      <h2><i class="fas fa-newspaper"></i> Лента публикаций</h2>
-      <div class="grid" id="feedGrid">
-        ${posts.length === 0 ? '<p>Пока нет публикаций. Будьте первым!</p>' : posts.map(post => `
-          <div class="card">
-            ${post.media ? (post.media.match(/\.(mp4|webm)/i) ? `<video src="${post.media}" controls></video>` : `<img src="${post.media}" onerror="this.style.display='none'">`) : '<div style="height:120px; background:#1a1f2c; border-radius:0.8rem; display:flex; align-items:center; justify-content:center;"><i class="fas fa-image" style="opacity:0.3"></i></div>'}
-            <h3 style="margin-top:0.8rem">${escapeHtml(post.title)}</h3>
-            <p>${escapeHtml(post.content)}</p>
-            <div class="badge">✍️ ${escapeHtml(post.author)} | 📅 ${post.date}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+  // ========== Вспомогательные функции ==========
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
   }
   
-  // Рендер плагинов
-  function renderPlugins() {
-    return `
-      <div class="form-card">
-        <h3><i class="fas fa-puzzle-piece"></i> Добавить плагин</h3>
-        <input type="text" id="pluginName" placeholder="Название плагина">
-        <textarea id="pluginDesc" rows="2" placeholder="Описание"></textarea>
-        <input type="text" id="pluginVersion" placeholder="Версия (например 1.0)">
-        <button class="btn" id="addPlugin">🔌 Добавить плагин</button>
-      </div>
-      <h2><i class="fas fa-boxes"></i> Библиотека плагинов</h2>
-      <div class="grid">
-        ${pluginsList.map(p => `
-          <div class="card">
-            <i class="fas fa-cube" style="font-size: 2rem; color:#a78bfa"></i>
-            <h3>${escapeHtml(p.name)} v${p.version}</h3>
-            <p>${escapeHtml(p.desc)}</p>
-            <div class="badge">👤 ${escapeHtml(p.author)}</div>
-            <button class="btn" style="margin-top:0.8rem" onclick="alert('Скачивание: ${p.name}')">⬇️ Скачать</button>
-          </div>
-        `).join('')}
-      </div>
-    `;
+  function formatDate() {
+    return new Date().toLocaleDateString('ru-RU');
   }
   
-  // Личный кабинет
-  function renderMy() {
-    return `
-      <div class="form-card">
-        <h3><i class="fas fa-user"></i> Информация профиля</h3>
-        <p><strong>Имя:</strong> ${currentUser.name || 'Не указано'}</p>
-        <p><strong>Telegram:</strong> ${currentUser.tg || 'Не указан'}</p>
-        <p><strong>Яндекс.Дзен:</strong> ${currentUser.zen || 'Не указан'}</p>
-        <button class="btn" id="editProfileBtn" style="margin-top: 1rem;">✏️ Редактировать профиль</button>
-      </div>
-      <h2><i class="fas fa-user-pen"></i> Мои публикации</h2>
-      <div class="grid">
-        ${publications.filter(p => p.author === currentUser.name && p.author).length === 0 ? '<p>У вас пока нет публикаций</p>' : 
-          publications.filter(p => p.author === currentUser.name && p.author).map(post => `
-          <div class="card">
-            <h3>${escapeHtml(post.title)}</h3>
-            <p>${escapeHtml(post.content)}</p>
-            <div class="badge">📅 ${post.date}</div>
-            <button class="btn-outline btn" style="margin-top:0.5rem" onclick="deletePost('${post.id}')">🗑️ Удалить</button>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-  
-  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-  
-  // Публикация поста (видят все)
+  // ========== Основные функции ==========
   function publishPost(title, content, media) {
-    if(!title.trim()) return alert('Введите заголовок');
-    if(!currentUser.name) return alert('Сначала заполните профиль (иконка 👤 вверху)');
+    if(!title.trim()) return alert('❌ Введите заголовок');
+    if(!currentUser.name) return alert('❌ Сначала заполните профиль (нажмите на иконку пользователя)');
     
     publications.unshift({
       id: Date.now().toString(),
       type: 'post',
-      title: title,
-      content: content,
+      title: title.trim(),
+      content: content.trim() || '—',
       media: media || '',
       author: currentUser.name,
-      date: new Date().toLocaleDateString()
+      date: formatDate(),
+      likes: 0
     });
     saveAll();
     alert('✅ Пост опубликован! Теперь его видят все пользователи.');
@@ -215,30 +331,144 @@
   }
   
   function addPlugin(name, desc, version) {
-    if(!name.trim()) return alert('Введите название плагина');
-    if(!currentUser.name) return alert('Сначала заполните профиль');
+    if(!name.trim()) return alert('❌ Введите название плагина');
+    if(!currentUser.name) return alert('❌ Сначала заполните профиль');
     
     pluginsList.push({
       id: Date.now().toString(),
-      name: name,
-      desc: desc,
-      version: version || '1.0',
-      author: currentUser.name
+      name: name.trim(),
+      desc: desc.trim() || '—',
+      version: version.trim() || '1.0',
+      author: currentUser.name,
+      downloads: 0
     });
     saveAll();
     alert('✅ Плагин добавлен в библиотеку!');
     renderCurrentPage();
   }
   
-  window.deletePost = (id) => {
-    if(confirm('Удалить публикацию?')) {
+  function deletePost(id) {
+    if(confirm('🗑️ Удалить этот пост?')) {
       publications = publications.filter(p => p.id !== id);
       saveAll();
       renderCurrentPage();
     }
-  };
+  }
   
+  function deletePlugin(id) {
+    if(confirm('🗑️ Удалить этот плагин?')) {
+      pluginsList = pluginsList.filter(p => p.id !== id);
+      saveAll();
+      renderCurrentPage();
+    }
+  }
+  
+  // ========== Рендер страниц ==========
   let currentPage = 'feed';
+  
+  function renderFeed() {
+    const posts = publications.filter(p => p.type === 'post');
+    return `
+      <div class="form-card">
+        <h3><i class="fas fa-pen-fancy"></i> Новая публикация</h3>
+        <input type="text" id="postTitle" placeholder="Заголовок">
+        <textarea id="postContent" rows="3" placeholder="Текст поста"></textarea>
+        <input type="text" id="postMedia" placeholder="Ссылка на картинку или видео (опционально)">
+        <button class="btn" id="publishPostBtn">📝 Опубликовать в ленту</button>
+      </div>
+      
+      <h2><i class="fas fa-newspaper"></i> Лента сообщества</h2>
+      <div class="grid">
+        ${posts.length === 0 ? '<p>📭 Пока нет публикаций. Будьте первым!</p>' : posts.map(post => `
+          <div class="card">
+            ${post.media ? (post.media.match(/\.(mp4|webm|mov)/i) ? `<video src="${post.media}" controls></video>` : `<img src="${post.media}" onerror="this.style.display='none'">`) : '<div style="height:120px; background:linear-gradient(135deg, #1e293b, #0f172a); border-radius:0.8rem; display:flex; align-items:center; justify-content:center;"><i class="fas fa-image" style="opacity:0.3; font-size:2rem"></i></div>'}
+            <h3 style="margin-top:0.8rem">${escapeHtml(post.title)}</h3>
+            <p>${escapeHtml(post.content)}</p>
+            <div class="badge">
+              <i class="fas fa-user"></i> ${escapeHtml(post.author)} | 
+              <i class="fas fa-calendar"></i> ${post.date}
+            </div>
+            ${post.author === currentUser.name && currentUser.name ? `<button class="btn delete-btn" onclick="deletePost('${post.id}')">🗑️ Удалить</button>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  
+  function renderPlugins() {
+    return `
+      <div class="form-card">
+        <h3><i class="fas fa-puzzle-piece"></i> Добавить плагин</h3>
+        <input type="text" id="pluginName" placeholder="Название плагина">
+        <textarea id="pluginDesc" rows="2" placeholder="Описание"></textarea>
+        <input type="text" id="pluginVersion" placeholder="Версия (например 1.0)">
+        <button class="btn" id="addPluginBtn">🔌 Добавить плагин</button>
+      </div>
+      
+      <h2><i class="fas fa-boxes"></i> Библиотека плагинов</h2>
+      <div class="grid">
+        ${pluginsList.map(p => `
+          <div class="card">
+            <i class="fas fa-cube" style="font-size: 2rem; color:#a78bfa"></i>
+            <h3>${escapeHtml(p.name)} <span style="font-size:0.8rem; color:#8b5cf6;">v${p.version}</span></h3>
+            <p>${escapeHtml(p.desc)}</p>
+            <div class="badge">
+              <i class="fas fa-user"></i> ${escapeHtml(p.author)} | 
+              <i class="fas fa-download"></i> ${p.downloads || 0} скачиваний
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:0.8rem;">
+              <button class="btn" style="flex:1" onclick="alert('⬇️ Скачивание: ${p.name}')">⬇️ Скачать</button>
+              ${p.author === currentUser.name && currentUser.name ? `<button class="btn-outline btn" onclick="deletePlugin('${p.id}')">🗑️</button>` : ''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  
+  function renderMy() {
+    const myPosts = publications.filter(p => p.type === 'post' && p.author === currentUser.name);
+    const myPlugins = pluginsList.filter(p => p.author === currentUser.name);
+    
+    return `
+      <div class="form-card">
+        <h3><i class="fas fa-id-card"></i> Информация профиля</h3>
+        <div style="background: #1a1f2c; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;">
+          <p><i class="fas fa-user"></i> <strong>Имя:</strong> ${currentUser.name || '❌ Не указано'}</p>
+          <p><i class="fab fa-telegram"></i> <strong>Telegram:</strong> ${currentUser.tg || '❌ Не указан'}</p>
+          <p><i class="fab fa-yandex"></i> <strong>Яндекс.Дзен:</strong> ${currentUser.zen || '❌ Не указан'}</p>
+          <p><i class="fab fa-github"></i> <strong>GitHub:</strong> ${currentUser.github ? `@${currentUser.github}` : '❌ Не указан'}</p>
+        </div>
+        <button class="btn" id="editProfileBtn">✏️ Редактировать профиль</button>
+      </div>
+      
+      <h2><i class="fas fa-user-pen"></i> Мои публикации (${myPosts.length})</h2>
+      <div class="grid">
+        ${myPosts.length === 0 ? '<p>📭 У вас пока нет публикаций</p>' : 
+          myPosts.map(post => `
+          <div class="card">
+            <h3>${escapeHtml(post.title)}</h3>
+            <p>${escapeHtml(post.content)}</p>
+            <div class="badge">📅 ${post.date}</div>
+            <button class="btn delete-btn" onclick="deletePost('${post.id}')">🗑️ Удалить</button>
+          </div>
+        `).join('')}
+      </div>
+      
+      <h2 style="margin-top: 2rem;"><i class="fas fa-plug"></i> Мои плагины (${myPlugins.length})</h2>
+      <div class="grid">
+        ${myPlugins.length === 0 ? '<p>📦 У вас пока нет плагинов</p>' :
+          myPlugins.map(p => `
+          <div class="card">
+            <h3>${escapeHtml(p.name)} v${p.version}</h3>
+            <p>${escapeHtml(p.desc)}</p>
+            <div class="badge">📥 ${p.downloads || 0} скачиваний</div>
+            <button class="btn delete-btn" onclick="deletePlugin('${p.id}')">🗑️ Удалить</button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
   
   function renderCurrentPage() {
     const app = document.getElementById('app');
@@ -246,52 +476,57 @@
     else if(currentPage === 'plugins') app.innerHTML = renderPlugins();
     else if(currentPage === 'my') app.innerHTML = renderMy();
     
-    // Обработчики кнопок
+    // Привязываем события
     if(currentPage === 'feed') {
-      document.getElementById('publishPost')?.onclick = () => {
+      document.getElementById('publishPostBtn')?.addEventListener('click', () => {
         publishPost(
           document.getElementById('postTitle').value,
           document.getElementById('postContent').value,
           document.getElementById('postMedia').value
         );
-      };
+      });
     }
     if(currentPage === 'plugins') {
-      document.getElementById('addPlugin')?.onclick = () => {
+      document.getElementById('addPluginBtn')?.addEventListener('click', () => {
         addPlugin(
           document.getElementById('pluginName').value,
           document.getElementById('pluginDesc').value,
           document.getElementById('pluginVersion').value
         );
-      };
+      });
     }
     if(currentPage === 'my') {
-      document.getElementById('editProfileBtn')?.onclick = () => openProfileModal();
+      document.getElementById('editProfileBtn')?.addEventListener('click', () => openProfileModal());
     }
   }
   
-  // Модальное окно профиля
+  // ========== Профиль ==========
   const modal = document.getElementById('profileModal');
+  
   function openProfileModal() {
-    document.getElementById('userName').value = currentUser.name;
-    document.getElementById('userTg').value = currentUser.tg;
-    document.getElementById('userZen').value = currentUser.zen;
+    document.getElementById('userName').value = currentUser.name || '';
+    document.getElementById('userTg').value = currentUser.tg || '';
+    document.getElementById('userZen').value = currentUser.zen || '';
+    document.getElementById('userGithub').value = currentUser.github || '';
     modal.style.display = 'flex';
   }
   
   document.getElementById('profileBtn').onclick = openProfileModal;
   document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
+  window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
+  
   document.getElementById('saveProfile').onclick = () => {
     currentUser.name = document.getElementById('userName').value.trim();
     currentUser.tg = document.getElementById('userTg').value.trim();
     currentUser.zen = document.getElementById('userZen').value.trim();
+    currentUser.github = document.getElementById('userGithub').value.trim();
     saveAll();
     modal.style.display = 'none';
-    alert('Профиль сохранён!');
+    alert('✅ Профиль сохранён! Теперь вы можете публиковать посты.');
     renderCurrentPage();
   };
   
-  // Навигация
+  // ========== Навигация ==========
   document.querySelectorAll('.nav-link').forEach(link => {
     link.onclick = (e) => {
       document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -301,7 +536,7 @@
     };
   });
   
-  // Инициализация
+  // ========== Запуск ==========
   loadData();
   renderCurrentPage();
 </script>
