@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>RootLab | Цифровая лаборатория контента</title>
-    <!-- Google Fonts + Font Awesome -->
+    <title>RootLab Cloud | Глобальная лаборатория контента</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -13,83 +12,63 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: radial-gradient(circle at 10% 20%, #0a0c12, #030507);
             font-family: 'Inter', sans-serif;
             color: #eef5ff;
-            line-height: 1.5;
             padding: 2rem 1.5rem;
         }
-
-        /* контейнер */
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        /* header с неоном */
+        /* анимация загрузки */
+        .loader-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 1rem;
+            font-weight: 600;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2effe0;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             flex-wrap: wrap;
-            margin-bottom: 2.8rem;
+            margin-bottom: 2rem;
             border-bottom: 1px solid rgba(0, 255, 255, 0.2);
             padding-bottom: 1rem;
         }
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #aaffff, #2a7fff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
+        .logo h1 { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #aaffff, #2a7fff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .badge-cloud {
+            background: #0a5c4e33;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            border: 1px solid #2effe0;
         }
-        .logo p {
-            font-size: 0.8rem;
-            color: #7f8fa4;
-            letter-spacing: 0.3px;
-        }
-        .stats {
-            background: rgba(18, 25, 45, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-        .stats i {
-            color: #0ff;
-            margin-right: 6px;
-        }
-
-        /* форма создания (лаборатория) */
         .creation-panel {
             background: rgba(12, 18, 28, 0.75);
             backdrop-filter: blur(12px);
             border-radius: 2rem;
             border: 1px solid rgba(0, 255, 255, 0.25);
             padding: 1.6rem 2rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
-        }
-        .panel-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 1.4rem;
-        }
-        .panel-title i {
-            font-size: 1.8rem;
-            color: #2effe0;
-        }
-        .input-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 2rem;
         }
         input, select, textarea {
             width: 100%;
@@ -98,28 +77,12 @@
             border-radius: 1.2rem;
             padding: 0.9rem 1.2rem;
             font-family: 'Inter', monospace;
-            font-size: 0.95rem;
             color: #f0f4fa;
-            transition: all 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-        }
-        .row-2cols {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .row-2cols > div {
-            flex: 1;
-            min-width: 180px;
         }
         .type-buttons {
             display: flex;
             gap: 1rem;
-            margin: 1rem 0 1.2rem;
+            margin: 1rem 0;
             flex-wrap: wrap;
         }
         .type-btn {
@@ -127,167 +90,84 @@
             border: 1px solid #2d3a4b;
             border-radius: 2rem;
             padding: 0.6rem 1.4rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
-            color: #b9d0f0;
         }
         .type-btn.active {
             background: #1e90ff33;
             border-color: #0ff;
-            color: #aaffff;
             box-shadow: 0 0 6px cyan;
         }
         .btn-publish {
             background: linear-gradient(95deg, #00c3ff, #2b5eff);
             border: none;
-            padding: 0.9rem 1.8rem;
+            padding: 0.9rem;
             border-radius: 2rem;
             font-weight: 700;
-            font-size: 1rem;
             color: white;
             cursor: pointer;
-            transition: all 0.2s ease;
             width: 100%;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.8px;
         }
-        .btn-publish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px #00c8ff60;
-        }
-
-        /* галерея контента (плитка) */
-        .feed-header {
+        .sync-toolbar {
             display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            gap: 1rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
         }
-        .feed-header h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #c0e0ff, #2affcc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .clear-btn {
-            background: rgba(255, 70, 70, 0.15);
-            border: 1px solid #ff4d6d55;
-            padding: 0.4rem 1rem;
+        .sync-btn {
+            background: #1e2a3a;
+            border: none;
+            padding: 0.5rem 1.2rem;
             border-radius: 2rem;
-            color: #ffb3c6;
+            color: white;
             cursor: pointer;
-            transition: 0.2s;
+            font-size: 0.8rem;
         }
         .posts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.8rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
-        /* карточка поста */
         .post-card {
             background: rgba(8, 14, 22, 0.8);
-            backdrop-filter: blur(4px);
-            border-radius: 1.8rem;
+            border-radius: 1.5rem;
             border: 1px solid rgba(72, 187, 255, 0.2);
             overflow: hidden;
-            transition: all 0.25s ease;
-            box-shadow: 0 12px 20px -12px black;
-        }
-        .post-card:hover {
-            border-color: #0ff7;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 28px -12px #0ff3;
         }
         .media-container {
             width: 100%;
-            max-height: 240px;
+            max-height: 200px;
             overflow: hidden;
             background: #010101;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
         }
         .media-container img, .media-container video {
             width: 100%;
             object-fit: cover;
-            max-height: 220px;
+            max-height: 200px;
         }
-        .plugin-badge {
-            background: #2a1e4c;
-            display: inline-block;
-            padding: 0.3rem 0.9rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #caaaff;
-            letter-spacing: 0.5px;
-        }
-        .post-content {
-            padding: 1.2rem 1.4rem 1.4rem;
-        }
-        .post-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            word-break: break-word;
-        }
-        .post-desc {
-            color: #b7c5db;
-            font-size: 0.9rem;
-            margin: 0.6rem 0;
-            line-height: 1.4;
-        }
-        .post-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-            font-size: 0.7rem;
-            color: #7596c2;
-            border-top: 1px dashed #2a3548;
-            padding-top: 0.7rem;
-        }
-        .post-type-icon {
-            background: #1b2a3a;
-            border-radius: 50px;
-            padding: 0.2rem 0.7rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
+        .post-content { padding: 1rem; }
         .delete-post {
             background: none;
             border: none;
             color: #ff8181;
             cursor: pointer;
-            font-size: 1.1rem;
-            opacity: 0.6;
-            transition: 0.2s;
-        }
-        .delete-post:hover {
-            opacity: 1;
-            transform: scale(1.1);
         }
         .empty-feed {
             text-align: center;
             padding: 3rem;
             background: #07101c60;
             border-radius: 2rem;
-            font-style: italic;
-            color: #98aec9;
         }
         footer {
-            margin-top: 4rem;
+            margin-top: 3rem;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #4a6588;
         }
         @media (max-width: 700px) {
             body { padding: 1rem; }
-            .creation-panel { padding: 1rem; }
         }
     </style>
 </head>
@@ -295,208 +175,93 @@
 <div class="container">
     <div class="header">
         <div class="logo">
-            <h1><i class="fas fa-flask"></i> RootLab</h1>
-            <p>лаборатория публикаций • плагины • контент</p>
+            <h1><i class="fas fa-globe"></i> RootLab Cloud</h1>
+            <p>глобальная лаборатория • публикации для всех</p>
         </div>
-        <div class="stats" id="statsDisplay">
-            <i class="fas fa-cubes"></i> <span id="postCount">0</span> элементов
+        <div class="badge-cloud" id="cloudStatusBadge">
+            <i class="fas fa-sync-alt"></i> <span id="statusText">Определение режима...</span>
         </div>
     </div>
 
-    <!-- панель создания: универсальный конструктор -->
     <div class="creation-panel">
-        <div class="panel-title">
-            <i class="fas fa-vial"></i> 
-            <span>Новая публикация</span>
-        </div>
-        <div class="input-group">
-            <input type="text" id="postTitle" placeholder="Название / Имя плагина / Заголовок поста" autocomplete="off">
-        </div>
-        <div class="input-group">
-            <textarea id="postDesc" rows="2" placeholder="Описание, текст или дополнительная информация..."></textarea>
-        </div>
-
-        <!-- тип контента -->
+        <h3 style="margin-bottom: 1rem;"><i class="fas fa-plus-circle"></i> Новая публикация</h3>
+        <input type="text" id="postTitle" placeholder="Заголовок / Название плагина">
+        <textarea id="postDesc" rows="2" placeholder="Описание..." style="margin-top: 0.8rem;"></textarea>
+        
         <div class="type-buttons" id="typeSelector">
             <div class="type-btn" data-type="post"><i class="fas fa-paragraph"></i> Пост</div>
             <div class="type-btn" data-type="plugin"><i class="fas fa-puzzle-piece"></i> Плагин</div>
-            <div class="type-btn" data-type="image" id="imageTypeBtn"><i class="fas fa-image"></i> Картинка</div>
+            <div class="type-btn" data-type="image"><i class="fas fa-image"></i> Картинка</div>
             <div class="type-btn" data-type="video"><i class="fas fa-video"></i> Видео</div>
         </div>
 
-        <!-- динамическое поле под медиа - URL или загрузка файла -->
-        <div class="row-2cols" id="mediaRow">
-            <div style="flex:2">
-                <input type="text" id="mediaUrl" placeholder="URL изображения / видео (или ссылка на плагин / демо)" autocomplete="off">
-            </div>
-            <div style="flex:1">
-                <input type="file" id="fileUpload" accept="image/*,video/*" style="background:#0e1622; padding: 0.6rem;">
-            </div>
+        <div style="display: flex; gap: 0.8rem; margin: 0.8rem 0;">
+            <input type="text" id="mediaUrl" placeholder="URL медиа / ссылка на плагин (опционально)" style="flex:2">
+            <input type="file" id="fileUpload" accept="image/*,video/*" style="flex:1; background:#0e1622;">
         </div>
-        <small style="display: block; margin: 8px 0 12px 0; color:#86a0c2;"><i class="fas fa-link"></i> Для поста/плагина можно указать ссылку. Для картинки/видео — загрузите файл или вставьте URL</small>
-
-        <button class="btn-publish" id="publishBtn"><i class="fas fa-rocket"></i> Опубликовать в RootLab</button>
+        <button class="btn-publish" id="publishBtn"><i class="fas fa-rocket"></i> Опубликовать для всех</button>
     </div>
 
-    <!-- Лента контента -->
-    <div class="feed-header">
-        <h2><i class="fas fa-waveform"></i> Biblioteca контента</h2>
-        <button id="clearAllBtn" class="clear-btn"><i class="fas fa-trash-alt"></i> Очистить всё</button>
+    <div class="sync-toolbar">
+        <div>
+            <button id="refreshBtn" class="sync-btn"><i class="fas fa-download"></i> Синхронизировать</button>
+            <button id="exportJsonBtn" class="sync-btn"><i class="fas fa-file-export"></i> Экспорт JSON</button>
+            <button id="importJsonBtn" class="sync-btn"><i class="fas fa-file-import"></i> Импорт JSON</button>
+        </div>
+        <div>
+            <button id="clearAllBtn" class="sync-btn" style="background:#aa2e4e;"><i class="fas fa-trash-alt"></i> Очистить всё</button>
+        </div>
     </div>
+
     <div id="postsContainer" class="posts-grid">
-        <!-- динамические карточки -->
-        <div class="empty-feed">✨ Лаборатория ждёт первых экспериментов. Создайте пост, плагин или загрузите медиа ✨</div>
+        <div class="empty-feed">🌍 Загрузка глобальной ленты RootLab...</div>
     </div>
     <footer>
-        RootLab — digital lab для идей, плагинов и креатива. Все данные хранятся локально.
+        ⚡ Режим: <span id="modeDesc">локальный</span> • Для постоянного облака: разверните Cloudflare Worker (инструкция в коде)
     </footer>
 </div>
 
 <script>
-    // --- данные ---
-    let feedItems = [];  // каждый элемент: { id, type, title, desc, mediaUrl, fileDataUrl?, timestamp }
-
-    // Загрузка из localStorage
-    function loadFromStorage() {
-        const stored = localStorage.getItem('rootlab_feed');
-        if(stored) {
-            try {
-                feedItems = JSON.parse(stored);
-                // убираем потенциально огромные blob url, если они есть из старых сессий? сохраним только безопасно.
-                // фильтруем валидность (можно)
-                renderFeed();
-            } catch(e) { console.warn(e); feedItems = []; }
+    // ==================== КОНФИГУРАЦИЯ CLOUDFLARE WORKER ====================
+    // Бесплатный глобальный бэкенд. Инструкция:
+    // 1. Зайдите в Cloudflare Dashboard → Workers & Pages → Create Worker
+    // 2. Вставьте код из блока ниже (в <!-- WORKER CODE -->)
+    // 3. Скопируйте URL вашего worker (например https://rootlab.yourname.workers.dev)
+    // 4. Вставьте его сюда:
+    const CLOUD_WORKER_URL = "https://rootlab-api.your-worker.workers.dev"; // 🔁 ЗАМЕНИТЕ НА ВАШ URL!
+    // ======================================================================
+    
+    // Режим работы: 'local' или 'cloud'
+    let currentMode = 'local';
+    let feedItems = [];
+    
+    // DOM элементы
+    const container = document.getElementById('postsContainer');
+    const publishBtn = document.getElementById('publishBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const clearAllBtn = document.getElementById('clearAllBtn');
+    const exportBtn = document.getElementById('exportJsonBtn');
+    const importBtn = document.getElementById('importJsonBtn');
+    const statusSpan = document.getElementById('statusText');
+    const modeDescSpan = document.getElementById('modeDesc');
+    
+    let currentType = 'post';
+    
+    // --- Вспомогательные функции ---
+    function showLoader(show) {
+        let loader = document.querySelector('.loader-overlay');
+        if(show) {
+            if(!loader) {
+                const div = document.createElement('div');
+                div.className = 'loader-overlay';
+                div.innerHTML = '<div class="spinner"></div><div>Синхронизация RootLab...</div>';
+                document.body.appendChild(div);
+            }
         } else {
-            // демо-примеры для красоты интерфейса
-            feedItems = [
-                { id: Date.now()+1, type: 'plugin', title: 'DarkCore Optimizer', desc: 'Плагин ускорения рендеринга для веб-приложений. Версия 2.1', mediaUrl: 'https://placehold.co/600x400/0a1122/cyan?text=Plugin+Demo', fileDataUrl: null, timestamp: Date.now() - 3600000 },
-                { id: Date.now()+2, type: 'image', title: 'Неоновая архитектура', desc: 'Абстракция RootLab концепт арт', mediaUrl: 'https://picsum.photos/id/104/500/300', fileDataUrl: null, timestamp: Date.now() - 7200000 },
-                { id: Date.now()+3, type: 'video', title: 'Революция лаборатории', desc: 'Краткий тизер генерации контента AI', mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', fileDataUrl: null, timestamp: Date.now() - 86400000 }
-            ];
-            saveAndRender();
+            if(loader) loader.remove();
         }
     }
-
-    function saveToStorage() {
-        // Чтобы не хранить огромные dataURL слишком много, но для демки норм
-        const toStore = feedItems.map(item => {
-            // удаляем потенциальные blob ссылки? (они не сериализуются, но мы храним fileDataUrl как строку dataURL)
-            // оставляем как есть, но осторожно
-            return { ...item };
-        });
-        localStorage.setItem('rootlab_feed', JSON.stringify(toStore));
-    }
-
-    function saveAndRender() {
-        saveToStorage();
-        renderFeed();
-        updateStats();
-    }
-
-    function updateStats() {
-        const countSpan = document.getElementById('postCount');
-        if(countSpan) countSpan.innerText = feedItems.length;
-    }
-
-    // рендер всех постов / плагинов / медиа
-    function renderFeed() {
-        const container = document.getElementById('postsContainer');
-        if(!container) return;
-        if(feedItems.length === 0) {
-            container.innerHTML = `<div class="empty-feed">🧪 Лаборатория пуста. Начните с первой публикации! 🧪</div>`;
-            updateStats();
-            return;
-        }
-
-        let html = '';
-        feedItems.slice().reverse().forEach(item => {
-            const { id, type, title, desc, mediaUrl, fileDataUrl, timestamp } = item;
-            // основной медиа-источник: если есть fileDataUrl (загруженный файл) - используем его, иначе mediaUrl
-            let finalMedia = fileDataUrl && fileDataUrl.startsWith('data:') ? fileDataUrl : (mediaUrl || '');
-            let mediaTag = '';
-            let typeIcon = '';
-            let extraBadge = '';
-
-            if(type === 'image') {
-                typeIcon = '<i class="fas fa-image"></i> Изображение';
-                if(finalMedia) {
-                    mediaTag = `<div class="media-container"><img src="${escapeHtml(finalMedia)}" alt="image" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a1f2e/ff66cc?text=Ошибка+загрузки'"></div>`;
-                } else {
-                    mediaTag = `<div class="media-container"><div style="padding:2rem; background:#0b1020;">🖼️ Нет превью</div></div>`;
-                }
-            } 
-            else if(type === 'video') {
-                typeIcon = '<i class="fas fa-video"></i> Видео';
-                if(finalMedia) {
-                    mediaTag = `<div class="media-container"><video controls src="${escapeHtml(finalMedia)}" style="max-height:210px; width:100%">Ваш браузер не поддерживает видео</video></div>`;
-                } else {
-                    mediaTag = `<div class="media-container"><div style="padding:1rem;">🎬 Видео без источника</div></div>`;
-                }
-            }
-            else if(type === 'plugin') {
-                typeIcon = '<i class="fas fa-puzzle-piece"></i> Плагин';
-                extraBadge = `<span class="plugin-badge"><i class="fas fa-code-branch"></i> EXTENSION</span>`;
-                if(finalMedia) {
-                    mediaTag = `<div class="media-container" style="background:#0E1622; justify-content:flex-start; padding:0.8rem 1rem;"><i class="fas fa-download" style="margin-right:8px;"></i> <span style="font-size:0.8rem;">Ссылка: <a href="${escapeHtml(finalMedia)}" target="_blank" style="color:#6ee7ff;">${finalMedia.length>40?finalMedia.substring(0,40)+'...':finalMedia}</a></span></div>`;
-                } else {
-                    mediaTag = `<div class="media-container" style="padding:0.8rem;">🔌 Плагин без ссылки (демо-версия)</div>`;
-                }
-            }
-            else { // тип post
-                typeIcon = '<i class="fas fa-newspaper"></i> Пост';
-                if(finalMedia) {
-                    mediaTag = `<div class="media-container" style="background:#090f18; padding:0.7rem;"><i class="fas fa-link"></i> <a href="${escapeHtml(finalMedia)}" target="_blank" style="color:#88ddff;">${escapeHtml(finalMedia.length>50 ? finalMedia.substring(0,50)+'...' : finalMedia)}</a></div>`;
-                } else {
-                    mediaTag = `<div class="media-container" style="padding:1rem; background:#03060c;"><i class="far fa-file-alt"></i> Текстовый пост</div>`;
-                }
-            }
-
-            // дата
-            const dateStr = timestamp ? new Date(timestamp).toLocaleString() : 'недавно';
-            html += `
-                <div class="post-card" data-id="${id}">
-                    ${mediaTag}
-                    <div class="post-content">
-                        <div style="display:flex; justify-content: space-between; align-items:center;">
-                            <div class="post-type-icon">${typeIcon}</div>
-                            ${extraBadge}
-                        </div>
-                        <div class="post-title">${escapeHtml(title) || 'Без названия'}</div>
-                        <div class="post-desc">${escapeHtml(desc) || 'Описание отсутствует'}</div>
-                        <div class="post-meta">
-                            <span><i class="far fa-clock"></i> ${dateStr}</span>
-                            <button class="delete-post" data-id="${id}" title="Удалить публикацию"><i class="fas fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-
-        // добавим слушатели на удаление
-        document.querySelectorAll('.delete-post').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = parseInt(btn.getAttribute('data-id'));
-                deletePostById(id);
-            });
-        });
-        updateStats();
-    }
-
-    function deletePostById(id) {
-        feedItems = feedItems.filter(item => item.id !== id);
-        saveAndRender();
-    }
-
-    function clearAll() {
-        if(confirm('🧪 Стереть всю лабораторию? Все посты, плагины и медиа будут удалены.')) {
-            feedItems = [];
-            saveAndRender();
-        }
-    }
-
-    // утилита
+    
     function escapeHtml(str) {
         if(!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -504,124 +269,358 @@
             if(m === '<') return '&lt;';
             if(m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
-
-    // ---- логика публикации с обработкой файлов ----
-    let currentType = 'post';   // по умолчанию
-
-    // подсветка кнопок типа
-    const typeBtns = document.querySelectorAll('.type-btn');
-    function setActiveType(type) {
-        currentType = type;
-        typeBtns.forEach(btn => {
-            if(btn.getAttribute('data-type') === type) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+    
+    // --- Локальное хранилище ---
+    function saveToLocal() {
+        localStorage.setItem('rootlab_local_feed', JSON.stringify(feedItems));
+    }
+    
+    function loadFromLocal() {
+        const stored = localStorage.getItem('rootlab_local_feed');
+        if(stored) {
+            try { feedItems = JSON.parse(stored); } catch(e) { feedItems = []; }
+        } else {
+            // демо-данные
+            feedItems = [
+                { id: Date.now()+1, type: 'plugin', title: 'CloudSync Kit', desc: 'Плагин для мгновенной синхронизации', mediaUrl: '', fileDataUrl: null, timestamp: Date.now() - 3600000 },
+                { id: Date.now()+2, type: 'image', title: 'Глобальная лаборатория', desc: 'Концепт RootLab Network', mediaUrl: 'https://picsum.photos/id/106/500/300', fileDataUrl: null, timestamp: Date.now() - 7200000 }
+            ];
+            saveToLocal();
+        }
+    }
+    
+    // --- Облачные API (Worker KV) ---
+    async function testCloudConnection() {
+        if(!CLOUD_WORKER_URL || CLOUD_WORKER_URL.includes('your-worker')) return false;
+        try {
+            const res = await fetch(`${CLOUD_WORKER_URL}/ping`, { method: 'GET', cache: 'no-store' });
+            if(res.ok) return true;
+        } catch(e) { return false; }
+        return false;
+    }
+    
+    async function fetchCloudData() {
+        if(currentMode !== 'cloud') return null;
+        try {
+            const res = await fetch(`${CLOUD_WORKER_URL}/items`);
+            if(res.ok) {
+                const data = await res.json();
+                return data.items || [];
             }
+        } catch(e) { console.warn("Cloud fetch error", e); }
+        return null;
+    }
+    
+    async function pushCloudData(items) {
+        if(currentMode !== 'cloud') return false;
+        try {
+            const res = await fetch(`${CLOUD_WORKER_URL}/sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: items })
+            });
+            return res.ok;
+        } catch(e) { return false; }
+    }
+    
+    async function deleteCloudItem(itemId) {
+        if(currentMode !== 'cloud') return false;
+        try {
+            const res = await fetch(`${CLOUD_WORKER_URL}/delete/${itemId}`, { method: 'DELETE' });
+            return res.ok;
+        } catch(e) { return false; }
+    }
+    
+    async function clearCloud() {
+        if(currentMode !== 'cloud') return false;
+        try {
+            const res = await fetch(`${CLOUD_WORKER_URL}/clear`, { method: 'DELETE' });
+            return res.ok;
+        } catch(e) { return false; }
+    }
+    
+    // --- Инициализация режима ---
+    async function initMode() {
+        showLoader(true);
+        const cloudReachable = await testCloudConnection();
+        if(cloudReachable && CLOUD_WORKER_URL && !CLOUD_WORKER_URL.includes('your-worker')) {
+            currentMode = 'cloud';
+            statusSpan.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Облако активно';
+            modeDescSpan.innerText = 'ГЛОБАЛЬНЫЙ (Cloudflare KV)';
+            await loadCloudToMemory();
+        } else {
+            currentMode = 'local';
+            statusSpan.innerHTML = '<i class="fas fa-database"></i> Локальный режим';
+            modeDescSpan.innerText = 'локальный (только этот браузер)';
+            loadFromLocal();
+            renderFeed();
+        }
+        showLoader(false);
+        updateStatsDisplay();
+    }
+    
+    async function loadCloudToMemory() {
+        const cloudItems = await fetchCloudData();
+        if(cloudItems && Array.isArray(cloudItems)) {
+            feedItems = cloudItems;
+            renderFeed();
+            saveToLocal(); // кэш
+        } else {
+            // если облако пустое, попробуем поднять локальные
+            loadFromLocal();
+            await pushCloudData(feedItems);
+            renderFeed();
+        }
+    }
+    
+    // --- Рендер + удаление / синхронизация ---
+    function renderFeed() {
+        if(!container) return;
+        if(feedItems.length === 0) {
+            container.innerHTML = `<div class="empty-feed">🧪 Лаборатория пуста. Создайте первую публикацию! 🧪</div>`;
+            updateStatsDisplay();
+            return;
+        }
+        let html = '';
+        [...feedItems].reverse().forEach(item => {
+            const { id, type, title, desc, mediaUrl, fileDataUrl } = item;
+            let finalMedia = (fileDataUrl && fileDataUrl.startsWith('data:')) ? fileDataUrl : mediaUrl;
+            let mediaTag = '';
+            let typeIcon = '';
+            if(type === 'image') {
+                typeIcon = '<i class="fas fa-image"></i> Изображение';
+                mediaTag = finalMedia ? `<div class="media-container"><img src="${escapeHtml(finalMedia)}" onerror="this.src='https://placehold.co/600x400/1a1f2e/ff66cc?text=Ошибка'" loading="lazy"></div>` : `<div class="media-container">🖼️ нет превью</div>`;
+            } else if(type === 'video') {
+                typeIcon = '<i class="fas fa-video"></i> Видео';
+                mediaTag = finalMedia ? `<div class="media-container"><video controls src="${escapeHtml(finalMedia)}" style="max-height:200px;"></video></div>` : `<div class="media-container">🎬 видео без источника</div>`;
+            } else if(type === 'plugin') {
+                typeIcon = '<i class="fas fa-puzzle-piece"></i> Плагин';
+                mediaTag = `<div class="media-container" style="padding:0.8rem;"><i class="fas fa-code-branch"></i> ${finalMedia ? `<a href="${escapeHtml(finalMedia)}" target="_blank">Ссылка</a>` : 'Демо-режим'}</div>`;
+            } else {
+                typeIcon = '<i class="fas fa-newspaper"></i> Пост';
+                mediaTag = `<div class="media-container" style="padding:0.7rem;">${finalMedia ? `<i class="fas fa-link"></i> <a href="${escapeHtml(finalMedia)}" target="_blank">Ресурс</a>` : 'Текстовый пост'}</div>`;
+            }
+            const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleString() : '—';
+            html += `
+                <div class="post-card" data-id="${id}">
+                    ${mediaTag}
+                    <div class="post-content">
+                        <div><span class="post-type-icon">${typeIcon}</span></div>
+                        <div class="post-title"><strong>${escapeHtml(title) || 'Без названия'}</strong></div>
+                        <div class="post-desc">${escapeHtml(desc || '')}</div>
+                        <div class="post-meta" style="display:flex; justify-content:space-between; margin-top:0.7rem;">
+                            <small>${dateStr}</small>
+                            <button class="delete-post" data-id="${id}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+        attachDeleteEvents();
+        updateStatsDisplay();
+        if(currentMode === 'cloud') pushCloudData(feedItems).catch(console.warn);
+        else saveToLocal();
+    }
+    
+    function attachDeleteEvents() {
+        document.querySelectorAll('.delete-post').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute('data-id'));
+                if(currentMode === 'cloud') {
+                    showLoader(true);
+                    await deleteCloudItem(id);
+                    feedItems = feedItems.filter(i => i.id !== id);
+                    await pushCloudData(feedItems);
+                    renderFeed();
+                    showLoader(false);
+                } else {
+                    feedItems = feedItems.filter(i => i.id !== id);
+                    renderFeed();
+                }
+            });
         });
     }
-
-    typeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const t = btn.getAttribute('data-type');
-            setActiveType(t);
-        });
-    });
-    setActiveType('post');
-
-    // Получить данные из формы + работа с файлом
-    const publishBtn = document.getElementById('publishBtn');
-    const titleInput = document.getElementById('postTitle');
-    const descInput = document.getElementById('postDesc');
-    const mediaUrlInput = document.getElementById('mediaUrl');
-    const fileUploadInput = document.getElementById('fileUpload');
-
+    
+    function updateStatsDisplay() {
+        const countSpan = document.getElementById('postCount');
+        if(countSpan) countSpan.innerText = feedItems.length;
+        else {
+            const header = document.querySelector('.badge-cloud');
+            if(header && !document.getElementById('postCount')) {
+                const span = document.createElement('span');
+                span.id = 'postCount';
+                span.style.marginLeft='0.8rem';
+                header.appendChild(span);
+            }
+            const pc = document.getElementById('postCount');
+            if(pc) pc.innerText = `📦 ${feedItems.length}`;
+        }
+    }
+    
+    // --- Добавление новой публикации с файлами ---
     function readFileAsDataURL(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result);
-            reader.onerror = () => reject(reader.error);
+            reader.onerror = reject;
             reader.readAsDataURL(file);
         });
     }
-
-    async function publishNewItem() {
-        let title = titleInput.value.trim();
-        let desc = descInput.value.trim();
-        let mediaUrl = mediaUrlInput.value.trim();
-        const file = fileUploadInput.files[0];
+    
+    publishBtn.addEventListener('click', async () => {
+        const title = document.getElementById('postTitle').value.trim();
+        const desc = document.getElementById('postDesc').value.trim();
+        let mediaUrl = document.getElementById('mediaUrl').value.trim();
+        const file = document.getElementById('fileUpload').files[0];
         let fileDataUrl = null;
-
-        if(!title) {
-            alert('Введите название / заголовок публикации');
+        if(!title) { alert("Введите заголовок"); return; }
+        
+        if(file) {
+            if(currentType === 'image' && !file.type.startsWith('image/')) { alert("Нужно изображение"); return; }
+            if(currentType === 'video' && !file.type.startsWith('video/')) { alert("Нужно видео"); return; }
+            fileDataUrl = await readFileAsDataURL(file);
+            mediaUrl = '';
+        } else if((currentType === 'image' || currentType === 'video') && !mediaUrl) {
+            alert("Для картинки/видео нужен URL или файл");
             return;
         }
-
-        // обработка файла: если файл загружен (картинка или видео)
-        if(file) {
-            const fileType = file.type;
-            if(currentType === 'image' && !fileType.startsWith('image/')) {
-                alert('Пожалуйста, выберите файл изображения (jpg, png, gif, webp)');
-                return;
-            }
-            if(currentType === 'video' && !fileType.startsWith('video/')) {
-                alert('Выберите видеофайл (mp4, webm, mov и т.д.)');
-                return;
-            }
-            if((currentType === 'post' || currentType === 'plugin') && (fileType.startsWith('image/') || fileType.startsWith('video/'))) {
-                // разрешим, но это не стандарт: используем файл как вложение
-                // всё равно ок, покажем как медиа
-            }
-            try {
-                fileDataUrl = await readFileAsDataURL(file);
-                // очищаем URL, чтоб не дублировать
-                mediaUrl = ''; // приоритет fileDataUrl
-            } catch(err) {
-                alert('Ошибка чтения файла');
-                return;
-            }
-        } else {
-            // Если файла нет, но тип картинка или видео и нет mediaUrl — предупредим
-            if((currentType === 'image' || currentType === 'video') && !mediaUrl) {
-                alert(`Для типа "${currentType === 'image' ? 'Картинка' : 'Видео'}" укажите URL или загрузите файл`);
-                return;
-            }
-        }
-
-        // для плагина/поста можно без ссылки, ок
+        
         const newItem = {
             id: Date.now(),
             type: currentType,
             title: title,
-            desc: desc || ' ',
+            desc: desc || '',
             mediaUrl: mediaUrl,
             fileDataUrl: fileDataUrl,
             timestamp: Date.now()
         };
-
-        feedItems.unshift(newItem); // добавить в начало
-        saveToStorage();
+        feedItems.unshift(newItem);
+        if(currentMode === 'cloud') {
+            showLoader(true);
+            await pushCloudData(feedItems);
+            showLoader(false);
+        }
         renderFeed();
-
-        // очистка формы после публикации (некоторые поля чистим)
-        titleInput.value = '';
-        descInput.value = '';
-        mediaUrlInput.value = '';
-        fileUploadInput.value = '';
-        // Оставим тип, но можно сбросить, но сохраним активный
-    }
-
-    publishBtn.addEventListener('click', publishNewItem);
-    document.getElementById('clearAllBtn').addEventListener('click', clearAll);
-
-    // дополнительно кнопка ввода для Enter нигде не конфликтует, всё чисто
-    loadFromStorage();
-
-    // при ошибках загрузки картинок не ломаем интерфейс (уже есть onerror в img)
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postDesc').value = '';
+        document.getElementById('mediaUrl').value = '';
+        document.getElementById('fileUpload').value = '';
+    });
+    
+    // Синхронизация вручную
+    refreshBtn.addEventListener('click', async () => {
+        if(currentMode === 'cloud') {
+            showLoader(true);
+            await loadCloudToMemory();
+            showLoader(false);
+        } else {
+            loadFromLocal();
+            renderFeed();
+        }
+    });
+    
+    clearAllBtn.addEventListener('click', async () => {
+        if(confirm("Удалить ВСЕ публикации для всех пользователей?")) {
+            if(currentMode === 'cloud') {
+                showLoader(true);
+                await clearCloud();
+                feedItems = [];
+                await pushCloudData(feedItems);
+                renderFeed();
+                showLoader(false);
+            } else {
+                feedItems = [];
+                renderFeed();
+            }
+        }
+    });
+    
+    // Экспорт/импорт JSON (переносимость)
+    exportBtn.addEventListener('click', () => {
+        const dataStr = JSON.stringify(feedItems, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `rootlab_backup_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+    
+    importBtn.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const text = await file.text();
+            try {
+                const imported = JSON.parse(text);
+                if(Array.isArray(imported)) {
+                    feedItems = imported;
+                    if(currentMode === 'cloud') {
+                        showLoader(true);
+                        await pushCloudData(feedItems);
+                        showLoader(false);
+                    }
+                    renderFeed();
+                    alert("Импорт выполнен");
+                } else throw new Error();
+            } catch(err) { alert("Неверный JSON"); }
+        };
+        input.click();
+    });
+    
+    // --- тип контента ---
+    document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentType = btn.getAttribute('data-type');
+        });
+    });
+    document.querySelector('.type-btn').classList.add('active');
+    
+    initMode();
 </script>
+
+<!-- ИНСТРУКЦИЯ: КОД ДЛЯ CLOUDFLARE WORKER (скопируйте в панель Worker) 
+     Название: rootlab-api
+     Добавьте привязку KV: ROOTLAB_KV (пространство имен)
+-->
+<!-- WORKER CODE (полный бэкенд) 
+export default {
+    async fetch(request, env) {
+        const url = new URL(request.url);
+        if (url.pathname === "/ping") return new Response("pong");
+        if (request.method === "GET" && url.pathname === "/items") {
+            const items = await env.ROOTLAB_KV.get("feed_items", "json");
+            return new Response(JSON.stringify({ items: items || [] }), { headers: { "Content-Type": "application/json" } });
+        }
+        if (request.method === "POST" && url.pathname === "/sync") {
+            const { items } = await request.json();
+            await env.ROOTLAB_KV.put("feed_items", JSON.stringify(items));
+            return new Response("ok");
+        }
+        if (request.method === "DELETE" && url.pathname === "/clear") {
+            await env.ROOTLAB_KV.put("feed_items", JSON.stringify([]));
+            return new Response("cleared");
+        }
+        if (request.method === "DELETE" && url.pathname.startsWith("/delete/")) {
+            const idToDelete = parseInt(url.pathname.split("/").pop());
+            const stored = await env.ROOTLAB_KV.get("feed_items", "json");
+            let items = stored || [];
+            items = items.filter(i => i.id !== idToDelete);
+            await env.ROOTLAB_KV.put("feed_items", JSON.stringify(items));
+            return new Response("deleted");
+        }
+        return new Response("Not found", { status: 404 });
+    }
+};
+-->
 </body>
 </html>
