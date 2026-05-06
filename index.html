@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>RootLab Official | Редактирование + Публикация</title>
-    <!-- Font Awesome Icons (v6 free) -->
+    <title>RootLab | Цифровая лаборатория контента</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter + Space Grotesk -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,562 +15,488 @@
         }
 
         body {
-            background: #0a0c12;
+            background: radial-gradient(circle at 10% 20%, #0a0c12, #030507);
             font-family: 'Inter', sans-serif;
-            color: #eef2ff;
+            color: #eef5ff;
             line-height: 1.5;
-            scroll-behavior: smooth;
+            padding: 2rem 1.5rem;
         }
 
-        :root {
-            --glow-cyan: #00f2ff;
-            --glow-purple: #b624ff;
-            --card-bg: rgba(18, 22, 35, 0.75);
-            --border-neon: rgba(0, 242, 255, 0.25);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #141a2a; }
-        ::-webkit-scrollbar-thumb { background: var(--glow-cyan); border-radius: 8px; }
-
-        .app-container {
-            max-width: 1440px;
+        /* контейнер */
+        .container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 1.5rem 2rem;
         }
 
+        /* header с неоном */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: baseline;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.8rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
             padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
         }
         .logo h1 {
-            font-family: 'Space Grotesk', monospace;
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #fff, var(--glow-cyan), var(--glow-purple));
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #aaffff, #2a7fff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
         }
-        .logo span {
+        .logo p {
             font-size: 0.8rem;
-            color: #7e8a9c;
-            display: block;
+            color: #7f8fa4;
+            letter-spacing: 0.3px;
         }
-        .new-post-btn {
-            background: linear-gradient(95deg, #00c3ff20, #9d4eff20);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-neon);
-            padding: 0.7rem 1.5rem;
+        .stats {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1.2rem;
             border-radius: 60px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 255, 255, 0.3);
         }
-        .new-post-btn:hover {
-            border-color: var(--glow-cyan);
-            box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
-            transform: scale(1.02);
+        .stats i {
+            color: #0ff;
+            margin-right: 6px;
         }
 
-        .tabs-filter {
+        /* форма создания (лаборатория) */
+        .creation-panel {
+            background: rgba(12, 18, 28, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            padding: 1.6rem 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+        }
+        .panel-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 1.4rem;
+        }
+        .panel-title i {
+            font-size: 1.8rem;
+            color: #2effe0;
+        }
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            background: #0b1018;
+            border: 1px solid #2a3448;
+            border-radius: 1.2rem;
+            padding: 0.9rem 1.2rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.95rem;
+            color: #f0f4fa;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0ff;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+        .row-2cols {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #1f2538;
-            padding-bottom: 0.75rem;
         }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: #9aa4bf;
-            font-size: 1rem;
+        .row-2cols > div {
+            flex: 1;
+            min-width: 180px;
+        }
+        .type-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0 1.2rem;
+            flex-wrap: wrap;
+        }
+        .type-btn {
+            background: #111a24;
+            border: 1px solid #2d3a4b;
+            border-radius: 2rem;
+            padding: 0.6rem 1.4rem;
             font-weight: 600;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
             cursor: pointer;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #b9d0f0;
         }
-        .tab-btn i { font-size: 1.1rem; }
-        .tab-btn.active {
-            background: rgba(0, 242, 255, 0.15);
-            color: var(--glow-cyan);
-            box-shadow: 0 0 6px rgba(0,242,255,0.2);
-            border: 1px solid rgba(0,242,255,0.4);
+        .type-btn.active {
+            background: #1e90ff33;
+            border-color: #0ff;
+            color: #aaffff;
+            box-shadow: 0 0 6px cyan;
         }
-        .tab-btn:hover:not(.active) {
+        .btn-publish {
+            background: linear-gradient(95deg, #00c3ff, #2b5eff);
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 1rem;
             color: white;
-            background: #1e253e;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.8px;
+        }
+        .btn-publish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px #00c8ff60;
         }
 
-        .feed-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.8rem;
-            margin-top: 1rem;
-        }
-        .post-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 28px;
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            overflow: hidden;
-            transition: all 0.25s ease;
-            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
-        }
-        .post-card:hover {
-            border-color: var(--glow-cyan);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 32px -12px rgba(0,242,255,0.2);
-        }
-        .card-media {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            background: #10141f;
+        /* галерея контента (плитка) */
+        .feed-header {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
-        .img-placeholder, .video-placeholder, .plugin-placeholder {
-            width: 100%;
-            height: 180px;
-            background: #11161f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--glow-cyan);
-            flex-direction: column;
-            gap: 6px;
-        }
-        img.card-img, video.card-video {
-            width: 100%;
-            display: block;
-            max-height: 220px;
-            object-fit: cover;
-        }
-        .card-content {
-            padding: 1.2rem 1.2rem 1.4rem;
-        }
-        .badge-type {
-            display: inline-block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            background: #1f2a44;
-            padding: 0.2rem 0.7rem;
-            border-radius: 30px;
-            margin-bottom: 0.7rem;
-            letter-spacing: 1px;
-            color: #a7c0ff;
-        }
-        .post-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, #fff, #b0e0ff);
+        .feed-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #c0e0ff, #2affcc);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .post-desc {
-            color: #b9c3de;
-            margin: 0.6rem 0;
-            font-size: 0.9rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .plugin-details {
-            background: #00000030;
-            border-radius: 20px;
-            padding: 0.5rem 0.8rem;
-            font-size: 0.8rem;
-            margin: 0.7rem 0;
-            font-family: monospace;
-            border-left: 3px solid var(--glow-cyan);
-            word-break: break-all;
-        }
-        .card-actions {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.8rem;
-            justify-content: flex-start;
-            font-size: 0.85rem;
-            color: #b1c2e6;
-            flex-wrap: wrap;
-        }
-        .action-btn {
+        .clear-btn {
+            background: rgba(255, 70, 70, 0.15);
+            border: 1px solid #ff4d6d55;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            color: #ffb3c6;
             cursor: pointer;
             transition: 0.2s;
-            background: transparent;
-            border: none;
-            color: #b1c2e6;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 8px;
-            border-radius: 30px;
         }
-        .action-btn:hover { background: #1e2740; color: white; }
-        .delete-btn:hover { color: #ff7b8a; }
-        .edit-btn:hover { color: var(--glow-cyan); }
-        hr { border-color: #232b3f; margin: 0.5rem 0; }
-
-        /* modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(2, 4, 12, 0.85);
-            backdrop-filter: blur(12px);
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.8rem;
+        }
+        /* карточка поста */
+        .post-card {
+            background: rgba(8, 14, 22, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 1.8rem;
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.25s ease;
+            box-shadow: 0 12px 20px -12px black;
+        }
+        .post-card:hover {
+            border-color: #0ff7;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 28px -12px #0ff3;
+        }
+        .media-container {
+            width: 100%;
+            max-height: 240px;
+            overflow: hidden;
+            background: #010101;
+            display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
         }
-        .modal-card {
-            background: #0e1120e6;
-            border: 1px solid var(--glow-cyan);
-            border-radius: 32px;
-            max-width: 560px;
-            width: 90%;
-            padding: 2rem;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.6);
-        }
-        .modal-card h2 { margin-bottom: 1.5rem; font-size: 1.6rem; }
-        .modal-card input, .modal-card select, .modal-card textarea {
+        .media-container img, .media-container video {
             width: 100%;
-            margin: 0.6rem 0;
-            padding: 0.8rem 1rem;
-            background: #1a1f2c;
-            border: 1px solid #2f3a5c;
-            border-radius: 18px;
-            color: white;
-            font-family: inherit;
+            object-fit: cover;
+            max-height: 220px;
         }
-        .modal-card input:focus, .modal-card textarea:focus {
-            outline: none;
-            border-color: var(--glow-cyan);
-            box-shadow: 0 0 5px cyan;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .btn-primary, .btn-secondary {
-            padding: 0.6rem 1.3rem;
-            border-radius: 40px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background: linear-gradient(120deg, #0cb9ff, #a13eff);
-            color: white;
-        }
-        .btn-secondary {
-            background: #262e44;
-            color: #ddd;
-        }
-        .file-hint {
+        .plugin-badge {
+            background: #2a1e4c;
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
             font-size: 0.7rem;
-            color: #9aaac2;
-            margin-top: -0.2rem;
-            margin-bottom: 0.8rem;
+            font-weight: 700;
+            color: #caaaff;
+            letter-spacing: 0.5px;
         }
-        .close-icon {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
+        .post-content {
+            padding: 1.2rem 1.4rem 1.4rem;
         }
-        .file-upload-area {
-            background: #1a1f2e;
-            border: 1px dashed var(--glow-cyan);
-            border-radius: 24px;
-            padding: 0.8rem;
-            margin: 0.8rem 0;
-            text-align: center;
+        .post-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+        .post-desc {
+            color: #b7c5db;
+            font-size: 0.9rem;
+            margin: 0.6rem 0;
+            line-height: 1.4;
+        }
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #7596c2;
+            border-top: 1px dashed #2a3548;
+            padding-top: 0.7rem;
+        }
+        .post-type-icon {
+            background: #1b2a3a;
+            border-radius: 50px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .delete-post {
+            background: none;
+            border: none;
+            color: #ff8181;
             cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.6;
             transition: 0.2s;
         }
-        .file-upload-area:hover {
-            background: #232a40;
-            border-color: #0af;
-        }
-        .file-upload-area i {
-            font-size: 1.8rem;
-            color: var(--glow-cyan);
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-        .file-info {
-            font-size: 0.75rem;
-            margin-top: 8px;
-            word-break: break-all;
-        }
-        .preview-box {
-            margin-top: 12px;
-            max-height: 140px;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .preview-box img, .preview-box video {
-            max-width: 100%;
-            max-height: 130px;
-            border-radius: 16px;
-            border: 1px solid cyan;
-        }
-        @media (max-width: 680px) {
-            .app-container { padding: 1rem; }
-            .feed-grid { grid-template-columns: 1fr; }
+        .delete-post:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
         .empty-feed {
             text-align: center;
             padding: 3rem;
-            background: #0f1322;
-            border-radius: 40px;
-            color: #6a789e;
+            background: #07101c60;
+            border-radius: 2rem;
+            font-style: italic;
+            color: #98aec9;
+        }
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #4a6588;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .creation-panel { padding: 1rem; }
         }
     </style>
 </head>
 <body>
-<div class="app-container">
+<div class="container">
     <div class="header">
         <div class="logo">
-            <h1>◈ RootLab ◈</h1>
-            <span>official — редактируй & загружай плагины/медиа</span>
+            <h1><i class="fas fa-flask"></i> RootLab</h1>
+            <p>лаборатория публикаций • плагины • контент</p>
         </div>
-        <button class="new-post-btn" id="openModalBtn"><i class="fas fa-plus-circle"></i> Опубликовать</button>
+        <div class="stats" id="statsDisplay">
+            <i class="fas fa-cubes"></i> <span id="postCount">0</span> элементов
+        </div>
     </div>
 
-    <div class="tabs-filter">
-        <button class="tab-btn active" data-filter="all"><i class="fas fa-globe"></i> Всё</button>
-        <button class="tab-btn" data-filter="plugin"><i class="fas fa-puzzle-piece"></i> Плагины</button>
-        <button class="tab-btn" data-filter="post"><i class="fas fa-newspaper"></i> Посты</button>
-        <button class="tab-btn" data-filter="photo"><i class="fas fa-image"></i> Фото</button>
-        <button class="tab-btn" data-filter="video"><i class="fas fa-video"></i> Видео</button>
+    <!-- панель создания: универсальный конструктор -->
+    <div class="creation-panel">
+        <div class="panel-title">
+            <i class="fas fa-vial"></i> 
+            <span>Новая публикация</span>
+        </div>
+        <div class="input-group">
+            <input type="text" id="postTitle" placeholder="Название / Имя плагина / Заголовок поста" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <textarea id="postDesc" rows="2" placeholder="Описание, текст или дополнительная информация..."></textarea>
+        </div>
+
+        <!-- тип контента -->
+        <div class="type-buttons" id="typeSelector">
+            <div class="type-btn" data-type="post"><i class="fas fa-paragraph"></i> Пост</div>
+            <div class="type-btn" data-type="plugin"><i class="fas fa-puzzle-piece"></i> Плагин</div>
+            <div class="type-btn" data-type="image" id="imageTypeBtn"><i class="fas fa-image"></i> Картинка</div>
+            <div class="type-btn" data-type="video"><i class="fas fa-video"></i> Видео</div>
+        </div>
+
+        <!-- динамическое поле под медиа - URL или загрузка файла -->
+        <div class="row-2cols" id="mediaRow">
+            <div style="flex:2">
+                <input type="text" id="mediaUrl" placeholder="URL изображения / видео (или ссылка на плагин / демо)" autocomplete="off">
+            </div>
+            <div style="flex:1">
+                <input type="file" id="fileUpload" accept="image/*,video/*" style="background:#0e1622; padding: 0.6rem;">
+            </div>
+        </div>
+        <small style="display: block; margin: 8px 0 12px 0; color:#86a0c2;"><i class="fas fa-link"></i> Для поста/плагина можно указать ссылку. Для картинки/видео — загрузите файл или вставьте URL</small>
+
+        <button class="btn-publish" id="publishBtn"><i class="fas fa-rocket"></i> Опубликовать в RootLab</button>
     </div>
 
-    <div id="feedContainer" class="feed-grid"></div>
-</div>
-
-<!-- Модальное окно (СОЗДАНИЕ / РЕДАКТИРОВАНИЕ) -->
-<div id="postModal" class="modal">
-    <div class="modal-card">
-        <i class="fas fa-times close-icon" id="closeModalBtn"></i>
-        <h2 id="modalTitle"><i class="fas fa-flask"></i> Новая публикация</h2>
-        <form id="publishForm">
-            <select id="contentType" required>
-                <option value="post">📄 Пост (текст)</option>
-                <option value="plugin">🔌 Плагин (загрузить архив)</option>
-                <option value="photo">🖼️ Фото (из галереи)</option>
-                <option value="video">🎥 Видео (из файлов)</option>
-            </select>
-            <input type="text" id="titleInput" placeholder="Заголовок *" required>
-            <textarea id="descInput" rows="3" placeholder="Описание / контент..."></textarea>
-            
-            <!-- Поле для плагина (скрепка) -->
-            <div id="dynamicPluginField" style="display: none;">
-                <div class="file-upload-area" id="pluginUploadArea">
-                    <i class="fas fa-paperclip fa-lg"></i> <i class="fas fa-cube"></i>
-                    <div>Прикрепить плагин (архив или файл)</div>
-                    <input type="file" id="pluginFileInput" accept=".zip,.rar,.vst3,.dll,.so,.vst,application/zip,application/x-rar-compressed" style="display: none;">
-                    <div id="pluginFileName" class="file-info"></div>
-                </div>
-                <div class="file-hint">Поддерживаются .zip, .rar, .vst3 (до 20 МБ).</div>
-            </div>
-            
-            <!-- Поле для медиа (фото/видео) -->
-            <div id="dynamicMediaField" style="display: none;">
-                <div class="file-upload-area" id="mediaUploadArea">
-                    <i class="fas fa-folder-open"></i> <i class="fas fa-image" id="mediaTypeIcon"></i>
-                    <div>Выбрать файл с устройства</div>
-                    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
-                    <div id="selectedFileName" class="file-info"></div>
-                </div>
-                <div id="mediaPreview" class="preview-box"></div>
-                <div class="file-hint">Фото JPG/PNG/GIF или видео MP4/WebM (до 15 МБ).</div>
-            </div>
-
-            <div class="modal-buttons">
-                <button type="button" class="btn-secondary" id="cancelModalBtn">Отмена</button>
-                <button type="submit" class="btn-primary" id="submitBtn">Опубликовать</button>
-            </div>
-        </form>
+    <!-- Лента контента -->
+    <div class="feed-header">
+        <h2><i class="fas fa-waveform"></i> Biblioteca контента</h2>
+        <button id="clearAllBtn" class="clear-btn"><i class="fas fa-trash-alt"></i> Очистить всё</button>
     </div>
+    <div id="postsContainer" class="posts-grid">
+        <!-- динамические карточки -->
+        <div class="empty-feed">✨ Лаборатория ждёт первых экспериментов. Создайте пост, плагин или загрузите медиа ✨</div>
+    </div>
+    <footer>
+        RootLab — digital lab для идей, плагинов и креатива. Все данные хранятся локально.
+    </footer>
 </div>
 
 <script>
-    // ---------- ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ ----------
-    let posts = [];
-    let editModeId = null;
+    // --- данные ---
+    let feedItems = [];  // каждый элемент: { id, type, title, desc, mediaUrl, fileDataUrl?, timestamp }
 
-    function loadPostsFromStorage() {
-        const stored = localStorage.getItem('rootlab_fixed_publish');
+    // Загрузка из localStorage
+    function loadFromStorage() {
+        const stored = localStorage.getItem('rootlab_feed');
         if(stored) {
-            posts = JSON.parse(stored);
+            try {
+                feedItems = JSON.parse(stored);
+                // убираем потенциально огромные blob url, если они есть из старых сессий? сохраним только безопасно.
+                // фильтруем валидность (можно)
+                renderFeed();
+            } catch(e) { console.warn(e); feedItems = []; }
         } else {
-            posts = [
-                { id: Date.now()+1, type: 'plugin', title: 'Root Spectral Processor', description: 'Плагин для спектральной обработки звука', pluginData: { name: 'RootSpectral.zip', base64: null, size: 0 }, createdAt: new Date().toISOString(), demoMode: true },
-                { id: Date.now()+2, type: 'post', title: 'RootLab Обновление: теперь всё работает!', description: 'Кнопка опубликовать активна, редактирование постов добавлено.', createdAt: new Date().toISOString() },
-                { id: Date.now()+3, type: 'photo', title: 'Интерфейс RootLab', description: 'Современный дизайн', mediaBase64: 'https://picsum.photos/id/104/500/300', isExternal: true, createdAt: new Date().toISOString() },
-                { id: Date.now()+4, type: 'video', title: 'Видео-инструкция', description: 'Как загружать плагины', mediaBase64: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', isExternal: true, createdAt: new Date().toISOString() }
+            // демо-примеры для красоты интерфейса
+            feedItems = [
+                { id: Date.now()+1, type: 'plugin', title: 'DarkCore Optimizer', desc: 'Плагин ускорения рендеринга для веб-приложений. Версия 2.1', mediaUrl: 'https://placehold.co/600x400/0a1122/cyan?text=Plugin+Demo', fileDataUrl: null, timestamp: Date.now() - 3600000 },
+                { id: Date.now()+2, type: 'image', title: 'Неоновая архитектура', desc: 'Абстракция RootLab концепт арт', mediaUrl: 'https://picsum.photos/id/104/500/300', fileDataUrl: null, timestamp: Date.now() - 7200000 },
+                { id: Date.now()+3, type: 'video', title: 'Революция лаборатории', desc: 'Краткий тизер генерации контента AI', mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', fileDataUrl: null, timestamp: Date.now() - 86400000 }
             ];
-            savePostsToStorage();
-        }
-        renderFeed('all');
-    }
-
-    function savePostsToStorage() {
-        localStorage.setItem('rootlab_fixed_publish', JSON.stringify(posts));
-    }
-
-    function addPost(postData) {
-        const newPost = { id: Date.now(), createdAt: new Date().toISOString(), ...postData };
-        posts.unshift(newPost);
-        savePostsToStorage();
-        renderFeed(currentFilter);
-    }
-
-    function updatePost(id, updatedData) {
-        const index = posts.findIndex(p => p.id === id);
-        if(index !== -1) {
-            posts[index] = { ...posts[index], ...updatedData, updatedAt: new Date().toISOString() };
-            savePostsToStorage();
-            renderFeed(currentFilter);
+            saveAndRender();
         }
     }
 
-    let currentFilter = 'all';
+    function saveToStorage() {
+        // Чтобы не хранить огромные dataURL слишком много, но для демки норм
+        const toStore = feedItems.map(item => {
+            // удаляем потенциальные blob ссылки? (они не сериализуются, но мы храним fileDataUrl как строку dataURL)
+            // оставляем как есть, но осторожно
+            return { ...item };
+        });
+        localStorage.setItem('rootlab_feed', JSON.stringify(toStore));
+    }
 
-    function renderFeed(filterType) {
-        const container = document.getElementById('feedContainer');
-        let filteredPosts = posts.filter(p => filterType === 'all' ? true : p.type === filterType);
-        if(filteredPosts.length === 0) {
-            container.innerHTML = `<div class="empty-feed"><i class="fas fa-cube fa-2x"></i><p>Публикаций пока нет. Нажмите "Опубликовать"!</p></div>`;
+    function saveAndRender() {
+        saveToStorage();
+        renderFeed();
+        updateStats();
+    }
+
+    function updateStats() {
+        const countSpan = document.getElementById('postCount');
+        if(countSpan) countSpan.innerText = feedItems.length;
+    }
+
+    // рендер всех постов / плагинов / медиа
+    function renderFeed() {
+        const container = document.getElementById('postsContainer');
+        if(!container) return;
+        if(feedItems.length === 0) {
+            container.innerHTML = `<div class="empty-feed">🧪 Лаборатория пуста. Начните с первой публикации! 🧪</div>`;
+            updateStats();
             return;
         }
 
-        container.innerHTML = filteredPosts.map(post => {
-            let mediaHtml = '';
-            let badgeContent = '';
-            let extraMeta = '';
+        let html = '';
+        feedItems.slice().reverse().forEach(item => {
+            const { id, type, title, desc, mediaUrl, fileDataUrl, timestamp } = item;
+            // основной медиа-источник: если есть fileDataUrl (загруженный файл) - используем его, иначе mediaUrl
+            let finalMedia = fileDataUrl && fileDataUrl.startsWith('data:') ? fileDataUrl : (mediaUrl || '');
+            let mediaTag = '';
+            let typeIcon = '';
+            let extraBadge = '';
 
-            if(post.type === 'plugin') {
-                badgeContent = '<span class="badge-type"><i class="fas fa-puzzle-piece"></i> Плагин</span>';
-                let pluginFileName = (post.pluginData && post.pluginData.name) ? post.pluginData.name : (post.demoPluginName || 'plugin_file');
-                let hasRealFile = (post.pluginData && post.pluginData.base64);
-                extraMeta = `<div class="plugin-details">
-                                <i class="fas fa-paperclip"></i> ${escapeHtml(pluginFileName)} 
-                                ${hasRealFile ? `<button class="download-plugin-btn" data-id="${post.id}" style="background:none; border:none; color:#0af; cursor:pointer; margin-left:8px;"><i class="fas fa-download"></i> Скачать</button>` : '<span style="color:#aaa;"> (демо)</span>'}
-                             </div>`;
-                mediaHtml = `<div class="plugin-placeholder"><i class="fas fa-cube fa-3x"></i><i class="fas fa-paperclip"></i><span>Файл плагина</span></div>`;
-            }
-            else if(post.type === 'post') {
-                badgeContent = '<span class="badge-type"><i class="fas fa-align-left"></i> Пост</span>';
-                mediaHtml = `<div class="img-placeholder"><i class="fas fa-newspaper fa-2x"></i> RootLab insider</div>`;
-            }
-            else if(post.type === 'photo') {
-                badgeContent = '<span class="badge-type"><i class="fas fa-camera"></i> Фото</span>';
-                if(post.mediaBase64) {
-                    mediaHtml = `<img class="card-img" src="${post.mediaBase64}" alt="photo" onerror="this.src='https://placehold.co/600x400/1a1f2c/cyan?text=Error';">`;
+            if(type === 'image') {
+                typeIcon = '<i class="fas fa-image"></i> Изображение';
+                if(finalMedia) {
+                    mediaTag = `<div class="media-container"><img src="${escapeHtml(finalMedia)}" alt="image" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a1f2e/ff66cc?text=Ошибка+загрузки'"></div>`;
                 } else {
-                    mediaHtml = `<div class="img-placeholder"><i class="fas fa-image fa-3x"></i></div>`;
+                    mediaTag = `<div class="media-container"><div style="padding:2rem; background:#0b1020;">🖼️ Нет превью</div></div>`;
+                }
+            } 
+            else if(type === 'video') {
+                typeIcon = '<i class="fas fa-video"></i> Видео';
+                if(finalMedia) {
+                    mediaTag = `<div class="media-container"><video controls src="${escapeHtml(finalMedia)}" style="max-height:210px; width:100%">Ваш браузер не поддерживает видео</video></div>`;
+                } else {
+                    mediaTag = `<div class="media-container"><div style="padding:1rem;">🎬 Видео без источника</div></div>`;
                 }
             }
-            else if(post.type === 'video') {
-                badgeContent = '<span class="badge-type"><i class="fas fa-play"></i> Видео</span>';
-                if(post.mediaBase64) {
-                    if(post.isExternal && !post.mediaBase64.startsWith('data:')) {
-                        if(post.mediaBase64.match(/\.(mp4|webm)$/i)) {
-                            mediaHtml = `<video class="card-video" controls><source src="${post.mediaBase64}" type="video/mp4"></video>`;
-                        } else {
-                            mediaHtml = `<div class="img-placeholder"><i class="fas fa-video"></i> <a href="${post.mediaBase64}" target="_blank">Открыть</a></div>`;
-                        }
-                    } else {
-                        mediaHtml = `<video class="card-video" controls><source src="${post.mediaBase64}" type="video/mp4"></video>`;
-                    }
+            else if(type === 'plugin') {
+                typeIcon = '<i class="fas fa-puzzle-piece"></i> Плагин';
+                extraBadge = `<span class="plugin-badge"><i class="fas fa-code-branch"></i> EXTENSION</span>`;
+                if(finalMedia) {
+                    mediaTag = `<div class="media-container" style="background:#0E1622; justify-content:flex-start; padding:0.8rem 1rem;"><i class="fas fa-download" style="margin-right:8px;"></i> <span style="font-size:0.8rem;">Ссылка: <a href="${escapeHtml(finalMedia)}" target="_blank" style="color:#6ee7ff;">${finalMedia.length>40?finalMedia.substring(0,40)+'...':finalMedia}</a></span></div>`;
                 } else {
-                    mediaHtml = `<div class="img-placeholder"><i class="fas fa-link"></i> нет видео</div>`;
+                    mediaTag = `<div class="media-container" style="padding:0.8rem;">🔌 Плагин без ссылки (демо-версия)</div>`;
+                }
+            }
+            else { // тип post
+                typeIcon = '<i class="fas fa-newspaper"></i> Пост';
+                if(finalMedia) {
+                    mediaTag = `<div class="media-container" style="background:#090f18; padding:0.7rem;"><i class="fas fa-link"></i> <a href="${escapeHtml(finalMedia)}" target="_blank" style="color:#88ddff;">${escapeHtml(finalMedia.length>50 ? finalMedia.substring(0,50)+'...' : finalMedia)}</a></div>`;
+                } else {
+                    mediaTag = `<div class="media-container" style="padding:1rem; background:#03060c;"><i class="far fa-file-alt"></i> Текстовый пост</div>`;
                 }
             }
 
-            const date = new Date(post.createdAt);
-            const formattedDate = date.toLocaleDateString('ru-RU', { day:'numeric', month:'short', year:'numeric' });
-            return `
-                <div class="post-card" data-id="${post.id}">
-                    <div class="card-media">${mediaHtml}</div>
-                    <div class="card-content">
-                        ${badgeContent}
-                        <div class="post-title">${escapeHtml(post.title)}</div>
-                        <div class="post-desc">${escapeHtml(post.description) || '—'}</div>
-                        ${extraMeta}
-                        <hr>
-                        <div class="card-actions">
-                            <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
-                            <button class="action-btn edit-btn" data-id="${post.id}"><i class="fas fa-edit"></i> Ред.</button>
-                            <button class="action-btn delete-btn" data-id="${post.id}"><i class="fas fa-trash-alt"></i> Удалить</button>
+            // дата
+            const dateStr = timestamp ? new Date(timestamp).toLocaleString() : 'недавно';
+            html += `
+                <div class="post-card" data-id="${id}">
+                    ${mediaTag}
+                    <div class="post-content">
+                        <div style="display:flex; justify-content: space-between; align-items:center;">
+                            <div class="post-type-icon">${typeIcon}</div>
+                            ${extraBadge}
+                        </div>
+                        <div class="post-title">${escapeHtml(title) || 'Без названия'}</div>
+                        <div class="post-desc">${escapeHtml(desc) || 'Описание отсутствует'}</div>
+                        <div class="post-meta">
+                            <span><i class="far fa-clock"></i> ${dateStr}</span>
+                            <button class="delete-post" data-id="${id}" title="Удалить публикацию"><i class="fas fa-trash-can"></i></button>
                         </div>
                     </div>
                 </div>
             `;
-        }).join('');
+        });
+        container.innerHTML = html;
 
-        document.querySelectorAll('.delete-btn').forEach(btn => {
+        // добавим слушатели на удаление
+        document.querySelectorAll('.delete-post').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const id = parseInt(btn.getAttribute('data-id'));
-                if(confirm("Удалить публикацию?")) {
-                    posts = posts.filter(p => p.id !== id);
-                    savePostsToStorage();
-                    renderFeed(currentFilter);
-                }
+                deletePostById(id);
             });
         });
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                openEditModal(id);
-            });
-        });
-        document.querySelectorAll('.download-plugin-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const postId = parseInt(btn.getAttribute('data-id'));
-                const post = posts.find(p => p.id === postId);
-                if(post && post.pluginData && post.pluginData.base64) {
-                    const a = document.createElement('a');
-                    a.href = post.pluginData.base64;
-                    a.download = post.pluginData.name;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    alert("Файл плагина недоступен для скачивания (демо). Загрузите свой!");
-                }
-            });
-        });
+        updateStats();
     }
 
+    function deletePostById(id) {
+        feedItems = feedItems.filter(item => item.id !== id);
+        saveAndRender();
+    }
+
+    function clearAll() {
+        if(confirm('🧪 Стереть всю лабораторию? Все посты, плагины и медиа будут удалены.')) {
+            feedItems = [];
+            saveAndRender();
+        }
+    }
+
+    // утилита
     function escapeHtml(str) {
         if(!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -579,197 +504,124 @@
             if(m === '<') return '&lt;';
             if(m === '>') return '&gt;';
             return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
         });
     }
 
-    // ---------- ЛОГИКА РЕДАКТИРОВАНИЯ И ФАЙЛОВ ----------
-    let selectedPluginFile = null;
-    let selectedMediaBase64 = null;
+    // ---- логика публикации с обработкой файлов ----
+    let currentType = 'post';   // по умолчанию
 
-    const pluginFileInput = document.getElementById('pluginFileInput');
-    const pluginUploadArea = document.getElementById('pluginUploadArea');
-    const pluginFileNameSpan = document.getElementById('pluginFileName');
-    const mediaFileInput = document.getElementById('mediaFileInput');
-    const mediaUploadArea = document.getElementById('mediaUploadArea');
-    const selectedFileNameSpan = document.getElementById('selectedFileName');
-    const mediaPreviewDiv = document.getElementById('mediaPreview');
-
-    function resetPluginSelection() {
-        selectedPluginFile = null;
-        if(pluginFileInput) pluginFileInput.value = '';
-        if(pluginFileNameSpan) pluginFileNameSpan.innerText = '';
-    }
-    function resetMediaSelection() {
-        selectedMediaBase64 = null;
-        if(mediaFileInput) mediaFileInput.value = '';
-        if(selectedFileNameSpan) selectedFileNameSpan.innerText = '';
-        if(mediaPreviewDiv) mediaPreviewDiv.innerHTML = '';
-    }
-
-    if(pluginUploadArea) {
-        pluginUploadArea.addEventListener('click', () => pluginFileInput.click());
-        pluginFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            if(file.size > 20 * 1024 * 1024) { alert("Максимум 20 МБ"); return; }
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                selectedPluginFile = { name: file.name, base64: ev.target.result, size: file.size };
-                pluginFileNameSpan.innerText = `📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-    if(mediaUploadArea) {
-        mediaUploadArea.addEventListener('click', () => mediaFileInput.click());
-        mediaFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            const type = document.getElementById('contentType').value;
-            const isImage = file.type.startsWith('image/');
-            const isVideo = file.type.startsWith('video/');
-            if(type === 'photo' && !isImage) { alert("Выберите изображение!"); return; }
-            if(type === 'video' && !isVideo) { alert("Выберите видео!"); return; }
-            if(file.size > 15 * 1024 * 1024) { alert("Максимум 15 МБ"); return; }
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                selectedMediaBase64 = ev.target.result;
-                selectedFileNameSpan.innerText = `📁 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
-                if(mediaPreviewDiv) {
-                    if(isImage) mediaPreviewDiv.innerHTML = `<img src="${selectedMediaBase64}" style="max-width:100%; max-height:130px; border-radius:16px;">`;
-                    else mediaPreviewDiv.innerHTML = `<video src="${selectedMediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    function toggleDynamicFields() {
-        const type = document.getElementById('contentType').value;
-        const pluginDiv = document.getElementById('dynamicPluginField');
-        const mediaDiv = document.getElementById('dynamicMediaField');
-        pluginDiv.style.display = 'none';
-        mediaDiv.style.display = 'none';
-        if(type === 'plugin') pluginDiv.style.display = 'block';
-        else if(type === 'photo' || type === 'video') mediaDiv.style.display = 'block';
-    }
-
-    function openEditModal(id) {
-        const post = posts.find(p => p.id === id);
-        if(!post) return;
-        editModeId = id;
-        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-pen-fancy"></i> Редактирование';
-        document.getElementById('submitBtn').innerText = 'Сохранить изменения';
-        document.getElementById('contentType').value = post.type;
-        document.getElementById('titleInput').value = post.title;
-        document.getElementById('descInput').value = post.description || '';
-        resetPluginSelection();
-        resetMediaSelection();
-        toggleDynamicFields();
-        
-        if(post.type === 'plugin') {
-            if(post.pluginData && post.pluginData.name) {
-                pluginFileNameSpan.innerText = `📎 Текущий: ${post.pluginData.name} (можно заменить)`;
+    // подсветка кнопок типа
+    const typeBtns = document.querySelectorAll('.type-btn');
+    function setActiveType(type) {
+        currentType = type;
+        typeBtns.forEach(btn => {
+            if(btn.getAttribute('data-type') === type) {
+                btn.classList.add('active');
             } else {
-                pluginFileNameSpan.innerText = `📎 Демо-плагин (загрузите свой для замены)`;
+                btn.classList.remove('active');
             }
-        }
-        if(post.type === 'photo' || post.type === 'video') {
-            if(post.mediaBase64 && !post.isExternal) {
-                selectedMediaBase64 = post.mediaBase64;
-                if(post.type === 'photo') mediaPreviewDiv.innerHTML = `<img src="${post.mediaBase64}" style="max-width:100%; max-height:130px; border-radius:16px;">`;
-                else mediaPreviewDiv.innerHTML = `<video src="${post.mediaBase64}" controls style="max-width:100%; max-height:130px;"></video>`;
-                selectedFileNameSpan.innerText = `Текущий файл (можно заменить)`;
-            } else if(post.mediaBase64 && post.isExternal) {
-                selectedFileNameSpan.innerText = `Внешний URL (загрузите новый файл для замены)`;
-            }
-        }
-        document.getElementById('postModal').style.display = 'flex';
+        });
     }
 
-    function resetEditMode() {
-        editModeId = null;
-        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-flask"></i> Новая публикация';
-        document.getElementById('submitBtn').innerText = 'Опубликовать';
-        document.getElementById('publishForm').reset();
-        resetPluginSelection();
-        resetMediaSelection();
-        toggleDynamicFields();
-    }
-
-    // Modal open/close
-    const modal = document.getElementById('postModal');
-    const openBtn = document.getElementById('openModalBtn');
-    openBtn.addEventListener('click', () => { resetEditMode(); modal.style.display = 'flex'; });
-    document.getElementById('closeModalBtn').addEventListener('click', () => { modal.style.display = 'none'; resetEditMode(); });
-    document.getElementById('cancelModalBtn').addEventListener('click', () => { modal.style.display = 'none'; resetEditMode(); });
-    window.addEventListener('click', (e) => { if(e.target === modal) { modal.style.display = 'none'; resetEditMode(); } });
-    document.getElementById('contentType').addEventListener('change', toggleDynamicFields);
-
-    // SUBMIT (СОЗДАНИЕ / ОБНОВЛЕНИЕ) — ГЛАВНЫЙ ФИКС
-    const publishForm = document.getElementById('publishForm');
-    publishForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const type = document.getElementById('contentType').value;
-        const title = document.getElementById('titleInput').value.trim();
-        const description = document.getElementById('descInput').value.trim();
-        if(!title) { alert("Введите заголовок"); return; }
-
-        if(editModeId !== null) {
-            // РЕДАКТИРОВАНИЕ
-            const updated = { type, title, description };
-            if(type === 'plugin') {
-                if(selectedPluginFile) {
-                    updated.pluginData = { name: selectedPluginFile.name, base64: selectedPluginFile.base64, size: selectedPluginFile.size };
-                } else {
-                    const oldPost = posts.find(p => p.id === editModeId);
-                    if(oldPost && oldPost.pluginData) updated.pluginData = oldPost.pluginData;
-                    else if(oldPost && oldPost.demoMode) updated.demoMode = true;
-                }
-            }
-            else if(type === 'photo' || type === 'video') {
-                if(selectedMediaBase64) {
-                    updated.mediaBase64 = selectedMediaBase64;
-                    updated.isExternal = false;
-                } else {
-                    const oldPost = posts.find(p => p.id === editModeId);
-                    if(oldPost && oldPost.mediaBase64) {
-                        updated.mediaBase64 = oldPost.mediaBase64;
-                        updated.isExternal = oldPost.isExternal || false;
-                    }
-                }
-            }
-            updatePost(editModeId, updated);
-        } 
-        else {
-            // СОЗДАНИЕ НОВОГО ПОСТА
-            const newData = { type, title, description };
-            if(type === 'plugin') {
-                if(!selectedPluginFile) { alert("Прикрепите файл плагина (скрепка)!"); return; }
-                newData.pluginData = { name: selectedPluginFile.name, base64: selectedPluginFile.base64, size: selectedPluginFile.size };
-            }
-            else if(type === 'photo' || type === 'video') {
-                if(!selectedMediaBase64) { alert(`Выберите ${type === 'photo' ? 'фото' : 'видео'} с устройства!`); return; }
-                newData.mediaBase64 = selectedMediaBase64;
-                newData.isExternal = false;
-            }
-            addPost(newData);
-        }
-        modal.style.display = 'none';
-        resetEditMode();
-    });
-
-    // TABS
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => {
+    typeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.getAttribute('data-filter');
-            renderFeed(currentFilter);
+            const t = btn.getAttribute('data-type');
+            setActiveType(t);
         });
     });
-    loadPostsFromStorage();
+    setActiveType('post');
+
+    // Получить данные из формы + работа с файлом
+    const publishBtn = document.getElementById('publishBtn');
+    const titleInput = document.getElementById('postTitle');
+    const descInput = document.getElementById('postDesc');
+    const mediaUrlInput = document.getElementById('mediaUrl');
+    const fileUploadInput = document.getElementById('fileUpload');
+
+    function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function publishNewItem() {
+        let title = titleInput.value.trim();
+        let desc = descInput.value.trim();
+        let mediaUrl = mediaUrlInput.value.trim();
+        const file = fileUploadInput.files[0];
+        let fileDataUrl = null;
+
+        if(!title) {
+            alert('Введите название / заголовок публикации');
+            return;
+        }
+
+        // обработка файла: если файл загружен (картинка или видео)
+        if(file) {
+            const fileType = file.type;
+            if(currentType === 'image' && !fileType.startsWith('image/')) {
+                alert('Пожалуйста, выберите файл изображения (jpg, png, gif, webp)');
+                return;
+            }
+            if(currentType === 'video' && !fileType.startsWith('video/')) {
+                alert('Выберите видеофайл (mp4, webm, mov и т.д.)');
+                return;
+            }
+            if((currentType === 'post' || currentType === 'plugin') && (fileType.startsWith('image/') || fileType.startsWith('video/'))) {
+                // разрешим, но это не стандарт: используем файл как вложение
+                // всё равно ок, покажем как медиа
+            }
+            try {
+                fileDataUrl = await readFileAsDataURL(file);
+                // очищаем URL, чтоб не дублировать
+                mediaUrl = ''; // приоритет fileDataUrl
+            } catch(err) {
+                alert('Ошибка чтения файла');
+                return;
+            }
+        } else {
+            // Если файла нет, но тип картинка или видео и нет mediaUrl — предупредим
+            if((currentType === 'image' || currentType === 'video') && !mediaUrl) {
+                alert(`Для типа "${currentType === 'image' ? 'Картинка' : 'Видео'}" укажите URL или загрузите файл`);
+                return;
+            }
+        }
+
+        // для плагина/поста можно без ссылки, ок
+        const newItem = {
+            id: Date.now(),
+            type: currentType,
+            title: title,
+            desc: desc || ' ',
+            mediaUrl: mediaUrl,
+            fileDataUrl: fileDataUrl,
+            timestamp: Date.now()
+        };
+
+        feedItems.unshift(newItem); // добавить в начало
+        saveToStorage();
+        renderFeed();
+
+        // очистка формы после публикации (некоторые поля чистим)
+        titleInput.value = '';
+        descInput.value = '';
+        mediaUrlInput.value = '';
+        fileUploadInput.value = '';
+        // Оставим тип, но можно сбросить, но сохраним активный
+    }
+
+    publishBtn.addEventListener('click', publishNewItem);
+    document.getElementById('clearAllBtn').addEventListener('click', clearAll);
+
+    // дополнительно кнопка ввода для Enter нигде не конфликтует, всё чисто
+    loadFromStorage();
+
+    // при ошибках загрузки картинок не ломаем интерфейс (уже есть onerror в img)
 </script>
 </body>
 </html>
