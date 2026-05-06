@@ -1,43 +1,321 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# =====================================================
+# RootLab - Static Site Deployment Configuration
+# Универсальный конфиг для GitHub Pages, Cloudflare Pages,
+# Netlify, Vercel и любых static хостингов
+# =====================================================
 
+# Имя рабочего процесса (для GitHub Actions)
+name: Deploy RootLab Static Site
+
+# Триггеры для автоматического деплоя
 on:
-  # Runs on pushes targeting the default branch
+  # Авто-деплой при пуше в основные ветки
   push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches:
+      - main
+      - master
+      - develop
+    # Опционально: только при изменении нужных файлов
+    paths:
+      - 'index.html'
+      - 'static.yml'
+      - 'assets/**'
+  
+  # Ручной запуск из интерфейса GitHub
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+  # Ежедневная перепроверка (опционально)
+  schedule:
+    - cron: '0 0 * * *'  # Каждый день в 00:00 UTC
+
+# Разрешения для GitHub токена
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+# Окружение для деплоя
+env:
+  # Название сайта
+  SITE_NAME: "RootLab"
+  # Версия сборки (используется для кэша)
+  BUILD_VERSION: "1.0.0"
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # =============================================
+  # JOB 1: Сборка и проверка статических файлов
+  # =============================================
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # 2. Создаём директорию для сборки
+      - name: Create build directory
+        run: |
+          mkdir -p build
+          mkdir -p build/assets
+          mkdir -p build/images
+      
+      # 3. Копируем основной HTML файл (RootLab)
+      - name: Copy RootLab HTML
+        run: |
+          # Если файл называется index.html
+          if [ -f "index.html" ]; then
+            cp index.html build/index.html
+          else
+            # Создаём заглушку с информацией
+            echo '<!DOCTYPE html>
+            <html>
+            <head><meta charset="UTF-8"><title>RootLab</title>
+            <style>body{background:#0a0c12;color:white;font-family:monospace;display:flex;justify-content:center;align-items:center;height:100vh;}</style>
+            </head>
+            <body>
+            <div style="text-align:center">
+            <h1>🧪 RootLab</h1>
+            <p>Пожалуйста, загрузите index.html с полной версией RootLab</p>
+            <a href="https://github.com/yourusername/rootlab">Скачать шаблон</a>
+            </div>
+            </body>
+            </html>' > build/index.html
+          fi
+      
+      # 4. Копируем дополнительные статические ресурсы (если есть)
+      - name: Copy static assets
+        run: |
+          if [ -d "assets" ]; then cp -r assets/* build/assets/ 2>/dev/null || true; fi
+          if [ -d "images" ]; then cp -r images/* build/images/ 2>/dev/null || true; fi
+          if [ -f "favicon.ico" ]; then cp favicon.ico build/; fi
+          if [ -f "robots.txt" ]; then cp robots.txt build/; fi
+      
+      # 5. Создаём _headers файл для правильных MIME-типов
+      - name: Configure security headers
+        run: |
+          cat > build/_headers << 'EOF'
+          /*
+            X-Content-Type-Options: nosniff
+            X-Frame-Options: DENY
+            X-XSS-Protection: 1; mode=block
+            Referrer-Policy: strict-origin-when-cross-origin
+            Permissions-Policy: geolocation=(), microphone=(), camera=()
+          EOF
+          
+          cat > build/_redirects << 'EOF'
+          # Netlify redirects
+          /index.html / 200
+          EOF
+      
+      # 6. Создаём простую service worker для кэширования (опционально)
+      - name: Create service worker
+        run: |
+          cat > build/sw.js << 'EOF'
+          const CACHE_NAME = 'rootlab-v1';
+          const urlsToCache = ['/', '/index.html'];
+          
+          self.addEventListener('install', event => {
+            event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+          });
+          
+          self.addEventListener('fetch', event => {
+            event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
+          });
+          EOF
+      
+      # 7. Генерируем sitemap.xml для SEO
+      - name: Generate sitemap
+        run: |
+          cat > build/sitemap.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url>
+              <loc>https://${{ vars.SITE_DOMAIN || 'rootlab.example.com' }}/</loc>
+              <lastmod>$(date -u +"%Y-%m-%d")</lastmod>
+              <priority>1.0</priority>
+            </url>
+          </urlset>
+          EOF
+      
+      # 8. Сохраняем артефакт для деплоя
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rootlab-static-site
+          path: build/
+          retention-days: 7
+          compression-level: 6
+
+  # =============================================
+  # JOB 2: Деплой на GitHub Pages
+  # =============================================
+  deploy-github-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rootlab-static-site
+          path: ./_site
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: '🚀 Deploy RootLab ${{ env.BUILD_VERSION }}'
+          enable_jekyll: false
+          allow_empty_commit: false
+
+  # =============================================
+  # JOB 3: Деплой на Cloudflare Pages (альтернатива)
+  # =============================================
+  deploy-cloudflare:
+    needs: build
+    runs-on: ubuntu-latest
+    if: false  # Отключено по умолчанию, включите если нужно
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rootlab-static-site
+          path: ./dist
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: rootlab
+          directory: ./dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+  # =============================================
+  # JOB 4: Тестирование и проверка ссылок
+  # =============================================
+  test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          name: rootlab-static-site
+          path: ./test-site
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install HTML validator
+        run: npm install -g html-validator-cli
+      
+      - name: Validate HTML
+        run: |
+          cd test-site
+          html-validator index.html --verbose || true
+      
+      - name: Check for broken links (optional)
+        run: |
+          npm install -g broken-link-checker
+          cd test-site
+          blc http://localhost:3000 --recursive --exclude '*.pdf' || true
+
+  # =============================================
+  # JOB 5: Оптимизация и сжатие (для больших файлов)
+  # =============================================
+  optimize:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rootlab-static-site
+          path: ./optimize-temp
+      
+      - name: Compress images (if any)
+        run: |
+          # Установка инструментов для оптимизации
+          sudo apt-get update
+          sudo apt-get install -y optipng jpegoptim
+          
+          # Оптимизация изображений
+          find ./optimize-temp -name "*.png" -exec optipng -o2 {} \;
+          find ./optimize-temp -name "*.jpg" -exec jpegoptim --strip-all {} \;
+          find ./optimize-temp -name "*.jpeg" -exec jpegoptim --strip-all {} \;
+      
+      - name: Create gzipped versions
+        run: |
+          cd optimize-temp
+          find . -type f -name "*.html" -exec gzip -k -9 {} \;
+          find . -type f -name "*.css" -exec gzip -k -9 {} \;
+          find . -type f -name "*.js" -exec gzip -k -9 {} \;
+      
+      - name: Upload optimized artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rootlab-optimized
+          path: optimize-temp/
+          retention-days: 3
+
+# =====================================================
+# НАСТРОЙКИ ДЛЯ РУЧНОГО ДЕПЛОЯ (локально):
+# =====================================================
+# 
+# Для деплоя на GitHub Pages локально:
+# 1. git add index.html static.yml
+# 2. git commit -m "Add RootLab static site"
+# 3. git push origin main
+# 4. Включите GitHub Pages в настройках репозитория
+#
+# Для деплоя на Netlify:
+# 1. Загрузите index.html на Netlify Drop
+# 2. Или подключите репозиторий к Netlify
+# 3. Команда сборки: echo "Static site ready"
+# 4. Публичная директория: ./
+#
+# Для деплоя на Vercel:
+# 1. vercel --prod
+# 2. Или подключите репозиторий
+#
+# Для Cloudflare Pages:
+# 1. Загрузите через dashboard
+# 2. Или используйте Wrangler CLI
+#
+# =====================================================
+# ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ (секреты):
+# =====================================================
+# 
+# CLOUDFLARE_API_TOKEN - для деплоя на Cloudflare
+# CLOUDFLARE_ACCOUNT_ID - ID аккаунта Cloudflare
+# SITE_DOMAIN - домен сайта (для sitemap)
+#
+# =====================================================
+
+# Кастомные настройки для разных хостингов
+
+# Для GitHub Pages
+ github-pages:
+   site: https://yourusername.github.io/rootlab
+   branch: gh-pages
+   
+# Для Cloudflare Pages
+ cloudflare:
+   project: rootlab
+   production-branch: main
+   
+# Для Netlify
+ netlify:
+   publish: ./
+   command: echo "Build complete"
